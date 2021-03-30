@@ -20,8 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    _calendarController = CalendarController();
     super.initState();
+    _calendarController = CalendarController();
+    _eventController = TextEditingController();
     _events = {};
     _selectedEvents = [];
   }
@@ -38,41 +39,107 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("Calendar"),
       ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            TableCalendar(
-              events: _events,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              calendarController: _calendarController,
-              headerStyle: HeaderStyle(
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TableCalendar(
+                events: _events,
+                initialCalendarFormat: CalendarFormat.month,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarController: _calendarController,
+                calendarStyle: CalendarStyle(
+                  canEventMarkersOverflow: true,
+                  todayColor: Colors.orange,
+                  selectedColor: Colors.green,
+                ),
+                headerStyle: HeaderStyle(
                   centerHeaderTitle: true,
                   formatButtonDecoration: BoxDecoration(
                       color: Colors.blue,
-                      borderRadius: BorderRadius.circular(20)),
-                  formatButtonTextStyle: TextStyle(color: Colors.white)),
-              onDaySelected: (date, events, holidays) {
-                setState(() {
-                  _selectedEvents = events;
-                });
-              },
-            ),
-          ],
+                      borderRadius: BorderRadius.circular(20)
+                  ),
+                  formatButtonTextStyle: TextStyle(color: Colors.white),
+                  formatButtonShowsNext: false,
+                ),
+                onDaySelected: (date, events, holidays) {
+                  setState(() {
+                    _selectedEvents = events;
+                  });
+                },
+                builders: CalendarBuilders(
+                  selectedDayBuilder: (context, date, events) =>
+                      Container(
+                        margin: const EdgeInsets.all(4),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Text(
+                          date.day.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                  todayDayBuilder: (context, date, events) =>
+                      Container(
+                          margin: const EdgeInsets.all(4),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            date.day.toString(),
+                            style: TextStyle(color: Colors.white),
+                          )),
+                ),
+                //calendarController = _calendarController,
+              ),
+              ..._selectedEvents.map((event) =>
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Container(
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height / 20,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 2,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey)
+                      ),
+                      child: Center(
+                        child: Text(
+                          event,
+                          style: TextStyle(color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),),
+                      ),
+                    ),))
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green,
           child: Icon(Icons.add),
           onPressed: _showAddDialog
-          //ScaffoldMessenger.of(context).showSnackBar(new SnackBar(content: new Text("Snackbar")));
-          ),
+        //ScaffoldMessenger.of(context).showSnackBar(new SnackBar(content: new Text("Snackbar")));
+      ),
     );
   }
 
   _showAddDialog() async {
     await showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) =>
+            AlertDialog(
               backgroundColor: Colors.white,
               title: Text("New Event"),
               content: TextField(controller: _eventController),
@@ -80,14 +147,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 FlatButton(
                   child: Text("Save"),
                   onPressed: () {
-                    if (_eventController.text.isEmpty){
+                    if (_eventController.text.isEmpty) {
                       return;
                     }
                     setState(() {
                       if (_events [_calendarController.selectedDay] != null) {
-                        _events [_calendarController.selectedDay].add(_eventController.text);
+                        _events [_calendarController.selectedDay].add(
+                            _eventController.text);
                       } else {
-                        _events [_calendarController.selectedDay] = [_eventController.text];
+                        _events [_calendarController.selectedDay] =
+                        [_eventController.text];
                       }
                       _eventController.clear();
                       Navigator.pop(context);
