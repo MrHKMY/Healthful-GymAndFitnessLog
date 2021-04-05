@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:calendar/screens.dart';
 import 'package:calendar/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -90,15 +91,15 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
+        icon: Icon(CupertinoIcons.calendar_today),
         title: "Home",
         activeColorPrimary: Colors.blue,
         inactiveColorPrimary: Colors.grey,
         inactiveColorSecondary: Colors.purple,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.search),
-        title: ("Search"),
+        icon: Icon(Icons.list),
+        title: ("History"),
         activeColorPrimary: Colors.teal,
         inactiveColorPrimary: Colors.grey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
@@ -110,8 +111,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         ),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.message),
-        title: ("Messages"),
+        icon: Icon(CupertinoIcons.gauge),
+        title: ("Progress"),
         activeColorPrimary: Colors.deepOrange,
         inactiveColorPrimary: Colors.grey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
@@ -123,8 +124,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         ),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.settings),
-        title: ("Settings"),
+        icon: Icon(CupertinoIcons.profile_circled),
+        title: ("Profile"),
         activeColorPrimary: Colors.indigo,
         inactiveColorPrimary: Colors.grey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
@@ -147,7 +148,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         screens: _buildScreens(),
         items: _navBarsItems(),
         confineInSafeArea: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
@@ -182,7 +183,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         hideNavigationBar: _hideNavBar,
         decoration: NavBarDecoration(
             colorBehindNavBar: Colors.indigo,
-            borderRadius: BorderRadius.circular(0.0)),
+            borderRadius: BorderRadius.only(topRight: Radius.circular(25.0), topLeft: Radius.circular(25.0))),
         popAllScreensOnTapOfSelectedTab: true,
         itemAnimationProperties: ItemAnimationProperties(
           duration: Duration(milliseconds: 400),
