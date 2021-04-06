@@ -7,6 +7,7 @@ import 'package:flutter/painting.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:calendar/widgets.dart';
 
 class CalendarScreen extends StatefulWidget {
   final BuildContext menuScreenContext;
@@ -76,8 +77,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Stack(
-            children: [
+        child: Stack(children: [
       Container(
         color: Colors.greenAccent,
         //height: 500,
@@ -174,9 +174,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
         //     ),
       ),
       Positioned(
-        bottom: MediaQuery.of(context).viewInsets.bottom > 0
-            ? 0.0
-            : kBottomNavigationBarHeight + 10,
+          bottom: MediaQuery.of(context).viewInsets.bottom > 0
+              ? 0.0
+              : kBottomNavigationBarHeight + 10,
           right: 10,
           child: FloatingActionButton(
               backgroundColor: Colors.green,
@@ -186,6 +186,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   _showAddDialog() async {
+
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -200,13 +201,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       return;
                     }
                     //Save activity to Database
-                    Activities _newActivity = Activities(activity: _eventController.text, time: _calendarController.selectedDay.toString());
+                    String a = _calendarController.selectedDay.toString();
+
+                    Activities _newActivity = Activities(
+                        activity: _eventController.text,
+                        date: a.substring(0,10)
+                    );
                     _actID = await _dbHelper.insertActivity(_newActivity);
                     setState(() {
                       if (_events[_calendarController.selectedDay] != null) {
                         _events[_calendarController.selectedDay]
                             .add(_eventController.text);
-
                       } else {
                         _events[_calendarController.selectedDay] = [
                           _eventController.text
@@ -224,38 +229,42 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 }
 
-class MainScreen2 extends StatelessWidget {
-  const MainScreen2({Key key}) : super(key: key);
+class HistoryScreen extends StatefulWidget {
+  const HistoryScreen({Key key}) : super(key: key);
+
+  @override
+  _HistoryScreenState createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.teal,
       body: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  pushNewScreen(context, screen: MainScreen3());
-                },
-                child: Text(
-                  "Go to Third Screen",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "Go Back to First Screen",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
+        width: double.infinity,
+        child: Stack(
+          children: [
+            Column(children: [
+              Expanded(
+                  child: FutureBuilder(
+                      initialData: [],
+                      future: _dbHelper.retrieveActivity(),
+                      builder: (context, snapshot) {
+                        return ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return HistoryWidget(
+                              activity: snapshot.data[index].activity,
+                              date: snapshot.data[index].date,
+                            );
+                          },
+                        );
+                      }))
+            ])
+          ],
         ),
       ),
     );
