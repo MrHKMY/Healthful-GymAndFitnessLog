@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       home: ProvidedStylesExample(),
       initialRoute: "/",
       routes: {
-        "/first" : (context) => MainScreen2(),
+        "/first" : (context) => HistoryScreen(),
         "/second" : (context) => MainScreen3(),
       },
     );
@@ -64,7 +64,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           });
         },
       ),
-      MainScreen2(
+      HistoryScreen(
 
       ),
       CalendarScreen(
@@ -105,7 +105,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
-            '/first': (context) => MainScreen2(),
+            '/first': (context) => HistoryScreen(),
             '/second': (context) => MainScreen3(),
           },
         ),
@@ -118,7 +118,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
-            '/first': (context) => MainScreen2(),
+            '/first': (context) => HistoryScreen(),
             '/second': (context) => MainScreen3(),
           },
         ),
@@ -131,7 +131,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
-            '/first': (context) => MainScreen2(),
+            '/first': (context) => HistoryScreen(),
             '/second': (context) => MainScreen3(),
           },
         ),
@@ -159,24 +159,24 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         margin: EdgeInsets.all(0.0),
         popActionScreens: PopActionScreensType.all,
         bottomScreenMargin: 0.0,
-        onWillPop: (context) async {
-          await showDialog(
-            context: context,
-            useSafeArea: true,
-            builder: (context) => Container(
-              height: 50.0,
-              width: 50.0,
-              color: Colors.white,
-              child: ElevatedButton(
-                child: Text("Close"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          );
-          return false;
-        },
+        // onWillPop: (context) async {
+        //   await showDialog(
+        //     context: context,
+        //     useSafeArea: true,
+        //     builder: (context) => Container(
+        //       height: 50.0,
+        //       width: 50.0,
+        //       color: Colors.white,
+        //       child: ElevatedButton(
+        //         child: Text("Close"),
+        //         onPressed: () {
+        //           Navigator.pop(context);
+        //         },
+        //       ),
+        //     ),
+        //   );
+        //   return false;
+        // },
         selectedTabScreenContext: (context) {
           testContext = context;
         },

@@ -2,6 +2,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:calendar/model/activities.dart';
 
+
 class DatabaseHelper {
 
   static final columnDate = "Date";
@@ -27,5 +28,13 @@ class DatabaseHelper {
       actID = value;
     });
     return actID;
+  }
+
+  Future<List<Activities>> retrieveActivity() async {
+    Database _db = await database();
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM tasks ORDER BY id DESC");
+    return List.generate(activityMap.length, (index) {
+      return Activities(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["Date"]);
+    });
   }
 }

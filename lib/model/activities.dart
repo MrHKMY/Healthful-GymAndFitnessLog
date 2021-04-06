@@ -1,14 +1,14 @@
 class Activities {
   final int id;
   final String activity;
-  final String time;
-  Activities({this.id, this.activity, this.time});
+  final String date;
+  Activities({this.id, this.activity, this.date});
 
   Map<String, dynamic> toMap() {
     return{
       "id" : id,
       "Activity" : activity,
-      "Date" : time
+      "Date" : date
     };
   }
 }
