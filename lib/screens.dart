@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:calendar/database_helper.dart';
+import 'package:calendar/model/activities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -28,6 +30,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   List<dynamic> _selectedEvents;
   TextEditingController _eventController;
   SharedPreferences prefs;
+  int _actID = 0;
+  DatabaseHelper _dbHelper = DatabaseHelper();
 
   Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
     Map<String, dynamic> newMap = {};
@@ -191,14 +195,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
               actions: <Widget>[
                 FlatButton(
                   child: Text("Save"),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_eventController.text.isEmpty) {
                       return;
                     }
+                    //Save activity to Database
+                    Activities _newActivity = Activities(activity: _eventController.text, time: _calendarController.selectedDay.toString());
+                    _actID = await _dbHelper.insertActivity(_newActivity);
                     setState(() {
                       if (_events[_calendarController.selectedDay] != null) {
                         _events[_calendarController.selectedDay]
                             .add(_eventController.text);
+
                       } else {
                         _events[_calendarController.selectedDay] = [
                           _eventController.text
