@@ -10,9 +10,9 @@ class HistoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)
+          borderRadius: BorderRadius.circular(8)
       ),
       elevation: 3,
       //margin: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
