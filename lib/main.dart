@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
       home: ProvidedStylesExample(),
       initialRoute: "/",
       routes: {
-        "/first" : (context) => HistoryScreen(),
-        "/second" : (context) => MainScreen3(),
+        '/first': (context) => ProgressScreen(),
+        '/second': (context) => HistoryScreen(),
       },
     );
   }
@@ -64,17 +64,10 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           });
         },
       ),
+
+      ProgressScreen(),
       HistoryScreen(
 
-      ),
-      CalendarScreen(
-        menuScreenContext: widget.menuScreenContext,
-        hideStatus: _hideNavBar,
-        onScreenHideButtonPressed: () {
-          setState(() {
-            _hideNavBar = !_hideNavBar;
-          });
-        },
       ),
       CalendarScreen(
         menuScreenContext: widget.menuScreenContext,
@@ -97,19 +90,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         inactiveColorPrimary: Colors.grey,
         inactiveColorSecondary: Colors.purple,
       ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.list),
-        title: ("History"),
-        activeColorPrimary: Colors.teal,
-        inactiveColorPrimary: Colors.grey,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/first': (context) => HistoryScreen(),
-            '/second': (context) => MainScreen3(),
-          },
-        ),
-      ),
+
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.gauge),
         title: ("Progress"),
@@ -118,8 +99,21 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
-            '/first': (context) => HistoryScreen(),
-            '/second': (context) => MainScreen3(),
+            '/first': (context) => ProgressScreen(),
+            '/second': (context) => HistoryScreen(),
+          },
+        ),
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.list),
+        title: ("History"),
+        activeColorPrimary: Colors.teal,
+        inactiveColorPrimary: Colors.grey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: '/',
+          routes: {
+            '/first': (context) => ProgressScreen(),
+            '/second': (context) => HistoryScreen(),
           },
         ),
       ),
@@ -131,8 +125,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
-            '/first': (context) => HistoryScreen(),
-            '/second': (context) => MainScreen3(),
+            '/first': (context) => ProgressScreen(),
+            '/second': (context) => HistoryScreen(),
           },
         ),
       ),
