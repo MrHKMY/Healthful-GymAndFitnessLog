@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class HistoryWidget extends StatelessWidget {
   final String activity;
@@ -44,3 +43,35 @@ class HistoryWidget extends StatelessWidget {
     );
   }
 }
+
+class WeightWidget extends StatelessWidget {
+  final String parts;
+  final String measurement;
+
+  WeightWidget({this.parts, this.measurement});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Container(
+          child: Column(
+            children: [
+              Text(parts),
+              Container(
+                //margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(5),
+                //width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: Color(0xFF30A9B2)
+                  ),
+                ),
+                child: Text(measurement, style: TextStyle(color: Colors.white),),
+              ),
+            ],
+          )),
+    );
+  }
+}
+

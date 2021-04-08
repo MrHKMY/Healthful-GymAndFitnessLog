@@ -172,10 +172,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ..._selectedEvents.map((event) => Padding(
                         padding: const EdgeInsets.all(4),
                         child: Container(
-                          height: MediaQuery.of(context).size.height / 20,
-                          width: MediaQuery.of(context).size.width / 2,
+                          height: MediaQuery.of(context).size.height / 15,
+                          width: double.infinity,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(0),
                               color: Colors.white,
                               border: Border.all(color: Colors.grey)),
                           child: Center(
@@ -295,26 +295,53 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 }
 
-class MainScreen3 extends StatelessWidget {
-  const MainScreen3({Key key}) : super(key: key);
+class ProgressScreen extends StatelessWidget {
+  const ProgressScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.deepOrangeAccent,
-      body: Container(
-        child: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              "Go Back to Second Screen",
-              style: TextStyle(color: Colors.white),
-            ),
+    return SafeArea(
+        child: Scaffold(
+      backgroundColor: Color(0xff465466),
+      body: Stack(children: [
+        Container(
+          margin: EdgeInsets.all(50),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/muscle_transparent.png"),
+                fit: BoxFit.cover),
           ),
         ),
-      ),
-    );
+        Positioned(
+            top: 4,
+            right: 110,
+            left: 110,
+            child: WeightWidget(
+              parts: "Weight",
+              measurement: "45",
+            )),
+        Positioned(
+            top: 120,
+            left: 30,
+            child: WeightWidget(
+              parts: "Chest",
+              measurement: "30",
+            )),
+        Positioned(
+            top: 215,
+            right: 30,
+            child: WeightWidget(
+              parts: "Waist",
+              measurement: "30",
+            )),
+        Positioned(
+            top: 270,
+            left: 30,
+            child: WeightWidget(
+              parts: "Hips",
+              measurement: "27",
+            )),
+      ]),
+    ));
   }
 }
