@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/activities.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -76,117 +77,141 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Stack(children: [
-      Container(
-        color: Colors.greenAccent,
-        //height: 500,
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom > 0
-              ? 0.0
-              : kBottomNavigationBarHeight,
-        ),
-        //backgroundColor: Colors.grey[500],
-        child: SingleChildScrollView(
-          //padding: EdgeInsets.only(bottom: 50),
-          child: SafeArea(
-            child: Column(
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TableCalendar(
-                  events: _events,
-                  initialCalendarFormat: CalendarFormat.month,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  calendarController: _calendarController,
-                  calendarStyle: CalendarStyle(
-                    canEventMarkersOverflow: true,
-                    todayColor: Colors.orange,
-                    selectedColor: Colors.green,
-                  ),
-                  headerStyle: HeaderStyle(
-                    centerHeaderTitle: true,
-                    formatButtonDecoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20)),
-                    formatButtonTextStyle: TextStyle(color: Colors.white),
-                    formatButtonShowsNext: false,
-                  ),
-                  onDaySelected: (date, events, holidays) {
-                    setState(() {
-                      _selectedEvents = events;
-                    });
-                  },
-                  builders: CalendarBuilders(
-                    selectedDayBuilder: (context, date, events) => Container(
-                      margin: const EdgeInsets.all(4),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Text(
-                        date.day.toString(),
-                        style: TextStyle(color: Colors.white),
-                      ),
+    return Scaffold(
+      backgroundColor: Color(0xff465466),
+      body: Stack(children: [
+        Container(
+          color: Color(0xff465466),
+          //height: 500,
+          height: double.infinity,
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom > 0
+                ? 0.0
+                : kBottomNavigationBarHeight,
+          ),
+          //backgroundColor: Colors.grey[500],
+          child: SingleChildScrollView(
+            //padding: EdgeInsets.only(bottom: 50),
+            child: SafeArea(
+              child: Column(
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  TableCalendar(
+                    events: _events,
+                    formatAnimation: FormatAnimation.slide,
+                    initialCalendarFormat: CalendarFormat.month,
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    calendarController: _calendarController,
+                    calendarStyle: CalendarStyle(
+                      weekdayStyle: TextStyle(color: Colors.white),
+                      weekendStyle: TextStyle(color: Colors.white),
+                      outsideStyle: TextStyle(color: Colors.grey),
+                      unavailableStyle: TextStyle(color: Colors.grey),
+                      outsideWeekendStyle: TextStyle(color: Colors.grey),
+                      canEventMarkersOverflow: true,
                     ),
-                    todayDayBuilder: (context, date, events) => Container(
+                    daysOfWeekStyle: DaysOfWeekStyle(
+                      weekdayStyle: TextStyle(color: Color(0xFF30A9B2)),
+                      weekendStyle: TextStyle(color: Color(0xFF3DD94C)),
+                    ),
+                    headerStyle: HeaderStyle(
+                        leftChevronIcon: Icon(
+                          CupertinoIcons.left_chevron,
+                          color: Colors.grey,
+                        ),
+                        rightChevronIcon: Icon(
+                          CupertinoIcons.right_chevron,
+                          color: Colors.grey,
+                        ),
+                        centerHeaderTitle: true,
+                        titleTextStyle: TextStyle(color: Colors.white),
+                        formatButtonVisible: false),
+                    onDaySelected: (date, events, holidays) {
+                      setState(() {
+                        _selectedEvents = events;
+                      });
+                    },
+                    builders: CalendarBuilders(
+                      markersBuilder: (context, date, events, holidays) {
+                        return [
+                          Container(
+                            decoration: new BoxDecoration(
+                              color: Color(0xFF30A9B2),
+                              shape: BoxShape.circle,
+                            ),
+                            margin: const EdgeInsets.all(4.0),
+                            width: 5,
+                            height: 5,
+                          )
+                        ];
+                      },
+                      selectedDayBuilder: (context, date, events) => Container(
                         margin: const EdgeInsets.all(4),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                            color: Color(0xFF30B25B), shape: BoxShape.circle),
                         child: Text(
                           date.day.toString(),
                           style: TextStyle(color: Colors.white),
-                        )),
-                  ),
-                  //calendarController = _calendarController,
-                ),
-                ..._selectedEvents.map((event) => Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 20,
-                        width: MediaQuery.of(context).size.width / 2,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey)),
-                        child: Center(
-                          child: Text(
-                            event,
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
                         ),
                       ),
-                    )),
-              ],
+                      todayDayBuilder: (context, date, events) => Container(
+                          margin: const EdgeInsets.all(4),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF30A9B2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            date.day.toString(),
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    ),
+                    //calendarController = _calendarController,
+                  ),
+                  ..._selectedEvents.map((event) => Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 20,
+                          width: MediaQuery.of(context).size.width / 2,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey)),
+                          child: Center(
+                            child: Text(
+                              event,
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
+                            ),
+                          ),
+                        ),
+                      )),
+                ],
+              ),
             ),
           ),
+          // floatingActionButton: FloatingActionButton(
+          //     backgroundColor: Colors.green,
+          //     child: Icon(Icons.add),
+          //     onPressed: _showAddDialog
+          //     //ScaffoldMessenger.of(context).showSnackBar(new SnackBar(content: new Text("Snackbar")));
+          //     ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //     backgroundColor: Colors.green,
-        //     child: Icon(Icons.add),
-        //     onPressed: _showAddDialog
-        //     //ScaffoldMessenger.of(context).showSnackBar(new SnackBar(content: new Text("Snackbar")));
-        //     ),
-      ),
-      Positioned(
-          bottom: MediaQuery.of(context).viewInsets.bottom > 0
-              ? 0.0
-              : kBottomNavigationBarHeight + 10,
-          right: 10,
-          child: FloatingActionButton(
-              backgroundColor: Colors.green,
-              child: Icon(Icons.add),
-              onPressed: _showAddDialog))
-    ]));
+        Positioned(
+            bottom: MediaQuery.of(context).viewInsets.bottom > 0
+                ? 0.0
+                : kBottomNavigationBarHeight + 10,
+            right: 10,
+            child: FloatingActionButton(
+                backgroundColor: Color(0xFF30A9B2),
+                child: Icon(Icons.add),
+                onPressed: _showAddDialog))
+      ]),
+    );
   }
 
   _showAddDialog() async {
-
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -205,8 +230,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                     Activities _newActivity = Activities(
                         activity: _eventController.text,
-                        date: a.substring(0,10)
-                    );
+                        date: a.substring(0, 10));
                     _actID = await _dbHelper.insertActivity(_newActivity);
                     setState(() {
                       if (_events[_calendarController.selectedDay] != null) {
