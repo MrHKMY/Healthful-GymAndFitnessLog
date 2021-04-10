@@ -57,6 +57,7 @@ class WeightWidget extends StatelessWidget {
           child: Column(
             children: [
               Text(parts),
+              SizedBox(height: 2,),
               Container(
                 //margin: EdgeInsets.all(10),
                 padding: EdgeInsets.all(5),
@@ -74,4 +75,63 @@ class WeightWidget extends StatelessWidget {
     );
   }
 }
+
+class ArmWidget extends StatelessWidget {
+
+  final String twoPart;
+  final String leftMeasurement;
+  final String rightMeasurement;
+
+  ArmWidget ({this.twoPart, this.leftMeasurement, this.rightMeasurement});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Text(twoPart),
+          SizedBox(height: 2,),
+          Row(
+            children: [
+              Text("L", style: TextStyle( color: Colors.white),),
+              Container(
+                width: 50,
+                margin: EdgeInsets.only(left: 10),
+                padding: EdgeInsets.all(5),
+                //width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      color: Color(0xFF30A9B2)
+                  ),
+                ),
+                child: Text(leftMeasurement, style: TextStyle(color: Colors.white),),
+              )
+            ],
+          ),
+          SizedBox(height: 3,),
+          Row(
+            children: [
+              Text("R", style: TextStyle( color: Colors.white),),
+              Container(
+                width: 50,
+                margin: EdgeInsets.only(left: 10),
+                padding: EdgeInsets.all(5),
+                //width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      color: Color(0xFF30A9B2)
+                  ),
+                ),
+                child: Text(rightMeasurement, style: TextStyle(color: Colors.white),),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
 
