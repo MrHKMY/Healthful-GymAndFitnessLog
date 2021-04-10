@@ -266,7 +266,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Color(0xff465466),
       body: Container(
         width: double.infinity,
         child: Stack(
@@ -318,29 +318,70 @@ class ProgressScreen extends StatelessWidget {
             left: 110,
             child: WeightWidget(
               parts: "Weight",
-              measurement: "45",
+              measurement: "45.56",
             )),
         Positioned(
-            top: 120,
+            top: 130,
             left: 30,
             child: WeightWidget(
               parts: "Chest",
-              measurement: "30",
+              measurement: "30.00",
             )),
         Positioned(
-            top: 215,
-            right: 30,
+            top: 190,
+            left: 30,
             child: WeightWidget(
               parts: "Waist",
-              measurement: "30",
+              measurement: "30.00",
             )),
         Positioned(
-            top: 270,
+            top: 250,
             left: 30,
             child: WeightWidget(
               parts: "Hips",
-              measurement: "27",
+              measurement: "20.00",
             )),
+        Positioned(
+          top: 120,
+          right: 20,
+            child: ArmWidget(
+              twoPart: "Upper Arm",
+              leftMeasurement: "11",
+              rightMeasurement: "11.11",
+        )),
+        Positioned(
+            top: 215,
+            right: 20,
+            child: ArmWidget(
+              twoPart: "Forearm",
+              leftMeasurement: "11",
+              rightMeasurement: "11.11",
+            )),
+        Positioned(
+            top: 325,
+            left: 30,
+            child: ArmWidget(
+              twoPart: "Thigh",
+              leftMeasurement: "11",
+              rightMeasurement: "11.11",
+            )),
+        Positioned(
+            top: 420,
+            left: 30,
+            child: ArmWidget(
+              twoPart: "Calf",
+              leftMeasurement: "11",
+              rightMeasurement: "11.11",
+            )),
+        Positioned(
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom > 0
+            ? 0.0
+            : kBottomNavigationBarHeight + 10,
+            child: FloatingActionButton(
+              child: Icon(Icons.bar_chart_rounded),
+
+        ),)
       ]),
     ));
   }

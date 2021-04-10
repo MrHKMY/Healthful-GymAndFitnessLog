@@ -20,9 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "CalendarTest",
-      theme: ThemeData(
-        primarySwatch: Colors.blue
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: ProvidedStylesExample(),
       initialRoute: "/",
       routes: {
@@ -36,6 +34,7 @@ class MyApp extends StatelessWidget {
 // ----------------------------------------- Provided Style ----------------------------------------- //
 class ProvidedStylesExample extends StatefulWidget {
   final BuildContext menuScreenContext;
+
   ProvidedStylesExample({Key key, this.menuScreenContext}) : super(key: key);
 
   @override
@@ -64,11 +63,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           });
         },
       ),
-
       ProgressScreen(),
-      HistoryScreen(
-
-      ),
+      HistoryScreen(),
       CalendarScreen(
         menuScreenContext: widget.menuScreenContext,
         hideStatus: _hideNavBar,
@@ -84,18 +80,19 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.calendar_today),
-        title: "Home",
-        activeColorPrimary: Colors.blue,
-        inactiveColorPrimary: Colors.grey,
-        inactiveColorSecondary: Colors.purple,
-      ),
+          icon: Icon(CupertinoIcons.calendar_today),
+          title: "Home",
+          activeColorPrimary: Colors.blue[700],
+          inactiveColorPrimary: Colors.white,
+          activeColorSecondary: Colors.white),
+
 
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.gauge),
         title: ("Progress"),
-        activeColorPrimary: Colors.deepOrange,
-        inactiveColorPrimary: Colors.grey,
+        activeColorPrimary: Colors.deepOrange[700],
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.white,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -107,8 +104,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.list),
         title: ("History"),
-        activeColorPrimary: Colors.teal,
-        inactiveColorPrimary: Colors.grey,
+        activeColorPrimary: Colors.green[700],
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.white,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -120,8 +118,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.profile_circled),
         title: ("Profile"),
-        activeColorPrimary: Colors.indigo,
-        inactiveColorPrimary: Colors.grey,
+        activeColorPrimary: Colors.red[700],
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.white,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -142,7 +141,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         screens: _buildScreens(),
         items: _navBarsItems(),
         confineInSafeArea: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff465466),
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
@@ -176,8 +175,10 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         },
         hideNavigationBar: _hideNavBar,
         decoration: NavBarDecoration(
-            colorBehindNavBar: Colors.indigo,
-            borderRadius: BorderRadius.only(topRight: Radius.circular(25.0), topLeft: Radius.circular(25.0))),
+            //colorBehindNavBar: Colors.indigo,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(25.0),
+                topLeft: Radius.circular(25.0))),
         popAllScreensOnTapOfSelectedTab: true,
         itemAnimationProperties: ItemAnimationProperties(
           duration: Duration(milliseconds: 400),
@@ -189,12 +190,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           duration: Duration(milliseconds: 200),
         ),
         navBarStyle:
-        NavBarStyle.style1, // Choose the nav bar style with this property
+            NavBarStyle.style7, // Choose the nav bar style with this property
       ),
     );
   }
 }
-
-
-
-
