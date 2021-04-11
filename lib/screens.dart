@@ -5,6 +5,7 @@ import 'package:calendar/model/activities.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -295,9 +296,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 }
 
-class ProgressScreen extends StatelessWidget {
+class ProgressScreen extends StatefulWidget {
   const ProgressScreen({Key key}) : super(key: key);
 
+  @override
+  _ProgressScreenState createState() => _ProgressScreenState();
+}
+
+class _ProgressScreenState extends State<ProgressScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -316,16 +322,24 @@ class ProgressScreen extends StatelessWidget {
             top: 4,
             right: 110,
             left: 110,
-            child: WeightWidget(
-              parts: "Weight",
-              measurement: "45.56",
+            child: GestureDetector(
+              onTap: () { _showSingleDialog("Weight");
+              },
+              child: WeightWidget(
+                parts: "Weight",
+                measurement: "45.56",
+              ),
             )),
         Positioned(
             top: 130,
             left: 30,
+            child: GestureDetector(
+                onTap: () { _showSingleDialog("Chest");
+                },
             child: WeightWidget(
               parts: "Chest",
               measurement: "30.00",
+            ),
             )),
         Positioned(
             top: 190,
@@ -342,13 +356,13 @@ class ProgressScreen extends StatelessWidget {
               measurement: "20.00",
             )),
         Positioned(
-          top: 120,
-          right: 20,
+            top: 120,
+            right: 20,
             child: ArmWidget(
               twoPart: "Upper Arm",
               leftMeasurement: "11",
               rightMeasurement: "11.11",
-        )),
+            )),
         Positioned(
             top: 215,
             right: 20,
@@ -374,15 +388,36 @@ class ProgressScreen extends StatelessWidget {
               rightMeasurement: "11.11",
             )),
         Positioned(
-            right: 10,
-            bottom: MediaQuery.of(context).viewInsets.bottom > 0
-            ? 0.0
-            : kBottomNavigationBarHeight + 10,
-            child: FloatingActionButton(
-              child: Icon(Icons.bar_chart_rounded),
-
-        ),)
+          right: 10,
+          bottom: MediaQuery.of(context).viewInsets.bottom > 0
+              ? 0.0
+              : kBottomNavigationBarHeight + 10,
+          child: FloatingActionButton(
+            child: Icon(Icons.bar_chart_rounded),
+          ),
+        )
       ]),
     ));
   }
+
+  _showSingleDialog(String part) async {
+    await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(part),
+          content: TextField(
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.]')),],
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Save"),
+            )
+          ],
+        ));
+  }
+
+
 }

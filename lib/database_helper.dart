@@ -14,6 +14,9 @@ class DatabaseHelper {
         await db.execute(
           "CREATE TABLE tasks (id INTEGER PRIMARY KEY, Activity TEXT, $columnDate TEXT)",
         );
+        await db.execute(
+          "CREATE TABLE progress (id INTEGER PRIMARY KEY, BodyPart TEXT, Center REAL, Left REAL, Right REAL, Date TEXT)",
+        );
         return db;
       },
       version: 1,
@@ -37,4 +40,15 @@ class DatabaseHelper {
       return Activities(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["Date"]);
     });
   }
+
+  Future<int> insertProgress(Progress progress) async {
+    int progressID = 0;
+    Database _db = await database();
+    await _db.insert("progress", progress.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+      progressID = value;
+    });
+    return progressID;
+  }
+
 }
