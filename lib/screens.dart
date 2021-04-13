@@ -202,8 +202,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         Positioned(
             bottom: MediaQuery.of(context).viewInsets.bottom > 0
                 ? 0.0
-                : kBottomNavigationBarHeight + 10,
-            right: 10,
+                : kBottomNavigationBarHeight + 30,
+            right: 30,
             child: FloatingActionButton(
                 backgroundColor: Color(0xFF30A9B2),
                 child: Icon(Icons.add),
@@ -307,6 +307,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
   TextEditingController weightInputController;
   int _progressID = 0;
   DatabaseHelper _dbHelper = DatabaseHelper();
+  String aaaa = "";
+
+  Future<String> getProgress(String part) async {
+    aaaa = await _dbHelper.retrieveProg(part);
+  }
 
   @override
   void initState() {
@@ -316,6 +321,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: false,
@@ -330,81 +338,105 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
         ),
         Positioned(
-            top: 4,
-            right: 110,
-            left: 110,
+            top: height * 0.01,
+            right: width * 0.4,
+            left: width * 0.4,
             child: GestureDetector(
               onTap: () {
                 _showSingleDialog("Weight");
               },
-              child: WeightWidget(
-                parts: "Weight",
-                measurement: "45.56",
-              ),
+              child: FutureBuilder(
+                  future: _dbHelper.retrieveProg("Weight"),
+                  builder: (context, snapshot) {
+                    return WeightWidget(
+                        parts: "Weight",
+                        //activity: snapshot.data[index].activity,
+                        //date: snapshot.data[index].date,
+                        measurement: snapshot.data.toString() + " Kg");
+                  }),
             )),
         Positioned(
-            top: 130,
-            left: 30,
+            top: height * 0.2,
+            left: width * 0.09,
             child: GestureDetector(
               onTap: () {
                 _showSingleDialog("Chest");
               },
-              child: WeightWidget(
-                parts: "Chest",
-                measurement: "30.00",
-              ),
+              child: FutureBuilder(
+                  future: _dbHelper.retrieveProg("Chest"),
+                  builder: (context, snapshot) {
+                    return WeightWidget(
+                      parts: "Chest",
+                      measurement: snapshot.data.toString());
+                  }),
             )),
         Positioned(
-            top: 190,
-            left: 30,
-            child: WeightWidget(
-              parts: "Waist",
-              measurement: "30.00",
+            top: height * 0.3,
+            left: width * 0.09,
+            child: GestureDetector(
+              onTap: () {
+                _showSingleDialog("Waist");
+              },
+              child: FutureBuilder(
+                  future: _dbHelper.retrieveProg("Waist"),
+                  builder: (context, snapshot) {
+                    return WeightWidget(
+                        parts: "Waist",
+                        measurement: snapshot.data.toString());
+                  }),
             )),
         Positioned(
-            top: 250,
-            left: 30,
-            child: WeightWidget(
-              parts: "Hips",
-              measurement: "20.00",
+            top: height * 0.4,
+            left: width * 0.09,
+            child: GestureDetector(
+              onTap: () {
+                _showSingleDialog("Hips");
+              },
+              child: FutureBuilder(
+                  future: _dbHelper.retrieveProg("Hips"),
+                  builder: (context, snapshot) {
+                    return WeightWidget(
+                        parts: "Hips",
+                        measurement: snapshot.data.toString());
+                  }),
             )),
         Positioned(
-            top: 120,
-            right: 20,
+            top: height * 0.2,
+            right: width * 0.07,
             child: ArmWidget(
               twoPart: "Upper Arm",
               leftMeasurement: "11",
               rightMeasurement: "11.11",
             )),
         Positioned(
-            top: 215,
-            right: 20,
+            top: height * 0.35,
+            right: width * 0.07,
             child: ArmWidget(
               twoPart: "Forearm",
               leftMeasurement: "11",
               rightMeasurement: "11.11",
             )),
         Positioned(
-            top: 325,
-            left: 30,
+            top: height * 0.53,
+            left: width * 0.09,
             child: ArmWidget(
               twoPart: "Thigh",
               leftMeasurement: "11",
               rightMeasurement: "11.11",
             )),
         Positioned(
-            top: 420,
-            left: 30,
+            top: height * 0.68,
+            left: width * 0.09,
             child: ArmWidget(
               twoPart: "Calf",
               leftMeasurement: "11",
               rightMeasurement: "11.11",
             )),
         Positioned(
-          right: 10,
+          right: width * 0.1,
           bottom: MediaQuery.of(context).viewInsets.bottom > 0
               ? 0.0
-              : kBottomNavigationBarHeight + 10,
+              : kBottomNavigationBarHeight + 50,
           child: FloatingActionButton(
             child: Icon(Icons.bar_chart_rounded),
           ),
@@ -428,7 +460,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 ],
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text("Save"),
                   onPressed: () async {
                     if (weightInputController.text.isEmpty) {
@@ -441,6 +473,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     //date: a.substring(0, 10));
                     _progressID = await _dbHelper.insertProgress(_newProgress);
                     setState(() {
+                      getProgress(part);
                       weightInputController.clear();
                       Navigator.pop(context);
                     });

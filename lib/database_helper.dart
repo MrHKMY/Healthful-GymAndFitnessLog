@@ -51,4 +51,22 @@ class DatabaseHelper {
     return progressID;
   }
 
+  Future<List<Progress>> retrieveProgress(String bodypart) async {
+    Database _db = await database();
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT Center FROM progress WHERE BodyPart = '$bodypart'");
+    return List.generate(activityMap.length, (index) {
+      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"], date: activityMap[index]["Date"]);
+    });
+  }
+
+  Future<String> retrieveProg(String bodypart) async {
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT Center FROM progress WHERE BodyPart = '$bodypart'");
+    if(response.length > 0) {
+      String theProgress = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      theProgress.substring(2);
+      return theProgress;
+    }
+  }
+
 }
