@@ -304,10 +304,21 @@ class ProgressScreen extends StatefulWidget {
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
+  TextEditingController weightInputController;
+  int _progressID = 0;
+  DatabaseHelper _dbHelper = DatabaseHelper();
+
+  @override
+  void initState() {
+    weightInputController = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xff465466),
       body: Stack(children: [
         Container(
@@ -323,7 +334,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
             right: 110,
             left: 110,
             child: GestureDetector(
-              onTap: () { _showSingleDialog("Weight");
+              onTap: () {
+                _showSingleDialog("Weight");
               },
               child: WeightWidget(
                 parts: "Weight",
@@ -334,12 +346,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
             top: 130,
             left: 30,
             child: GestureDetector(
-                onTap: () { _showSingleDialog("Chest");
-                },
-            child: WeightWidget(
-              parts: "Chest",
-              measurement: "30.00",
-            ),
+              onTap: () {
+                _showSingleDialog("Chest");
+              },
+              child: WeightWidget(
+                parts: "Chest",
+                measurement: "30.00",
+              ),
             )),
         Positioned(
             top: 190,
@@ -404,20 +417,36 @@ class _ProgressScreenState extends State<ProgressScreen> {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text(part),
-          content: TextField(
-            autofocus: true,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.]')),],
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Save"),
-            )
-          ],
-        ));
+              backgroundColor: Colors.white,
+              title: Text(part),
+              content: TextField(
+                controller: weightInputController,
+                autofocus: true,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Save"),
+                  onPressed: () async {
+                    if (weightInputController.text.isEmpty) {
+                      return;
+                    }
+                    Progress _newProgress = Progress(
+                      bodyPart: part,
+                      center: double.parse(weightInputController.text),
+                    );
+                    //date: a.substring(0, 10));
+                    _progressID = await _dbHelper.insertProgress(_newProgress);
+                    setState(() {
+                      weightInputController.clear();
+                      Navigator.pop(context);
+                    });
+                  },
+                )
+              ],
+            ));
   }
-
-
 }
