@@ -10,9 +10,7 @@ class HistoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8)
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 3,
       //margin: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
       child: Container(
@@ -33,8 +31,8 @@ class HistoryWidget extends StatelessWidget {
               padding: EdgeInsets.only(top: 2),
               child: Text(
                 date ?? 'No description added.',
-                style:
-                TextStyle(fontSize: 12, color: Colors.grey[500], height:1.5),
+                style: TextStyle(
+                    fontSize: 12, color: Colors.grey[500], height: 1.5),
               ),
             )
           ],
@@ -44,87 +42,170 @@ class HistoryWidget extends StatelessWidget {
   }
 }
 
-class WeightWidget extends StatelessWidget {
+class WeightWidget extends StatefulWidget {
   final String parts;
   final String measurement;
 
   WeightWidget({this.parts, this.measurement});
 
   @override
+  _WeightWidgetState createState() => _WeightWidgetState();
+}
+
+class _WeightWidgetState extends State<WeightWidget> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: Container(
           child: Column(
-            children: [
-              Text(parts),
-              SizedBox(height: 2,),
-              Container(
-                //margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(5),
-                //width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    color: Color(0xFF30A9B2)
-                  ),
+        children: [
+          Text(
+            widget.parts,
+            style: TextStyle(
+                color: Color(0xFF30A9B2), fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 2,
+          ),
+          Container(
+            //margin: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
+            //width: double.infinity,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
                 ),
-                child: Text(measurement, style: TextStyle(color: Colors.white),),
-              ),
-            ],
-          )),
+              ],
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Color(0xFF30A9B2)),
+            ),
+            child:
+                Text(widget.measurement, style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      )),
     );
   }
 }
 
 class ArmWidget extends StatelessWidget {
-
   final String twoPart;
   final String leftMeasurement;
   final String rightMeasurement;
 
-  ArmWidget ({this.twoPart, this.leftMeasurement, this.rightMeasurement});
+  ArmWidget({this.twoPart, this.leftMeasurement, this.rightMeasurement});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          Text(twoPart),
-          SizedBox(height: 2,),
+          Text(
+            twoPart,
+            style: TextStyle(
+                color: Color(0xFF30A9B2), fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 2,
+          ),
           Row(
             children: [
-              Text("L", style: TextStyle( color: Colors.white),),
               Container(
-                width: 50,
-                margin: EdgeInsets.only(left: 10),
                 padding: EdgeInsets.all(5),
                 //width: double.infinity,
                 decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                  color: Colors.blueGrey,
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: Color(0xFF30A9B2)
-                  ),
+                  border: Border.all(color: Color(0xFF30A9B2)),
                 ),
-                child: Text(leftMeasurement, style: TextStyle(color: Colors.white),),
+                child: Text(
+                  "L",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Container(
+                width: 50,
+                margin: EdgeInsets.only(left: 5),
+                padding: EdgeInsets.all(5),
+                //width: double.infinity,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Color(0xFF30A9B2)),
+                ),
+                child: Text(
+                  leftMeasurement,
+                  style: TextStyle(color: Colors.white),
+                ),
               )
             ],
           ),
-          SizedBox(height: 3,),
+          SizedBox(
+            height: 3,
+          ),
           Row(
             children: [
-              Text("R", style: TextStyle( color: Colors.white),),
               Container(
-                width: 50,
-                margin: EdgeInsets.only(left: 10),
                 padding: EdgeInsets.all(5),
                 //width: double.infinity,
                 decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                  color: Colors.blueGrey,
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: Color(0xFF30A9B2)
-                  ),
+                  border: Border.all(color: Color(0xFF30A9B2)),
                 ),
-                child: Text(rightMeasurement, style: TextStyle(color: Colors.white),),
+                child: Text(
+                  "R",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Container(
+                width: 50,
+                margin: EdgeInsets.only(left: 5),
+                padding: EdgeInsets.all(5),
+                //width: double.infinity,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Color(0xFF30A9B2)),
+                ),
+                child: Text(
+                  rightMeasurement,
+                  style: TextStyle(color: Colors.white),
+                ),
               )
             ],
           )
@@ -133,5 +214,3 @@ class ArmWidget extends StatelessWidget {
     );
   }
 }
-
-

@@ -33,4 +33,13 @@ class Progress {
       "Date" : date,
     };
   }
+
+  factory Progress.fromMap(Map<String, dynamic> json) =>new Progress(
+    id : json["id"],
+    bodyPart : json["BodyPart"],
+    center : json["Center"],
+    left : json["Left"],
+    right : json["Right"],
+    date : json["Date"],
+  );
 }
