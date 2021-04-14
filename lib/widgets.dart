@@ -84,7 +84,7 @@ class _WeightWidgetState extends State<WeightWidget> {
               border: Border.all(color: Color(0xFF30A9B2)),
             ),
             child:
-                Text(widget.measurement, style: TextStyle(color: Colors.white)),
+                Text(widget.measurement , style: TextStyle(color: Colors.white)),
           ),
         ],
       )),
@@ -102,6 +102,7 @@ class ArmWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: Column(
         children: [
           Text(
@@ -136,7 +137,7 @@ class ArmWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 50,
+
                 margin: EdgeInsets.only(left: 5),
                 padding: EdgeInsets.all(5),
                 //width: double.infinity,
@@ -186,7 +187,7 @@ class ArmWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 50,
+
                 margin: EdgeInsets.only(left: 5),
                 padding: EdgeInsets.all(5),
                 //width: double.infinity,

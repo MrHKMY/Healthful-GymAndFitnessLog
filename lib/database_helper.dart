@@ -51,15 +51,33 @@ class DatabaseHelper {
     return progressID;
   }
 
-  Future<List<Progress>> retrieveProgress(String bodypart) async {
+  Future<List<String>> retrieve2Part(String bodypart) async {
     Database _db = await database();
-    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT Center FROM progress WHERE BodyPart = '$bodypart'");
-    return List.generate(activityMap.length, (index) {
-      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"], date: activityMap[index]["Date"]);
-    });
+    String left, right;
+    var responseLeft = await _db.rawQuery(
+        "SELECT Left FROM progress WHERE BodyPart = '$bodypart'");
+    if (responseLeft.length > 0) {
+      left = responseLeft.last.values.toString().substring(
+          1, responseLeft.last.values
+          .toString()
+          .length - 1);
+      left.substring(2);
+      //return left;
+    }
+    var responseRight = await _db.rawQuery(
+        "SELECT Right FROM progress WHERE BodyPart = '$bodypart'");
+    if (responseRight.length > 0) {
+      right = responseRight.last.values.toString().substring(
+          1, responseRight.last.values
+          .toString()
+          .length - 1);
+      right.substring(2);
+      //return right;
+    }
+    return [left, right];
   }
 
-  Future<String> retrieveProg(String bodypart) async {
+  Future<String> retrieve1Part(String bodypart) async {
     Database _db = await database();
     var response = await _db.rawQuery("SELECT Center FROM progress WHERE BodyPart = '$bodypart'");
     if(response.length > 0) {
