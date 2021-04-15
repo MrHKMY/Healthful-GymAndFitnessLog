@@ -311,6 +311,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Future<String> getProgress(String part) async {
     aaaa = await _dbHelper.retrieve1Part(part);
   }
+
   Future<String> getDoublePart(String part) async {
     //aaaa = await _dbHelper.retrieve2Part(part);
   }
@@ -418,19 +419,31 @@ class _ProgressScreenState extends State<ProgressScreen> {
             right: width * 0.07,
             child: GestureDetector(
               onTap: () {
-                _showSingleDialog("Upper Arm");
+                _showDoubleDialog("Upper Arm");
               },
               child: FutureBuilder(
-                  future: _dbHelper.retrieve1Part("Upper Arm"),
+                  future: _dbHelper.retrieve2Part("Upper Arm"),
                   builder: (context, snapshot) {
-                    return ArmWidget(
-                        twoPart: "Upper Arm",
-                        leftMeasurement: snapshot.data.toString() != "null"
-                            ? snapshot.data.toString()
-                            : "Tap to input",
-                        rightMeasurement: snapshot.data.toString() != "null"
-                            ? snapshot.data.toString()
-                            : "Tap to input");
+                    switch (snapshot.connectionState) {
+                      // Uncompleted State
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                        break;
+                      default:
+                        // Completed with error
+                        if (snapshot.hasError)
+                          return Container(
+                              child: Text(snapshot.error.toString()));
+                        return ArmWidget(
+                            twoPart: "Upper Arm",
+                            leftMeasurement: snapshot.data[0].toString() != "null"
+                                ? snapshot.data[0].toString()
+                                : "Tap to input",
+                            rightMeasurement: snapshot.data[1].toString() != "null"
+                                ? snapshot.data[1].toString()
+                                : "Tap to input");
+                    }
                   }),
             )),
         Positioned(
@@ -438,19 +451,31 @@ class _ProgressScreenState extends State<ProgressScreen> {
             right: width * 0.07,
             child: GestureDetector(
               onTap: () {
-                _showSingleDialog("Forearm");
+                _showDoubleDialog("Forearm");
               },
               child: FutureBuilder(
-                  future: _dbHelper.retrieve1Part("Forearm"),
+                  future: _dbHelper.retrieve2Part("Forearm"),
                   builder: (context, snapshot) {
-                    return ArmWidget(
-                        twoPart: "Forearm",
-                        leftMeasurement: snapshot.data.toString() != "null"
-                            ? snapshot.data.toString()
-                            : "Tap to input",
-                        rightMeasurement: snapshot.data.toString() != "null"
-                            ? snapshot.data.toString()
-                            : "Tap to input");
+                    switch (snapshot.connectionState) {
+                      // Uncompleted State
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                        break;
+                      default:
+                        // Completed with error
+                        if (snapshot.hasError)
+                          return Container(
+                              child: Text(snapshot.error.toString()));
+                        return ArmWidget(
+                            twoPart: "Forearm",
+                            leftMeasurement: snapshot.data[0].toString() != "null"
+                                ? snapshot.data[0].toString()
+                                : "Tap to input",
+                            rightMeasurement: snapshot.data[1].toString() != "null"
+                                ? snapshot.data[1].toString()
+                                : "Tap to input");
+                    }
                   }),
             )),
         Positioned(
@@ -458,50 +483,74 @@ class _ProgressScreenState extends State<ProgressScreen> {
             left: width * 0.09,
             child: GestureDetector(
               onTap: () {
-                _showSingleDialog("Thigh");
+                _showDoubleDialog("Thigh");
               },
               child: FutureBuilder(
-                  future: _dbHelper.retrieve1Part("Thigh"),
+                  future: _dbHelper.retrieve2Part("Thigh"),
                   builder: (context, snapshot) {
-                    return ArmWidget(
-                        twoPart: "Thigh",
-                        leftMeasurement: snapshot.data.toString() != "null"
-                            ? snapshot.data.toString()
-                            : "Tap to input",
-                        rightMeasurement: snapshot.data.toString() != "null"
-                            ? snapshot.data.toString()
-                            : "Tap to input");
+                    switch (snapshot.connectionState) {
+                      // Uncompleted State
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                        break;
+                      default:
+                        // Completed with error
+                        if (snapshot.hasError)
+                          return Container(
+                              child: Text(snapshot.error.toString()));
+                        return ArmWidget(
+                            twoPart: "Thigh",
+                            leftMeasurement: snapshot.data[0].toString() != "null"
+                                ? snapshot.data[0].toString()
+                                : "Tap to input",
+                            rightMeasurement: snapshot.data[1].toString() != "null"
+                                ? snapshot.data[1].toString()
+                                : "Tap to input");
+                    }
                   }),
             )),
         Positioned(
             top: height * 0.68,
             left: width * 0.09,
             child: GestureDetector(
-              onTap: () {
-                _showDoubleDialog("Calf");
-              },
-              child: FutureBuilder(
-                  initialData: [],
-                  future: _dbHelper.retrieve2Part("Calf"),
-                  builder: (context, snapshot) {
-
-                    return ArmWidget(
-                        twoPart: "Calf",
-                        leftMeasurement: snapshot.data[0].toString() != "null"
-                            ? snapshot.data[0].toString()
-                            : "Tap to input",
-                        rightMeasurement: snapshot.data[1].toString() != "null"
-                            ? snapshot.data[1].toString()
-                            : "Tap to input");
-                  })
-            )),
+                onTap: () {
+                  _showDoubleDialog("Calf");
+                },
+                child: FutureBuilder(
+                    //initialData: [],
+                    future: _dbHelper.retrieve2Part("Calf"),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        // Uncompleted State
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Center(child: CircularProgressIndicator());
+                          break;
+                        default:
+                          // Completed with error
+                          if (snapshot.hasError)
+                            return Container(
+                                child: Text(snapshot.error.toString()));
+                          return ArmWidget(
+                              twoPart: "Calf",
+                              leftMeasurement:
+                                  snapshot.data[0].toString() != "null"
+                                      ? snapshot.data[0]
+                                      : "Tap to input",
+                              rightMeasurement:
+                                  snapshot.data[1].toString() != "null"
+                                      ? snapshot.data[1]
+                                      : "Tap to input");
+                      }
+                    }))),
         Positioned(
           right: width * 0.1,
           bottom: MediaQuery.of(context).viewInsets.bottom > 0
               ? 0.0
               : kBottomNavigationBarHeight + 50,
           child: FloatingActionButton(
-            onPressed: () {  },
+            onPressed: () {},
             child: Icon(Icons.bar_chart_rounded),
           ),
         )
@@ -514,7 +563,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         context: context,
         builder: (context) => AlertDialog(
               backgroundColor: Colors.white,
-              title: Text(part),
+              title: Text(part + " measurement"),
               content: TextField(
                 controller: weightInputController,
                 autofocus: true,
@@ -525,7 +574,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text("Save"),
+                  child: Text("Save", ),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.teal,
+                    shadowColor: Colors.black,
+                    elevation: 5
+                  ),
                   onPressed: () async {
                     if (weightInputController.text.isEmpty) {
                       return;
@@ -551,52 +606,63 @@ class _ProgressScreenState extends State<ProgressScreen> {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text(part),
-          content: Column(
-            children: [
-              TextField(
-                controller: leftController,
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-                ],
+              backgroundColor: Colors.white,
+              title: Text("$part measurement"),
+              content: SingleChildScrollView(
+                child: Column(
+                  //mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: leftController,
+                      autofocus: true,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                      ],
+                      decoration: InputDecoration(helperText: "Left"),
+                    ),
+                    TextField(
+                      controller: rightController,
+                      autofocus: true,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                      ],
+                      decoration: InputDecoration(helperText: "Right"),
+                    ),
+                  ],
+                ),
               ),
-              TextField(
-                controller: rightController,
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-                ],
-              ),
-
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text("Save"),
-              onPressed: () async {
-                if (leftController.text.isEmpty || rightController.text.isEmpty) {
-                  return;
-                }
-                Progress _newProgress = Progress(
-                  bodyPart: part,
-                  left: double.parse(leftController.text),
-                  right: double.parse(rightController.text)
-                );
-                //date: a.substring(0, 10));
-                _progressID = await _dbHelper.insertProgress(_newProgress);
-                setState(() {
-                  //getProgress(part);
-                  getDoublePart(part);
-                  weightInputController.clear();
-                  Navigator.pop(context);
-                });
-              },
-            )
-          ],
-        ));
+              actions: <Widget>[
+                TextButton(
+                  child: Text("Save"),
+                  style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.teal,
+                      shadowColor: Colors.black,
+                      elevation: 5
+                  ),
+                  onPressed: () async {
+                    if (leftController.text.isEmpty ||
+                        rightController.text.isEmpty) {
+                      return;
+                    }
+                    Progress _newProgress = Progress(
+                        bodyPart: part,
+                        left: double.parse(leftController.text),
+                        right: double.parse(rightController.text));
+                    //date: a.substring(0, 10));
+                    _progressID = await _dbHelper.insertProgress(_newProgress);
+                    setState(() {
+                      //getProgress(part);
+                      getDoublePart(part);
+                      leftController.clear();
+                      rightController.clear();
+                      Navigator.pop(context);
+                    });
+                  },
+                )
+              ],
+            ));
   }
 }
