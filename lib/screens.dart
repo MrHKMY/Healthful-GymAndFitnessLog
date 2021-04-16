@@ -215,12 +215,26 @@ class _CalendarScreenState extends State<CalendarScreen> {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xff465466),
               title: Text("New Event"),
-              content: TextField(controller: _eventController),
+          titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+              content: TextField(
+                controller: _eventController,
+                autofocus: true,
+                style: TextStyle(
+                  color: Colors.white,)
+              ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text("Save"),
+                  style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.teal,
+                      shadowColor: Colors.black,
+                      elevation: 5),
                   onPressed: () async {
                     if (_eventController.text.isEmpty) {
                       return;
@@ -307,14 +321,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
   int _progressID = 0;
   DatabaseHelper _dbHelper = DatabaseHelper();
   String aaaa = "";
-
-  Future<String> getProgress(String part) async {
-    aaaa = await _dbHelper.retrieve1Part(part);
-  }
-
-  Future<String> getDoublePart(String part) async {
-    //aaaa = await _dbHelper.retrieve2Part(part);
-  }
 
   @override
   void initState() {
@@ -437,12 +443,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               child: Text(snapshot.error.toString()));
                         return ArmWidget(
                             twoPart: "Upper Arm",
-                            leftMeasurement: snapshot.data[0].toString() != "null"
-                                ? snapshot.data[0].toString()
-                                : "Tap to input",
-                            rightMeasurement: snapshot.data[1].toString() != "null"
-                                ? snapshot.data[1].toString()
-                                : "Tap to input");
+                            leftMeasurement:
+                                snapshot.data[0].toString() != "null"
+                                    ? snapshot.data[0].toString()
+                                    : "Tap to input",
+                            rightMeasurement:
+                                snapshot.data[1].toString() != "null"
+                                    ? snapshot.data[1].toString()
+                                    : "Tap to input");
                     }
                   }),
             )),
@@ -469,12 +477,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               child: Text(snapshot.error.toString()));
                         return ArmWidget(
                             twoPart: "Forearm",
-                            leftMeasurement: snapshot.data[0].toString() != "null"
-                                ? snapshot.data[0].toString()
-                                : "Tap to input",
-                            rightMeasurement: snapshot.data[1].toString() != "null"
-                                ? snapshot.data[1].toString()
-                                : "Tap to input");
+                            leftMeasurement:
+                                snapshot.data[0].toString() != "null"
+                                    ? snapshot.data[0].toString()
+                                    : "Tap to input",
+                            rightMeasurement:
+                                snapshot.data[1].toString() != "null"
+                                    ? snapshot.data[1].toString()
+                                    : "Tap to input");
                     }
                   }),
             )),
@@ -501,12 +511,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               child: Text(snapshot.error.toString()));
                         return ArmWidget(
                             twoPart: "Thigh",
-                            leftMeasurement: snapshot.data[0].toString() != "null"
-                                ? snapshot.data[0].toString()
-                                : "Tap to input",
-                            rightMeasurement: snapshot.data[1].toString() != "null"
-                                ? snapshot.data[1].toString()
-                                : "Tap to input");
+                            leftMeasurement:
+                                snapshot.data[0].toString() != "null"
+                                    ? snapshot.data[0].toString()
+                                    : "Tap to input",
+                            rightMeasurement:
+                                snapshot.data[1].toString() != "null"
+                                    ? snapshot.data[1].toString()
+                                    : "Tap to input");
                     }
                   }),
             )),
@@ -562,7 +574,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xff465466),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
               title: Text(part + " measurement"),
               content: TextField(
                 controller: weightInputController,
@@ -571,16 +589,27 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
                 ],
+                style: TextStyle(color: Colors.white),
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text("Save", ),
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                    backgroundColor: Colors.teal,
-                    shadowColor: Colors.black,
-                    elevation: 5
+                    onPressed: () {
+                      weightInputController.clear();
+                      Navigator.pop(context);
+                    },
+                    child: Text("Cancel"),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                    )),
+                TextButton(
+                  child: Text(
+                    "Save",
                   ),
+                  style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.teal,
+                      shadowColor: Colors.black,
+                      elevation: 5),
                   onPressed: () async {
                     if (weightInputController.text.isEmpty) {
                       return;
@@ -592,7 +621,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     //date: a.substring(0, 10));
                     _progressID = await _dbHelper.insertProgress(_newProgress);
                     setState(() {
-                      getProgress(part);
+                      //getProgress(part);
                       weightInputController.clear();
                       Navigator.pop(context);
                     });
@@ -606,8 +635,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              backgroundColor: Colors.white,
-              title: Text("$part measurement"),
+              backgroundColor: Color(0xff465466),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              title: Text(
+                "$part measurement",
+              ),
+              titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
               content: SingleChildScrollView(
                 child: Column(
                   //mainAxisSize: MainAxisSize.min,
@@ -619,7 +656,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
                       ],
-                      decoration: InputDecoration(helperText: "Left"),
+                      decoration: InputDecoration(
+                          helperText: "Left",
+                          helperStyle: TextStyle(color: Colors.blue)),
+                      style: TextStyle(color: Colors.white),
                     ),
                     TextField(
                       controller: rightController,
@@ -628,20 +668,32 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
                       ],
-                      decoration: InputDecoration(helperText: "Right"),
+                      decoration: InputDecoration(
+                          helperText: "Right",
+                          helperStyle: TextStyle(color: Colors.blue)),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ],
                 ),
               ),
               actions: <Widget>[
                 TextButton(
+                    onPressed: () {
+                      leftController.clear();
+                      rightController.clear();
+                      Navigator.pop(context);
+                    },
+                    child: Text("Cancel"),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                    )),
+                TextButton(
                   child: Text("Save"),
                   style: TextButton.styleFrom(
                       primary: Colors.white,
                       backgroundColor: Colors.teal,
                       shadowColor: Colors.black,
-                      elevation: 5
-                  ),
+                      elevation: 5),
                   onPressed: () async {
                     if (leftController.text.isEmpty ||
                         rightController.text.isEmpty) {
@@ -655,13 +707,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     _progressID = await _dbHelper.insertProgress(_newProgress);
                     setState(() {
                       //getProgress(part);
-                      getDoublePart(part);
+                      //getDoublePart(part);
                       leftController.clear();
                       rightController.clear();
                       Navigator.pop(context);
                     });
                   },
-                )
+                ),
               ],
             ));
   }
