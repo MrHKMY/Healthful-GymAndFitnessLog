@@ -1,3 +1,4 @@
+import 'package:calendar/model/timerPainter.dart';
 import 'package:flutter/material.dart';
 
 class HistoryWidget extends StatelessWidget {
@@ -84,7 +85,7 @@ class _WeightWidgetState extends State<WeightWidget> {
               border: Border.all(color: Color(0xFF30A9B2)),
             ),
             child:
-                Text(widget.measurement , style: TextStyle(color: Colors.white)),
+                Text(widget.measurement, style: TextStyle(color: Colors.white)),
           ),
         ],
       )),
@@ -102,7 +103,6 @@ class ArmWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Column(
         children: [
           Text(
@@ -137,7 +137,6 @@ class ArmWidget extends StatelessWidget {
                 ),
               ),
               Container(
-
                 margin: EdgeInsets.only(left: 5),
                 padding: EdgeInsets.all(5),
                 //width: double.infinity,
@@ -187,7 +186,6 @@ class ArmWidget extends StatelessWidget {
                 ),
               ),
               Container(
-
                 margin: EdgeInsets.only(left: 5),
                 padding: EdgeInsets.all(5),
                 //width: double.infinity,
@@ -211,6 +209,203 @@ class ArmWidget extends StatelessWidget {
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+class CountDownTimer extends StatefulWidget {
+  @override
+  _CountDownTimerState createState() => _CountDownTimerState();
+}
+
+class _CountDownTimerState extends State<CountDownTimer>
+    with TickerProviderStateMixin {
+  AnimationController animationController;
+
+  String get timerString {
+    Duration duration =
+        animationController.duration * animationController.value;
+    return '${duration.inMinutes.toString().padLeft(1, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+        vsync: this, duration: Duration(minutes: 0, seconds: 10));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xff465466),
+        body: Container(
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom > 0
+                ? 0.0
+                : kBottomNavigationBarHeight,
+          ),
+          child: AnimatedBuilder(
+              animation: animationController,
+              builder: (context, child) {
+                return Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        color: Colors.blueGrey,
+                        height: animationController.value *
+                            MediaQuery.of(context).size.height,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(40.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: FractionalOffset.center,
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: CustomPaint(
+                                        painter: CustomTimerPainter(
+                                            animation: animationController,
+                                            backgroundColor: Colors.white,
+                                            color: Colors.red),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: FractionalOffset.center,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            "Countdown Timer",
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.white),
+                                          ),
+                                          Text(
+                                            timerString,
+                                            style: TextStyle(
+                                                fontSize: 112.0,
+                                                color: Colors.white),
+                                          ),
+                                          TextButton.icon(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.highlight_off,
+                                              color: Colors.grey,
+                                            ),
+                                            label: Text(""),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(children: [
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: Text("+1"),
+                                    style: TextButton.styleFrom(
+                                        primary: Colors.white,
+                                        backgroundColor: Colors.teal,
+                                        shadowColor: Colors.black,
+                                        elevation: 5,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10))),
+                                  ),
+                                  Text("min",
+                                      style: TextStyle(color: Colors.white)),
+                                ]),
+                                Column(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: Text("+15"),
+                                      style: TextButton.styleFrom(
+                                          primary: Colors.white,
+                                          backgroundColor: Colors.teal,
+                                          shadowColor: Colors.black,
+                                          elevation: 5,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10))),
+                                    ),
+                                    Text("sec",
+                                        style: TextStyle(color: Colors.white)),
+                                  ],
+                                ),
+                                Column(children: [
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: Text("+5"),
+                                    style: TextButton.styleFrom(
+                                        primary: Colors.white,
+                                        backgroundColor: Colors.teal,
+                                        shadowColor: Colors.black,
+                                        elevation: 5,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10))),
+                                  ),
+                                  Text(
+                                    "sec",
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                ]),
+                              ]),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          AnimatedBuilder(
+                              animation: animationController,
+                              builder: (context, child) {
+                                return FloatingActionButton.extended(
+                                    backgroundColor: Colors.blue[600],
+                                    onPressed: () {
+                                      if (animationController.isAnimating)
+                                        animationController.stop();
+                                      else {
+                                        animationController.reverse(
+                                            from: animationController.value ==
+                                                    0.0
+                                                ? 1.0
+                                                : animationController.value);
+                                      }
+                                    },
+                                    icon: Icon(animationController.isAnimating
+                                        ? Icons.pause
+                                        : Icons.play_arrow),
+                                    label: Text(animationController.isAnimating
+                                        ? "Pause"
+                                        : "Start"));
+                              }),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
+        ),
       ),
     );
   }
