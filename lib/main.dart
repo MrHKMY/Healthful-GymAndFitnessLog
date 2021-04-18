@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
       home: ProvidedStylesExample(),
       initialRoute: "/",
       routes: {
-        '/first': (context) => ProgressScreen(),
-        '/second': (context) => HistoryScreen(),
+        '/first': (context) => HistoryScreen(),
+        '/second': (context) => ProgressScreen()
       },
     );
   }
@@ -63,8 +63,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           });
         },
       ),
+      CountDownTimer(),
       ProgressScreen(),
-      HistoryScreen(),
       CalendarScreen(
         menuScreenContext: widget.menuScreenContext,
         hideStatus: _hideNavBar,
@@ -86,7 +86,20 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           inactiveColorPrimary: Colors.white,
           activeColorSecondary: Colors.white),
 
-
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.timer),
+        title: ("Timer"),
+        activeColorPrimary: Colors.green[700],
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.white,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: '/',
+          routes: {
+            '/first': (context) => HistoryScreen(),
+            '/second': (context) => ProgressScreen(),
+          },
+        ),
+      ),
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.gauge),
         title: ("Progress"),
@@ -96,25 +109,12 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
-            '/first': (context) => ProgressScreen(),
-            '/second': (context) => HistoryScreen(),
+            '/first': (context) => HistoryScreen(),
+            '/second': (context) => ProgressScreen(),
           },
         ),
       ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.list),
-        title: ("History"),
-        activeColorPrimary: Colors.green[700],
-        activeColorSecondary: Colors.white,
-        inactiveColorPrimary: Colors.white,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/first': (context) => ProgressScreen(),
-            '/second': (context) => HistoryScreen(),
-          },
-        ),
-      ),
+
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.profile_circled),
         title: ("Profile"),
@@ -124,8 +124,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
-            '/first': (context) => ProgressScreen(),
-            '/second': (context) => HistoryScreen(),
+            '/first': (context) => HistoryScreen(),
+            '/second': (context) => ProgressScreen(),
           },
         ),
       ),
