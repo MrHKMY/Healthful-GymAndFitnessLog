@@ -222,6 +222,8 @@ class CountDownTimer extends StatefulWidget {
 class _CountDownTimerState extends State<CountDownTimer>
     with TickerProviderStateMixin {
   AnimationController animationController;
+  //int theTime = 5;
+  ValueNotifier addSecond = ValueNotifier(false);
 
   String get timerString {
     Duration duration =
@@ -233,7 +235,7 @@ class _CountDownTimerState extends State<CountDownTimer>
   void initState() {
     super.initState();
     animationController = AnimationController(
-        vsync: this, duration: Duration(minutes: 0, seconds: 10));
+        vsync: this, duration: Duration(minutes: 0, seconds: 30));
   }
 
   @override
@@ -301,14 +303,6 @@ class _CountDownTimerState extends State<CountDownTimer>
                                                 fontSize: 112.0,
                                                 color: Colors.white),
                                           ),
-                                          TextButton.icon(
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.highlight_off,
-                                              color: Colors.grey,
-                                            ),
-                                            label: Text(""),
-                                          )
                                         ],
                                       ),
                                     ),
@@ -317,62 +311,60 @@ class _CountDownTimerState extends State<CountDownTimer>
                               ),
                             ),
                           ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(children: [
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: Text("+1"),
-                                    style: TextButton.styleFrom(
-                                        primary: Colors.white,
-                                        backgroundColor: Colors.teal,
-                                        shadowColor: Colors.black,
-                                        elevation: 5,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                  ),
-                                  Text("min",
-                                      style: TextStyle(color: Colors.white)),
-                                ]),
-                                Column(
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text("+15"),
-                                      style: TextButton.styleFrom(
-                                          primary: Colors.white,
-                                          backgroundColor: Colors.teal,
-                                          shadowColor: Colors.black,
-                                          elevation: 5,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10))),
-                                    ),
-                                    Text("sec",
-                                        style: TextStyle(color: Colors.white)),
-                                  ],
-                                ),
-                                Column(children: [
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: Text("+5"),
-                                    style: TextButton.styleFrom(
-                                        primary: Colors.white,
-                                        backgroundColor: Colors.teal,
-                                        shadowColor: Colors.black,
-                                        elevation: 5,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                  ),
-                                  Text(
-                                    "sec",
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ]),
-                              ]),
+                          // Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //     children: [
+                          //       Column(children: [
+                          //         TextButton(
+                          //           onPressed: () {},
+                          //           child: Text("+1"),
+                          //           style: TextButton.styleFrom(
+                          //               primary: Colors.white,
+                          //               backgroundColor: Colors.teal,
+                          //               shadowColor: Colors.black,
+                          //               elevation: 5,
+                          //               shape: RoundedRectangleBorder(
+                          //                   borderRadius:
+                          //                       BorderRadius.circular(10))),
+                          //         ),
+                          //         Text("min",
+                          //             style: TextStyle(color: Colors.white)),
+                          //       ]),
+                          //       Column(
+                          //         children: [
+                          //           TextButton(
+                          //             onPressed: () {},
+                          //             child: Text("+15"),
+                          //             style: TextButton.styleFrom(
+                          //                 primary: Colors.white,
+                          //                 backgroundColor: Colors.teal,
+                          //                 shadowColor: Colors.black,
+                          //                 elevation: 5,
+                          //                 shape: RoundedRectangleBorder(
+                          //                     borderRadius:
+                          //                         BorderRadius.circular(10))),
+                          //           ),
+                          //           Text("sec",
+                          //               style: TextStyle(color: Colors.white)),
+                          //         ],
+                          //       ),
+                          //       Column(children: [
+                          //         MaterialButton(
+                          //           onPressed: () {
+                          //             setState(() {
+                          //             });
+                          //           },
+                          //           child: Text("+5", style: TextStyle(color: Colors.white),),
+                          //               color: Colors.teal,
+                          //               elevation: 5,
+                          //               shape: CircleBorder(),
+                          //         ),
+                          //         Text(
+                          //           "sec",
+                          //           style: TextStyle(color: Colors.white),
+                          //         )
+                          //       ]),
+                          //     ]),
                           SizedBox(
                             height: 30.0,
                           ),
@@ -380,7 +372,7 @@ class _CountDownTimerState extends State<CountDownTimer>
                               animation: animationController,
                               builder: (context, child) {
                                 return FloatingActionButton.extended(
-                                    backgroundColor: Colors.blue[600],
+                                    backgroundColor: Colors.teal,
                                     onPressed: () {
                                       if (animationController.isAnimating)
                                         animationController.stop();
@@ -410,3 +402,5 @@ class _CountDownTimerState extends State<CountDownTimer>
     );
   }
 }
+
+
