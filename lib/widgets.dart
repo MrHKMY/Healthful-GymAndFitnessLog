@@ -223,7 +223,7 @@ class _CountDownTimerState extends State<CountDownTimer>
     with TickerProviderStateMixin {
   AnimationController animationController;
   //int theTime = 5;
-  ValueNotifier addSecond = ValueNotifier(false);
+  //ValueNotifier addSecond = ValueNotifier(false);
 
   String get timerString {
     Duration duration =

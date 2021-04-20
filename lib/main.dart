@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:calendar/profile_screen.dart';
 import 'package:calendar/screens.dart';
 import 'package:calendar/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,15 +66,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       ),
       CountDownTimer(),
       ProgressScreen(),
-      CalendarScreen(
-        menuScreenContext: widget.menuScreenContext,
-        hideStatus: _hideNavBar,
-        onScreenHideButtonPressed: () {
-          setState(() {
-            _hideNavBar = !_hideNavBar;
-          });
-        },
-      ),
+      ProfileScreen(),
     ];
   }
 

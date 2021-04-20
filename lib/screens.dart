@@ -103,16 +103,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     startingDayOfWeek: StartingDayOfWeek.monday,
                     calendarController: _calendarController,
                     calendarStyle: CalendarStyle(
-                      weekdayStyle: TextStyle(color: Colors.white),
-                      weekendStyle: TextStyle(color: Colors.white),
+                      weekdayStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      weekendStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       outsideStyle: TextStyle(color: Colors.grey),
                       unavailableStyle: TextStyle(color: Colors.grey),
                       outsideWeekendStyle: TextStyle(color: Colors.grey),
                       canEventMarkersOverflow: true,
                     ),
                     daysOfWeekStyle: DaysOfWeekStyle(
-                      weekdayStyle: TextStyle(color: Color(0xFF30A9B2)),
-                      weekendStyle: TextStyle(color: Color(0xFF3DD94C)),
+                      weekdayStyle: TextStyle(color: Color(0xFF30A9B2), fontWeight: FontWeight.bold),
+                      weekendStyle: TextStyle(color: Color(0xFF3DD94C), fontWeight: FontWeight.bold),
                     ),
                     headerStyle: HeaderStyle(
                         leftChevronIcon: Icon(
@@ -136,13 +136,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         return [
                           Container(
                             decoration: new BoxDecoration(
+                              //todo(1): make color based on workout selection type
                               color: Color(0xFF30A9B2),
                               shape: BoxShape.circle,
                             ),
                             margin: const EdgeInsets.all(4.0),
-                            width: 5,
-                            height: 5,
-                          )
+                            width: 8,
+                            height: 8,
+                          ),
                         ];
                       },
                       selectedDayBuilder: (context, date, events) => Container(
@@ -211,6 +212,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  //todo(2) create better dialog for activity tracker
   _showAddDialog() async {
     await showDialog(
         context: context,
@@ -562,6 +564,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ? 0.0
               : kBottomNavigationBarHeight + 50,
           child: FloatingActionButton(
+            //todo(3) create fab to open new charts screen
             onPressed: () {},
             child: Icon(Icons.bar_chart_rounded),
           ),
