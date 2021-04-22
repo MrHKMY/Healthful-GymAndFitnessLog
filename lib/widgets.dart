@@ -241,10 +241,16 @@ class _CountDownTimerState extends State<CountDownTimer>
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color(0xff465466),
-        body: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Countdown Timer"),
+        elevation: 10,
+        centerTitle: true,
+        backgroundColor: Color(0xff374250),
+      ),
+      backgroundColor: Color(0xff465466),
+      body: SafeArea(
+        child: Container(
           margin: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom > 0
                 ? 0.0
@@ -292,7 +298,7 @@ class _CountDownTimerState extends State<CountDownTimer>
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            "Countdown Timer",
+                                            "30 seconds",
                                             style: TextStyle(
                                                 fontSize: 20.0,
                                                 color: Colors.white),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:calendar/profile_screen.dart';
 import 'package:calendar/screens.dart';
 import 'package:calendar/widgets.dart';
@@ -134,7 +132,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         screens: _buildScreens(),
         items: _navBarsItems(),
         confineInSafeArea: true,
-        backgroundColor: Color(0xff465466),
+        backgroundColor: Color(0xff374250),
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,

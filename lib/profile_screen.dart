@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -5,42 +7,99 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
+
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  bool _visible = false;
+  final Duration delay = Duration(milliseconds: 50);
+  Timer timer;
+
+  @override
+  void initState() {
+    _visible = false;
+    timer = Timer(Duration(milliseconds: 50), () => setState(() {_visible = true;}));
+    // Future.delayed(Duration(seconds: 1)).then((value) => setState(() {
+    //   _visible = true;
+    // }));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // if (timer != null) timer.cancel();
+    // _visible = false;
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile"),
+        elevation: 10,
+        centerTitle: true,
+        backgroundColor: Color(0xff374250),
+      ),
       backgroundColor: Color(0xff465466),
       body: SafeArea(
         child: Stack(
           children: [
             Align(
-              alignment: Alignment(0.0, -0.8),
-              child: GestureDetector(
-                onTap: () {},
-                child: CircleAvatar(
-                  maxRadius: 65,
-                  backgroundColor: Colors.green,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    backgroundImage:
-                        ExactAssetImage("assets/images/profile_image.png"),
-                    maxRadius: 60,
+              alignment: Alignment(0, -1),
+              child: AnimatedOpacity(
+                opacity: _visible ? 1.0 : 0.0,
+                duration: Duration(milliseconds: 500),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  height: 220,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(0.0),
+                        bottomLeft: Radius.circular(150.0)),
+                    //border: Border.all(color: Color(0xFF30A9B2)),
+                    color: Color(0xFF30A9B2),
                   ),
                 ),
               ),
             ),
             Align(
-              alignment: Alignment(0.0, -0.45),
-              child: Text(
-                "John Doe",
-                style: TextStyle(
-                    fontSize: 26,
-                    color: Color(0xFF30A9B2),
-                    fontFamily: "Times"),
+              alignment: Alignment(0.4, -0.8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                child: Row(children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: CircleAvatar(
+                      maxRadius: 65,
+                      backgroundColor: Colors.black,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        backgroundImage:
+                            ExactAssetImage("assets/images/profile_image.png"),
+                        maxRadius: 60,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        "Adam Witwicky",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: TextStyle(
+                            fontSize: 26,
+                            color: Colors.black,
+                            fontFamily: "Times"),
+                      ),
+                    ),
+                  ),
+                ]),
               ),
             ),
             Align(
-              alignment: Alignment(0.0, -0.2),
+              alignment: Alignment(0.0, -0.25),
               child: FractionallySizedBox(
                 widthFactor: 0.8,
                 heightFactor: 0.1,
@@ -57,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            "71.5 Kg",
+                            "65.5 Kg",
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -79,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            "1.80 m",
+                            "1.70 m",
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -96,9 +155,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            //todo(4) list age, gender, bmi, goals, settings
             Align(
-              alignment: Alignment(0.0, 0.65),
+              alignment: Alignment(0.0, 0.5),
               child: FractionallySizedBox(
                 widthFactor: 0.8,
                 heightFactor: 0.4,
@@ -113,12 +171,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.deepPurple[800],
-                            backgroundImage: ExactAssetImage("assets/images/age_icon.png"),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                //color: Colors.blue,
+                                //borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.blue)),
+                            child: Image.asset(
+                              "assets/images/age_icon.png",
+                              color: Colors.blue,
+                              scale: 20,
+                            ),
                           ),
-                          SizedBox(width: 15,),
+                          SizedBox(
+                            width: 15,
+                          ),
                           Text(
                             "Age",
                             style: TextStyle(
@@ -135,13 +203,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.green[800],
-                              backgroundImage: AssetImage("assets/images/gender_icon.png"),
-
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                //color: Colors.blue,
+                                //borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.green)),
+                            child: Image.asset(
+                              "assets/images/gender_icon.png",
+                              color: Colors.green,
+                              scale: 20,
+                            ),
                           ),
-                          SizedBox(width: 15,),
+                          SizedBox(
+                            width: 15,
+                          ),
                           Text(
                             "Gender",
                             style: TextStyle(
@@ -158,12 +235,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.orange[800],
-                            backgroundImage: AssetImage("assets/images/bmi_icon.png"),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                //color: Colors.blue,
+                                //borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.red)),
+                            child: Image.asset(
+                              "assets/images/goals_icon.png",
+                              color: Colors.red[600],
+                              scale: 20,
+                            ),
                           ),
-                          SizedBox(width: 15,),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            "Fitness Goals",
+                            style: TextStyle(
+                                fontSize: 18,
+                                //fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Spacer(),
+                          Text(
+                            "Keep Fit",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                //color: Colors.blue,
+                                //borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.orange)),
+                            child: Image.asset(
+                              "assets/images/bmi_icon.png",
+                              color: Colors.orange,
+                              scale: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
                           Text(
                             "Body Mass Index (BMI)",
                             style: TextStyle(
@@ -178,39 +297,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.red[800],
-                            backgroundImage: AssetImage("assets/images/goals_icon.png"),
-                          ),
-                          SizedBox(width: 15,),
-                          Text(
-                            "Fitness Goals",
-                            style: TextStyle(
-                                fontSize: 18,
-                                //fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          Spacer(),
-                          Text(
-                            "Gain Muscle",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
+                      SizedBox(
+                        height: 10,
                       ),
-                      SizedBox(height: 15,),
                       Row(
                         children: [
-                          SizedBox(width: 15,),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.settings,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
                           Text(
                             "Settings",
-                            style: TextStyle(
-                                fontSize: 18,
-                                //fontWeight: FontWeight.bold,
-                                color: Colors.grey[300]),
-                          ),
+                            style: TextStyle(color: Colors.grey),
+                          )
                         ],
                       )
                     ],
