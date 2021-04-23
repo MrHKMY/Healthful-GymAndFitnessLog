@@ -17,7 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     _visible = false;
-    timer = Timer(Duration(milliseconds: 50), () => setState(() {_visible = true;}));
+    timer = Timer(Duration(milliseconds: 100), () => setState(() {_visible = true;}));
     // Future.delayed(Duration(seconds: 1)).then((value) => setState(() {
     //   _visible = true;
     // }));
@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         backgroundColor: Color(0xff374250),
       ),
-      backgroundColor: Color(0xff465466),
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Stack(
           children: [
@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 heightFactor: 0.1,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color(0xff465466),
+                    color: Colors.black,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Color(0xFF30A9B2)),
                   ),

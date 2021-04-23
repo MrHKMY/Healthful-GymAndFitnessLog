@@ -2,6 +2,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:calendar/model/activities.dart';
 
+import 'model/userInfo.dart';
+
 
 class DatabaseHelper {
 
@@ -16,6 +18,9 @@ class DatabaseHelper {
         );
         await db.execute(
           "CREATE TABLE progress (id INTEGER PRIMARY KEY, BodyPart TEXT, Center REAL, Left REAL, Right REAL, Date TEXT)",
+        );
+        await db.execute(
+          "CREATE TABLE userInfo (id INTEGER PRIMARY KEY, Name TEXT, Gender INTEGER, Age INTEGER, Height REAL, Goals TEXT)",
         );
         return db;
       },
@@ -86,5 +91,15 @@ class DatabaseHelper {
       return theProgress;
     }
   }
+
+  // Future<int> insertInfo(UserInfo userInfo) async {
+  //   int infoID = 0;
+  //   Database _db = await database();
+  //   await _db.insert("userInfo", userInfo.toMap(),
+  //       conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+  //     infoID = value;
+  //   });
+  //   return infoID;
+  // }
 
 }
