@@ -75,7 +75,7 @@ class _WeightWidgetState extends State<WeightWidget> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Color(0xff374250).withOpacity(0.8),
                   spreadRadius: 2,
                   blurRadius: 2,
                   offset: Offset(2, 2),
@@ -143,7 +143,7 @@ class ArmWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Color(0xff374250).withOpacity(0.8),
                       spreadRadius: 2,
                       blurRadius: 2,
                       offset: Offset(2, 2),
@@ -192,7 +192,7 @@ class ArmWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Color(0xff374250).withOpacity(0.8),
                       spreadRadius: 2,
                       blurRadius: 2,
                       offset: Offset(2, 2),
@@ -248,7 +248,7 @@ class _CountDownTimerState extends State<CountDownTimer>
         centerTitle: true,
         backgroundColor: Color(0xff374250),
       ),
-      backgroundColor: Color(0xff465466),
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.only(
