@@ -1,5 +1,8 @@
-import 'package:calendar/profile_screen.dart';
-import 'package:calendar/screens.dart';
+import 'package:calendar/model/progress.dart';
+import 'package:calendar/screens/profile_screen.dart';
+import 'package:calendar/screens/calendar.dart';
+import 'package:calendar/screens/history.dart';
+import 'package:calendar/screens/progress.dart';
 import 'package:calendar/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +135,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         screens: _buildScreens(),
         items: _navBarsItems(),
         confineInSafeArea: true,
-        backgroundColor: Color(0xff374250),
+        backgroundColor: Color(0xFF1F3546),
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
