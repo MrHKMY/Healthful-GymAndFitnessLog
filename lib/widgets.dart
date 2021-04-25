@@ -1,4 +1,6 @@
 import 'package:calendar/model/timerPainter.dart';
+import 'package:cupertino_radio_choice/cupertino_radio_choice.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HistoryWidget extends StatelessWidget {
@@ -127,7 +129,7 @@ class ArmWidget extends StatelessWidget {
                       offset: Offset(2, 2),
                     ),
                   ],
-                  color: Colors.blueGrey,
+                  color: Color(0xFF1F3546),
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: Color(0xFF30A9B2)),
                 ),
@@ -176,7 +178,7 @@ class ArmWidget extends StatelessWidget {
                       offset: Offset(2, 2),
                     ),
                   ],
-                  color: Colors.blueGrey,
+                  color: Color(0xFF1F3546),
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: Color(0xFF30A9B2)),
                 ),
@@ -222,6 +224,7 @@ class CountDownTimer extends StatefulWidget {
 class _CountDownTimerState extends State<CountDownTimer>
     with TickerProviderStateMixin {
   AnimationController animationController;
+
   //int theTime = 5;
   //ValueNotifier addSecond = ValueNotifier(false);
 
@@ -246,7 +249,7 @@ class _CountDownTimerState extends State<CountDownTimer>
         title: Text("Countdown Timer"),
         elevation: 10,
         centerTitle: true,
-        backgroundColor: Color(0xff374250),
+        backgroundColor: Color(0xFF1F3546),
       ),
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -408,5 +411,3 @@ class _CountDownTimerState extends State<CountDownTimer>
     );
   }
 }
-
-
