@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:calendar/model/userInfo.dart';
+import 'package:calendar/screens/startup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -353,7 +354,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              _showDialog("Info");
+                              //_showDialog("Info");
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => StartUpScreen()));
                             },
                             child: Row(
                               children: [

@@ -1,4 +1,6 @@
 import 'package:calendar/model/timerPainter.dart';
+import 'package:cupertino_radio_choice/cupertino_radio_choice.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HistoryWidget extends StatelessWidget {
@@ -222,6 +224,7 @@ class CountDownTimer extends StatefulWidget {
 class _CountDownTimerState extends State<CountDownTimer>
     with TickerProviderStateMixin {
   AnimationController animationController;
+
   //int theTime = 5;
   //ValueNotifier addSecond = ValueNotifier(false);
 
@@ -408,5 +411,3 @@ class _CountDownTimerState extends State<CountDownTimer>
     );
   }
 }
-
-

@@ -29,6 +29,7 @@ dependencies:
   persistent_bottom_nav_bar: ^4.0.2
   sqflite:
   path:
+  cupertino_radio_choice: ^1.0.1+1
 
 
   # The following adds the Cupertino Icons font to your application.
