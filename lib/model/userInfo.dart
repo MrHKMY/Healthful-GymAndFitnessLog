@@ -1,7 +1,7 @@
 class UserInfo {
   final int id;
   final String name;
-  final int gender;
+  final String gender;
   final int age;
   final double height;
   final String goals;

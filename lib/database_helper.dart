@@ -21,7 +21,7 @@ class DatabaseHelper {
           "CREATE TABLE progress (id INTEGER PRIMARY KEY, BodyPart TEXT, Center REAL, Left REAL, Right REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
-          "CREATE TABLE userInfo (id INTEGER PRIMARY KEY, Name TEXT, Gender INTEGER, Age INTEGER, Height REAL, Goals TEXT)",
+          "CREATE TABLE userInfo (id INTEGER PRIMARY KEY, Name TEXT, Gender TEXT, Age INTEGER, Height REAL, Goals TEXT)",
         );
         return db;
       },
