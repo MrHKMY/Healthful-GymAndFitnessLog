@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:calendar/database_helper.dart';
+import 'package:calendar/model/userInfo.dart';
 import 'package:calendar/widgets.dart';
 import 'package:cupertino_radio_choice/cupertino_radio_choice.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,8 @@ class _StartUpScreenState extends State<StartUpScreen> {
       heightInputController;
   String _selectedGender = genderMap.keys.first;
   String _chosenValue;
+  int _userInfo = 0;
+  DatabaseHelper _dbHelper = DatabaseHelper();
 
   static final Map<String, String> genderMap = {
     'male': 'Male',
@@ -261,7 +265,42 @@ class _StartUpScreenState extends State<StartUpScreen> {
                         ),
                       ),
                       child: menu,
-                    )
+                    ),
+                    Container(
+                      child: TextButton(
+                        child: Text(
+                          "Save",
+                        ),
+                        style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: Colors.teal,
+                            shadowColor: Colors.black,
+                            elevation: 5),
+                        onPressed: () async {
+                          if (nameInputController.text.isEmpty || ageInputController.text.isEmpty || heightInputController.text.isEmpty) {
+                            return;
+                          }
+                          UserInfo _newInfo = UserInfo(
+                              name: nameInputController.text,
+                              age: int.parse(ageInputController.text),
+                              gender: _selectedGender,
+                              height: double.parse(heightInputController.text),
+                              goals: _chosenValue,
+                            //bodyPart: part,
+                            //center: double.parse(weightInputController.text),
+                          );
+                          //date: a.substring(0, 10));
+                          _userInfo = await _dbHelper.insertInfo(_newInfo);
+                          setState(() {
+                            //getProgress(part);
+                            nameInputController.clear();
+                            ageInputController.clear();
+                            heightInputController.clear();
+                            Navigator.pop(context);
+                          });
+                        },
+                      )
+                      ),
                   ],
                 ),
               ),

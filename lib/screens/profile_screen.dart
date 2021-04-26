@@ -436,7 +436,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     UserInfo _newInfo = UserInfo(
                         name: "Adam",
                         age: 25,
-                        gender: 1,
+                        gender: "male",
                         height: 1.75,
                         goals: "Keep fit"
                         //bodyPart: part,
