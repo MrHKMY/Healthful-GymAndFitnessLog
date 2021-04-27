@@ -280,6 +280,7 @@ class _StartUpScreenState extends State<StartUpScreen> {
                           if (nameInputController.text.isEmpty || ageInputController.text.isEmpty || heightInputController.text.isEmpty) {
                             return;
                           }
+                          //todo if user update new info, just overwrite using update database crud
                           UserInfo _newInfo = UserInfo(
                               name: nameInputController.text,
                               age: int.parse(ageInputController.text),

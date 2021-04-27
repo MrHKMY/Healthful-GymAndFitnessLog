@@ -136,14 +136,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Flexible(
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            "Adam Witwicky",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                            style: TextStyle(
-                                fontSize: 26,
-                                color: Colors.black,
-                                fontFamily: "Times"),
+                          child: FutureBuilder(
+                            future: _dbHelper.retrieveUserInfo("Name"),
+                            builder: (context, snapshot) {
+                              return Text(
+                                snapshot.data.toString(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                                style: TextStyle(
+                                    fontSize: 26,
+                                    color: Colors.black,
+                                    fontFamily: "Times"),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -167,13 +172,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "65.5 Kg",
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
+                              FutureBuilder(
+                                  future: _dbHelper.retrieve1Part("Weight"),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      //todo this not updated if user loaded profile first, before user input weight in progress
+                                      snapshot.data.toString(),
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    );
+                                  }),
                               Text(
                                 "Weight",
                                 style: TextStyle(color: Colors.grey),
@@ -189,13 +199,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "1.70 m",
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
+                              FutureBuilder(
+                                  future: _dbHelper.retrieveUserInfo("Height"),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      //todo show 0.00 double/float for height instead of 0.0
+                                      snapshot.data.toString(),
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    );
+                                  }),
                               Text(
                                 "Height",
                                 style: TextStyle(color: Colors.grey),
@@ -247,10 +262,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: Colors.white),
                               ),
                               Spacer(),
-                              Text(
-                                "25",
-                                style: TextStyle(color: Colors.grey),
-                              ),
+                              FutureBuilder(
+                                  future: _dbHelper.retrieveUserInfo("Age"),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      style: TextStyle(color: Colors.grey),
+                                    );
+                                  }),
                             ],
                           ),
                           Row(
@@ -279,10 +298,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: Colors.white),
                               ),
                               Spacer(),
-                              Text(
-                                "Gender Icon",
-                                style: TextStyle(color: Colors.grey),
-                              ),
+                              FutureBuilder(
+                                  future: _dbHelper.retrieveUserInfo("Gender"),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      style: TextStyle(color: Colors.grey),
+                                    );
+                                  }),
                             ],
                           ),
                           Row(
@@ -311,10 +334,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: Colors.white),
                               ),
                               Spacer(),
-                              Text(
-                                "Keep Fit",
-                                style: TextStyle(color: Colors.grey),
-                              ),
+                              FutureBuilder(
+                                  future: _dbHelper.retrieveUserInfo("Goals"),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      style: TextStyle(color: Colors.grey),
+                                    );
+                                  }),
                             ],
                           ),
                           Row(
@@ -336,6 +363,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 15,
                               ),
                               Text(
+                                //todo need to input for the bmi's calculation formula
                                 "Body Mass Index (BMI)",
                                 style: TextStyle(
                                     fontSize: 18,
@@ -355,7 +383,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           GestureDetector(
                             onTap: () {
                               //_showDialog("Info");
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => StartUpScreen()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => StartUpScreen()));
                             },
                             child: Row(
                               children: [
