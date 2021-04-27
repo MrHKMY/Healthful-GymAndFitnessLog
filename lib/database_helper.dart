@@ -103,4 +103,14 @@ class DatabaseHelper {
     return infoID;
   }
 
+  Future<String> retrieveUserInfo(String info) async {
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT $info FROM userInfo");
+    if(response.length > 0) {
+      String theName = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      //theName.substring(2);
+      return theName;
+    }
+  }
+
 }
