@@ -122,6 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Row(children: [
                       GestureDetector(
                         onTap: () {},
+                        //todo onTap to change profile photo
                         child: CircleAvatar(
                           maxRadius: 65,
                           backgroundColor: Colors.black,
