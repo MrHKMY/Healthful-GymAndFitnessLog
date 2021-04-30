@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:calendar/database_helper.dart';
+import 'package:calendar/main.dart';
 import 'package:calendar/model/userInfo.dart';
+import 'package:calendar/route_animation.dart';
+import 'package:calendar/screens/profile_screen.dart';
 import 'package:calendar/widgets.dart';
 import 'package:cupertino_radio_choice/cupertino_radio_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 
 class StartUpScreen extends StatefulWidget {
   @override
@@ -24,8 +28,8 @@ class _StartUpScreenState extends State<StartUpScreen> {
   DatabaseHelper _dbHelper = DatabaseHelper();
 
   static final Map<String, String> genderMap = {
-    'male': 'Male',
-    'female': 'Female',
+    'Male': 'Male',
+    'Female': 'Female',
   };
 
   @override
@@ -99,253 +103,373 @@ class _StartUpScreenState extends State<StartUpScreen> {
 
     return Scaffold(
       backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Container(
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment(0, -0.7),
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Text(
-                    "Setup Your Profile:",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 26,
-                        fontFamily: "Times"),
+        child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Container(
+            height: height,
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom > 0
+                  ? 0.0
+                  : kBottomNavigationBarHeight,
+            ),
+            child: Stack(
+              children: [
+                Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.all(12),
+                  //alignment: Alignment.bottomLeft,
+                  foregroundDecoration: RotatedCornerDecoration(
+                    color: Color(0xFF30A9B2),
+                    geometry: const BadgeGeometry(
+                        width: 300,
+                        height: 100,
+                        alignment: BadgeAlignment.topLeft),
+                    labelInsets: const LabelInsets(baselineShift: 2),
                   ),
                 ),
-              ),
-              // Align(
-              //   alignment: Alignment(0, -1),
-              //   child: AnimatedOpacity(
-              //     opacity: _visible ? 1.0 : 0.0,
-              //     duration: Duration(milliseconds: 500),
-              //     child: Container(
-              //       padding: EdgeInsets.symmetric(horizontal: 50),
-              //       height: 220,
-              //       decoration: BoxDecoration(
-              //         borderRadius: BorderRadius.only(
-              //             topRight: Radius.circular(0.0),
-              //             bottomLeft: Radius.circular(150.0)),
-              //         //border: Border.all(color: Color(0xFF30A9B2)),
-              //         color: Color(0xFF1F3546),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Align(
-              //   alignment: Alignment(0, -1),
-              //   child: AnimatedOpacity(
-              //     opacity: _visible ? 1.0 : 0.0,
-              //     duration: Duration(milliseconds: 500),
-              //     child: Container(
-              //       padding: EdgeInsets.symmetric(horizontal: 50),
-              //       height: 205,
-              //       //width: width-20,
-              //       decoration: BoxDecoration(
-              //         boxShadow: [
-              //           BoxShadow(
-              //             color: Colors.black,
-              //             spreadRadius: 1,
-              //             blurRadius: 1,
-              //             offset: Offset(2, 2),
-              //           ),
-              //         ],
-              //         borderRadius: BorderRadius.only(
-              //             topRight: Radius.circular(0.0),
-              //             bottomLeft: Radius.circular(150.0)),
-              //         //border: Border.all(color: Color(0xFF30A9B2)),
-              //         color: Color(0xFF30A9B2),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              Align(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1F3546),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFF30A9B2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: Offset(2, 2),
-                          ),
-                        ],
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: TextField(
-                        controller: nameInputController,
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
-                          hintText: "Name: ",
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.deny(RegExp('[0-9.,]')),
-                        ],
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF1F3546),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xFF30A9B2),
-                                  spreadRadius: 1,
-                                  blurRadius: 1,
-                                  offset: Offset(2, 2),
-                                ),
-                              ],
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: TextField(
-                              controller: ageInputController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                hintText: "Age: ",
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]')),
-                              ],
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            margin: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF1F3546),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xFF30A9B2),
-                                  spreadRadius: 1,
-                                  blurRadius: 1,
-                                  offset: Offset(2, 2),
-                                ),
-                              ],
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: TextField(
-                              controller: heightInputController,
-                              keyboardType: TextInputType.number,
-                              //todo need restriction for height input (in cm/m only)
-                              decoration: InputDecoration(
-                                hintText: "Height: ",
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9.]')),
-                              ],
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.only(left: 25),
-                      child: genderSelectionTile,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.only(left: 25, right: 25),
-                      padding: EdgeInsets.only(left: 15),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1F3546),
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //     color: Color(0xFF30A9B2),
-                        //     spreadRadius: 1,
-                        //     blurRadius: 1,
-                        //     offset: Offset(2, 2),
-                        //   ),
-                        // ],
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: menu,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                        child: TextButton(
-                      child: Text(
-                        "Save",
-                      ),
-                      style: TextButton.styleFrom(
-                          primary: Colors.white,
-                          backgroundColor: Colors.green,
-                          shadowColor: Colors.black,
-                          elevation: 5),
-                      onPressed: () async {
-                        if (nameInputController.text.isEmpty ||
-                            ageInputController.text.isEmpty ||
-                            heightInputController.text.isEmpty) {
-                          return;
-                        }
-                        //todo if user update new info, just overwrite using update database crud
-                        UserInfo _newInfo = UserInfo(
-                          name: nameInputController.text,
-                          age: int.parse(ageInputController.text),
-                          gender: _selectedGender,
-                          height: double.parse(heightInputController.text),
-                          goals: _chosenValue,
-                          //bodyPart: part,
-                          //center: double.parse(weightInputController.text),
-                        );
-                        //date: a.substring(0, 10));
-                        _userInfo = await _dbHelper.insertInfo(_newInfo);
-                        setState(() {
-                          //getProgress(part);
-                          nameInputController.clear();
-                          ageInputController.clear();
-                          heightInputController.clear();
-                          Navigator.pop(context);
-                        });
-                      },
-                    )),
-                  ],
+                Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.all(12),
+                  //alignment: Alignment.bottomLeft,
+                  foregroundDecoration: const RotatedCornerDecoration(
+                    badgeShadow:
+                    BadgeShadow(
+                        color: Colors.black, elevation: 4),
+                    // gradient: LinearGradient(
+                    //   begin: Alignment.topLeft,
+                    //   end: Alignment.bottomRight,
+                    //   stops: [0, 1],
+                    //   colors: [Colors.blue, Colors.greenAccent],
+                    // ),
+                    color: Color(0xFF1F3546),
+                    geometry: const BadgeGeometry(
+                        width: 250,
+                        height: 80,
+                        alignment: BadgeAlignment.topLeft),
+                    labelInsets: const LabelInsets(baselineShift: 2),
+                  ),
                 ),
-              ),
-            ],
+                Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.all(12),
+                  //alignment: Alignment.bottomLeft,
+                  foregroundDecoration: RotatedCornerDecoration(
+                    color: Color(0xFF30A9B2),
+                    geometry: BadgeGeometry(
+                        width: width,
+                        height: 60,
+                        alignment: BadgeAlignment.bottomRight),
+                    labelInsets: const LabelInsets(baselineShift: 2),
+                  ),
+                ),
+                Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.all(12),
+                  //alignment: Alignment.bottomLeft,
+                  foregroundDecoration: const RotatedCornerDecoration(
+                    badgeShadow:
+                    BadgeShadow(
+                        color: Colors.black, elevation: 4),
+                    // gradient: LinearGradient(
+                    //   begin: Alignment.topLeft,
+                    //   end: Alignment.bottomRight,
+                    //   stops: [0, 1],
+                    //   colors: [Colors.blue, Colors.greenAccent],
+                    // ),
+                    color: Color(0xFF1F3546),
+                    geometry: const BadgeGeometry(
+                        width: 350,
+                        height: 50,
+                        alignment: BadgeAlignment.bottomRight),
+                    labelInsets: const LabelInsets(baselineShift: 2),
+                  ),
+                ),
+                // Container(
+                //   color: Colors.transparent,
+                //   padding: const EdgeInsets.all(12),
+                //   //alignment: Alignment.bottomLeft,
+                //   foregroundDecoration: RotatedCornerDecoration(
+                //     color: Color(0xFF30A9B2),
+                //     geometry: BadgeGeometry(
+                //         width: width,
+                //         height: 60,
+                //         alignment: BadgeAlignment.bottomLeft),
+                //     labelInsets: const LabelInsets(baselineShift: 2),
+                //   ),
+                // ),
+                // Container(
+                //   color: Colors.transparent,
+                //   padding: const EdgeInsets.all(12),
+                //   //alignment: Alignment.bottomLeft,
+                //   foregroundDecoration: const RotatedCornerDecoration(
+                //     badgeShadow:
+                //     BadgeShadow(
+                //         color: Colors.black, elevation: 4),
+                //     // gradient: LinearGradient(
+                //     //   begin: Alignment.topLeft,
+                //     //   end: Alignment.bottomRight,
+                //     //   stops: [0, 1],
+                //     //   colors: [Colors.blue, Colors.greenAccent],
+                //     // ),
+                //     color: Color(0xFF1F3546),
+                //     geometry: const BadgeGeometry(
+                //         width: 350,
+                //         height: 50,
+                //         alignment: BadgeAlignment.bottomLeft),
+                //     labelInsets: const LabelInsets(baselineShift: 2),
+                //   ),
+                // ),
+                Align(
+                  alignment: Alignment(0, -0.7),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Text(
+                      "Setup Your Profile:",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26,
+                          fontFamily: "Times"),
+                    ),
+                  ),
+                ),
+                // Align(
+                //   alignment: Alignment(0, -1),
+                //   child: AnimatedOpacity(
+                //     opacity: _visible ? 1.0 : 0.0,
+                //     duration: Duration(milliseconds: 500),
+                //     child: Container(
+                //       padding: EdgeInsets.symmetric(horizontal: 50),
+                //       height: 220,
+                //       decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.only(
+                //             topRight: Radius.circular(0.0),
+                //             bottomLeft: Radius.circular(150.0)),
+                //         //border: Border.all(color: Color(0xFF30A9B2)),
+                //         color: Color(0xFF1F3546),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // Align(
+                //   alignment: Alignment(0, -1),
+                //   child: AnimatedOpacity(
+                //     opacity: _visible ? 1.0 : 0.0,
+                //     duration: Duration(milliseconds: 500),
+                //     child: Container(
+                //       padding: EdgeInsets.symmetric(horizontal: 50),
+                //       height: 205,
+                //       //width: width-20,
+                //       decoration: BoxDecoration(
+                //         boxShadow: [
+                //           BoxShadow(
+                //             color: Colors.black,
+                //             spreadRadius: 1,
+                //             blurRadius: 1,
+                //             offset: Offset(2, 2),
+                //           ),
+                //         ],
+                //         borderRadius: BorderRadius.only(
+                //             topRight: Radius.circular(0.0),
+                //             bottomLeft: Radius.circular(150.0)),
+                //         //border: Border.all(color: Color(0xFF30A9B2)),
+                //         color: Color(0xFF30A9B2),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                Align(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF1F3546),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Color(0xFF30A9B2),
+                          //     spreadRadius: 1,
+                          //     blurRadius: 1,
+                          //     offset: Offset(2, 2),
+                          //   ),
+                          //],
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: nameInputController,
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            hintText: "Name: ",
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp('[0-9.,]')),
+                          ],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1F3546),
+                                // boxShadow: [
+                                //   BoxShadow(
+                                //     color: Color(0xFF30A9B2),
+                                //     spreadRadius: 1,
+                                //     blurRadius: 1,
+                                //     offset: Offset(2, 2),
+                                //   ),
+                                // ],
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: TextField(
+                                controller: ageInputController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  hintText: "Age: ",
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[0-9]')),
+                                ],
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              margin: EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1F3546),
+                                // boxShadow: [
+                                //   BoxShadow(
+                                //     color: Color(0xFF30A9B2),
+                                //     spreadRadius: 1,
+                                //     blurRadius: 1,
+                                //     offset: Offset(2, 2),
+                                //   ),
+                                // ],
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: TextField(
+                                controller: heightInputController,
+                                keyboardType: TextInputType.number,
+                                //todo need restriction for height input (in cm/m only)
+                                decoration: InputDecoration(
+                                  hintText: "Height: ",
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[0-9.]')),
+                                ],
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(left: 25),
+                        child: genderSelectionTile,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(left: 25, right: 25),
+                        padding: EdgeInsets.only(left: 15),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF1F3546),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Color(0xFF30A9B2),
+                          //     spreadRadius: 1,
+                          //     blurRadius: 1,
+                          //     offset: Offset(2, 2),
+                          //   ),
+                          // ],
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: menu,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                          child: TextButton(
+                        child: Text(
+                          "Save",
+                        ),
+                        style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: Colors.green,
+                            shadowColor: Colors.black,
+                            elevation: 5),
+                        onPressed: () async {
+                          if (nameInputController.text.isEmpty ||
+                              ageInputController.text.isEmpty ||
+                              heightInputController.text.isEmpty ||
+                              _chosenValue == null) {
+                            return;
+                          }
+                          //todo if user update new info, just overwrite using update database crud
+                          UserInfo _newInfo = UserInfo(
+                            name: nameInputController.text,
+                            age: int.parse(ageInputController.text),
+                            gender: _selectedGender,
+                            height: double.parse(heightInputController.text),
+                            goals: _chosenValue,
+                            //bodyPart: part,
+                            //center: double.parse(weightInputController.text),
+                          );
+                          //date: a.substring(0, 10));
+                          _userInfo = await _dbHelper.insertInfo(_newInfo);
+                          setState(() {
+                            //getProgress(part);
+                            nameInputController.clear();
+                            ageInputController.clear();
+                            heightInputController.clear();
+                            //Navigator.of(context).pop();
+                            //TODO if from first time launch use pushReplacement, if edit from profile use navigator.pop || maybe duplicate the file with different name
+
+                            Navigator.of(context).pushReplacement(new ScaleRoute(
+                                page: new ProvidedStylesExample()));
+                            //Navigator.pop(context, SlideRightRoute(page: ProfileScreen()));
+                          });
+                        },
+                      )),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

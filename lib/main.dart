@@ -1,8 +1,10 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:calendar/model/progress.dart';
 import 'package:calendar/screens/profile_screen.dart';
 import 'package:calendar/screens/calendar.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:calendar/screens/progress.dart';
+import 'package:calendar/screens/startup_screen.dart';
 import 'package:calendar/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "CalendarTest",
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: ProvidedStylesExample(),
+      home: Splash(),
       initialRoute: "/",
       routes: {
         '/first': (context) => HistoryScreen(),
@@ -32,6 +34,46 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class Splash extends StatefulWidget {
+  @override
+  _SplashState createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
+
+  Future checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+
+    if (_seen) {
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new ProvidedStylesExample()));
+    } else {
+      await prefs.setBool('seen', true);
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new StartUpScreen()));
+    }
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    checkFirstSeen();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Center(
+        child: Container(
+          child: Text("Loading..."),
+        ),
+      ),
+    );
+    throw UnimplementedError();
+  }
+}
+
 
 // ----------------------------------------- Provided Style ----------------------------------------- //
 class ProvidedStylesExample extends StatefulWidget {
