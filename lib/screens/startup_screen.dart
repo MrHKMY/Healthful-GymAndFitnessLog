@@ -109,11 +109,6 @@ class _StartUpScreenState extends State<StartUpScreen> {
           physics: NeverScrollableScrollPhysics(),
           child: Container(
             height: height,
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom > 0
-                  ? 0.0
-                  : kBottomNavigationBarHeight,
-            ),
             child: Stack(
               children: [
                 Container(

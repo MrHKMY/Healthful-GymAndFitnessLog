@@ -19,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController weightInputController;
   int _progressID = 0;
   DatabaseHelper _dbHelper = DatabaseHelper();
+  double bmiValue;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // Future.delayed(Duration(seconds: 1)).then((value) => setState(() {
     //   _visible = true;
     // }));
+    //getBmiValue();
     super.initState();
   }
 
@@ -42,6 +44,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.dispose();
   }
 
+  Future<String> getBmiValue() async {
+
+    String weight = await _dbHelper.retrieve1Part("Weight");
+    String height = await _dbHelper.retrieveUserInfo("Height");
+    double bmiHeight = double.parse(height);
+    double bmiWeight = double.parse(weight);
+
+    bmiValue = bmiWeight / (bmiHeight * bmiHeight);
+    bmiValue = num.parse(bmiValue.toStringAsFixed(2));
+
+    return bmiValue.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -49,6 +64,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double bottom = MediaQuery.of(context).viewInsets.bottom > 0
         ? 0.0
         : kBottomNavigationBarHeight;
+
+    // FutureBuilder(
+    //     future: _dbHelper.retrieveUserInfo("Height"),
+    //     builder: (context, snapshot) {
+    //       bmiHeight = snapshot.data.toString();
+    //       return bmiHeight;
+    //     }
+    // );
+
+
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -203,8 +230,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               FutureBuilder(
                                   future: _dbHelper.retrieveUserInfo("Height"),
                                   builder: (context, snapshot) {
+                                    // String a = snapshot.data.toString();
+                                    // double b = double.parse(a);
+                                    // b = num.parse(b.toStringAsFixed(3));
                                     return Text(
                                       //todo show 0.00 double/float for height instead of 0.0
+                                        //b.toString(),
                                       snapshot.data.toString(),
                                       style: TextStyle(
                                           fontSize: 22,
@@ -364,7 +395,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 15,
                               ),
                               Text(
-                                //todo need to input for the bmi's calculation formula
                                 "Body Mass Index (BMI)",
                                 style: TextStyle(
                                     fontSize: 18,
@@ -372,10 +402,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: Colors.white),
                               ),
                               Spacer(),
-                              Text(
-                                "21.2",
-                                style: TextStyle(color: Colors.grey),
-                              ),
+                              FutureBuilder(
+                                  future: getBmiValue(),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      //todo make bmi text color based on bmi value chart
+                                      style: TextStyle(color: Colors.grey),
+                                    );
+                                  }),
                             ],
                           ),
                           SizedBox(
