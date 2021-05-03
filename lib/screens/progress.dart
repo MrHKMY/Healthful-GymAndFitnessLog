@@ -39,6 +39,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
         elevation: 10,
         centerTitle: true,
         backgroundColor: Color(0xFF1F3546),
+        brightness: Brightness.light,
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
@@ -143,26 +146,26 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         future: _dbHelper.retrieve2Part("Upper Arm"),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
-                          // Uncompleted State
+                            // Uncompleted State
                             case ConnectionState.none:
                             case ConnectionState.waiting:
                               return Center(child: CircularProgressIndicator());
                               break;
                             default:
-                            // Completed with error
+                              // Completed with error
                               if (snapshot.hasError)
                                 return Container(
                                     child: Text(snapshot.error.toString()));
                               return ArmWidget(
                                   twoPart: "Upper Arm",
                                   leftMeasurement:
-                                  snapshot.data[0].toString() != "null"
-                                      ? snapshot.data[0].toString()
-                                      : "Tap to input",
+                                      snapshot.data[0].toString() != "null"
+                                          ? snapshot.data[0].toString()
+                                          : "Tap to input",
                                   rightMeasurement:
-                                  snapshot.data[1].toString() != "null"
-                                      ? snapshot.data[1].toString()
-                                      : "Tap to input");
+                                      snapshot.data[1].toString() != "null"
+                                          ? snapshot.data[1].toString()
+                                          : "Tap to input");
                           }
                         }),
                   )),
@@ -177,26 +180,26 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         future: _dbHelper.retrieve2Part("Forearm"),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
-                          // Uncompleted State
+                            // Uncompleted State
                             case ConnectionState.none:
                             case ConnectionState.waiting:
                               return Center(child: CircularProgressIndicator());
                               break;
                             default:
-                            // Completed with error
+                              // Completed with error
                               if (snapshot.hasError)
                                 return Container(
                                     child: Text(snapshot.error.toString()));
                               return ArmWidget(
                                   twoPart: "Forearm",
                                   leftMeasurement:
-                                  snapshot.data[0].toString() != "null"
-                                      ? snapshot.data[0].toString()
-                                      : "Tap to input",
+                                      snapshot.data[0].toString() != "null"
+                                          ? snapshot.data[0].toString()
+                                          : "Tap to input",
                                   rightMeasurement:
-                                  snapshot.data[1].toString() != "null"
-                                      ? snapshot.data[1].toString()
-                                      : "Tap to input");
+                                      snapshot.data[1].toString() != "null"
+                                          ? snapshot.data[1].toString()
+                                          : "Tap to input");
                           }
                         }),
                   )),
@@ -211,26 +214,26 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         future: _dbHelper.retrieve2Part("Thigh"),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
-                          // Uncompleted State
+                            // Uncompleted State
                             case ConnectionState.none:
                             case ConnectionState.waiting:
                               return Center(child: CircularProgressIndicator());
                               break;
                             default:
-                            // Completed with error
+                              // Completed with error
                               if (snapshot.hasError)
                                 return Container(
                                     child: Text(snapshot.error.toString()));
                               return ArmWidget(
                                   twoPart: "Thigh",
                                   leftMeasurement:
-                                  snapshot.data[0].toString() != "null"
-                                      ? snapshot.data[0].toString()
-                                      : "Tap to input",
+                                      snapshot.data[0].toString() != "null"
+                                          ? snapshot.data[0].toString()
+                                          : "Tap to input",
                                   rightMeasurement:
-                                  snapshot.data[1].toString() != "null"
-                                      ? snapshot.data[1].toString()
-                                      : "Tap to input");
+                                      snapshot.data[1].toString() != "null"
+                                          ? snapshot.data[1].toString()
+                                          : "Tap to input");
                           }
                         }),
                   )),
@@ -242,30 +245,31 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         _showDoubleDialog("Calf");
                       },
                       child: FutureBuilder(
-                        //initialData: [],
+                          //initialData: [],
                           future: _dbHelper.retrieve2Part("Calf"),
                           builder: (context, snapshot) {
                             switch (snapshot.connectionState) {
-                            // Uncompleted State
+                              // Uncompleted State
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return Center(child: CircularProgressIndicator());
+                                return Center(
+                                    child: CircularProgressIndicator());
                                 break;
                               default:
-                              // Completed with error
+                                // Completed with error
                                 if (snapshot.hasError)
                                   return Container(
                                       child: Text(snapshot.error.toString()));
                                 return ArmWidget(
                                     twoPart: "Calf",
                                     leftMeasurement:
-                                    snapshot.data[0].toString() != "null"
-                                        ? snapshot.data[0]
-                                        : "Tap to input",
+                                        snapshot.data[0].toString() != "null"
+                                            ? snapshot.data[0]
+                                            : "Tap to input",
                                     rightMeasurement:
-                                    snapshot.data[1].toString() != "null"
-                                        ? snapshot.data[1]
-                                        : "Tap to input");
+                                        snapshot.data[1].toString() != "null"
+                                            ? snapshot.data[1]
+                                            : "Tap to input");
                             }
                           }))),
               Positioned(
@@ -290,147 +294,155 @@ class _ProgressScreenState extends State<ProgressScreen> {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Color(0xff465466),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          titleTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold),
-          title: Text(part + " measurement"),
-          content: TextField(
-            controller: weightInputController,
-            autofocus: true,
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-            ],
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  weightInputController.clear();
-                  Navigator.pop(context);
-                },
-                child: Text("Cancel"),
-                style: TextButton.styleFrom(
-                  primary: Colors.white,
-                )),
-            TextButton(
-              child: Text(
-                "Save",
+              backgroundColor: Color(0xFF1F3546),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              title: Text(part + " measurement"),
+              content: TextField(
+                controller: weightInputController,
+                autofocus: true,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                ],
+                style: TextStyle(color: Colors.white),
               ),
-              style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: Colors.teal,
-                  shadowColor: Colors.black,
-                  elevation: 5),
-              onPressed: () async {
-                if (weightInputController.text.isEmpty) {
-                  return;
-                }
-                Progress _newProgress = Progress(
-                  bodyPart: part,
-                  center: double.parse(weightInputController.text),
-                );
-                //date: a.substring(0, 10));
-                _progressID = await _dbHelper.insertProgress(_newProgress);
-                setState(() {
-                  //getProgress(part);
-                  weightInputController.clear();
-                  Navigator.pop(context);
-                });
-              },
-            )
-          ],
-        ));
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      weightInputController.clear();
+                      Navigator.pop(context);
+                    },
+                    child: Text("Cancel"),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                    )),
+                TextButton(
+                  child: Text(
+                    "Save",
+                  ),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.teal,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (weightInputController.text.isEmpty) {
+                      return;
+                    }
+                    Progress _newProgress = Progress(
+                      bodyPart: part,
+                      center: double.parse(weightInputController.text),
+                    );
+                    //date: a.substring(0, 10));
+                    _progressID = await _dbHelper.insertProgress(_newProgress);
+                    setState(() {
+                      //getProgress(part);
+                      weightInputController.clear();
+                      Navigator.pop(context);
+                    });
+                  },
+                )
+              ],
+            ));
   }
 
   _showDoubleDialog(String part) async {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Color(0xff465466),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          title: Text(
-            "$part measurement",
-          ),
-          titleTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold),
-          content: SingleChildScrollView(
-            child: Column(
-              //mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: leftController,
-                  autofocus: true,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+              backgroundColor: Color(0xFF1F3546),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              title: Text(
+                "$part measurement",
+              ),
+              titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              content: SingleChildScrollView(
+                child: Column(
+                  //mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: leftController,
+                      autofocus: true,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                      ],
+                      decoration: InputDecoration(
+                          helperText: "Left",
+                          helperStyle: TextStyle(color: Colors.blue)),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    TextField(
+                      controller: rightController,
+                      autofocus: true,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                      ],
+                      decoration: InputDecoration(
+                          helperText: "Right",
+                          helperStyle: TextStyle(color: Colors.blue)),
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ],
-                  decoration: InputDecoration(
-                      helperText: "Left",
-                      helperStyle: TextStyle(color: Colors.blue)),
-                  style: TextStyle(color: Colors.white),
                 ),
-                TextField(
-                  controller: rightController,
-                  autofocus: true,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-                  ],
-                  decoration: InputDecoration(
-                      helperText: "Right",
-                      helperStyle: TextStyle(color: Colors.blue)),
-                  style: TextStyle(color: Colors.white),
+              ),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      leftController.clear();
+                      rightController.clear();
+                      Navigator.pop(context);
+                    },
+                    child: Text("Cancel"),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                    )),
+                TextButton(
+                  child: Text("Save"),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.teal,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (leftController.text.isEmpty ||
+                        rightController.text.isEmpty) {
+                      return;
+                    }
+                    Progress _newProgress = Progress(
+                        bodyPart: part,
+                        left: double.parse(leftController.text),
+                        right: double.parse(rightController.text));
+                    //date: a.substring(0, 10));
+                    _progressID = await _dbHelper.insertProgress(_newProgress);
+                    setState(() {
+                      //getProgress(part);
+                      //getDoublePart(part);
+                      leftController.clear();
+                      rightController.clear();
+                      Navigator.pop(context);
+                    });
+                  },
                 ),
               ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  leftController.clear();
-                  rightController.clear();
-                  Navigator.pop(context);
-                },
-                child: Text("Cancel"),
-                style: TextButton.styleFrom(
-                  primary: Colors.white,
-                )),
-            TextButton(
-              child: Text("Save"),
-              style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: Colors.teal,
-                  shadowColor: Colors.black,
-                  elevation: 5),
-              onPressed: () async {
-                if (leftController.text.isEmpty ||
-                    rightController.text.isEmpty) {
-                  return;
-                }
-                Progress _newProgress = Progress(
-                    bodyPart: part,
-                    left: double.parse(leftController.text),
-                    right: double.parse(rightController.text));
-                //date: a.substring(0, 10));
-                _progressID = await _dbHelper.insertProgress(_newProgress);
-                setState(() {
-                  //getProgress(part);
-                  //getDoublePart(part);
-                  leftController.clear();
-                  rightController.clear();
-                  Navigator.pop(context);
-                });
-              },
-            ),
-          ],
-        ));
+            ));
   }
 }
