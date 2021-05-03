@@ -8,6 +8,7 @@ import 'package:calendar/screens/startup_screen.dart';
 import 'package:calendar/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -170,6 +171,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: PersistentTabView(
         context,

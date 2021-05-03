@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:calendar/model/progress.dart';
 import 'package:calendar/model/userInfo.dart';
 import 'package:calendar/screens/startup_screen.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<String> getBmiValue() async {
-
     String weight = await _dbHelper.retrieve1Part("Weight");
     String height = await _dbHelper.retrieveUserInfo("Height");
     double bmiHeight = double.parse(height);
@@ -59,11 +59,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     double bottom = MediaQuery.of(context).viewInsets.bottom > 0
         ? 0.0
         : kBottomNavigationBarHeight;
+
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: Colors.black,
+    //   statusBarIconBrightness: Brightness.light,
+    //   //statusBarBrightness: Brightness.light,
+    //   //systemNavigationBarIconBrightness: Brightness.dark,
+    // ));
 
     // FutureBuilder(
     //     future: _dbHelper.retrieveUserInfo("Height"),
@@ -73,23 +80,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //     }
     // );
 
-
-
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
         elevation: 10,
         centerTitle: true,
         backgroundColor: Color(0xFF1F3546),
+        brightness: Brightness.light,
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
       ),
       backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Container(
-            height: height,
+            height: screenHeight,
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom > 0
                   ? 0.0
@@ -197,26 +203,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              FutureBuilder(
-                                  future: _dbHelper.retrieve1Part("Weight"),
-                                  builder: (context, snapshot) {
-                                    return Text(
-                                      //todo this not updated if user loaded profile first, before user input weight in progress
-                                      snapshot.data.toString(),
-                                      style: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    );
-                                  }),
-                              Text(
-                                "Weight",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
+                          GestureDetector(
+                            onTap: () {
+                              _showDialog("Weight");
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                FutureBuilder(
+                                    future: _dbHelper.retrieve1Part("Weight"),
+                                    builder: (context, snapshot) {
+                                      return Text(
+                                        //todo this not updated if user loaded profile first, before user input weight in progress
+                                        snapshot.data.toString(),
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      );
+                                    }),
+                                Text(
+                                  "Weight",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
                           ),
                           VerticalDivider(
                             color: Color(0xFF30A9B2),
@@ -235,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     // b = num.parse(b.toStringAsFixed(3));
                                     return Text(
                                       //todo show 0.00 double/float for height instead of 0.0
-                                        //b.toString(),
+                                      //b.toString(),
                                       snapshot.data.toString(),
                                       style: TextStyle(
                                           fontSize: 22,
@@ -460,14 +471,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              backgroundColor: Color(0xff465466),
+              backgroundColor: Color(0xFF1F3546),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               titleTextStyle: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
-              title: Text("User Info"),
+              title: Text("Enter Weight"),
               content: TextField(
                 controller: weightInputController,
                 autofocus: true,
@@ -492,25 +503,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     "Save",
                   ),
                   style: TextButton.styleFrom(
-                      primary: Colors.white,
-                      backgroundColor: Colors.teal,
-                      shadowColor: Colors.black,
-                      elevation: 5),
+                    primary: Colors.white,
+                    backgroundColor: Colors.teal,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
                   onPressed: () async {
                     if (weightInputController.text.isEmpty) {
                       return;
                     }
-                    UserInfo _newInfo = UserInfo(
-                        name: "Adam",
-                        age: 25,
-                        gender: "male",
-                        height: 1.75,
-                        goals: "Keep fit"
-                        //bodyPart: part,
-                        //center: double.parse(weightInputController.text),
-                        );
+                    Progress _newProgress = Progress(
+                      bodyPart: part,
+                      center: double.parse(weightInputController.text),
+                    );
                     //date: a.substring(0, 10));
-                    _progressID = await _dbHelper.insertInfo(_newInfo);
+                    _progressID = await _dbHelper.insertProgress(_newProgress);
                     setState(() {
                       //getProgress(part);
                       weightInputController.clear();
