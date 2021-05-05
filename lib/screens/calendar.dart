@@ -143,7 +143,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           color: Color(0xFF1F3546),
                           borderRadius: BorderRadius.circular(10)),
                       //Todo make the quotes randomly changes when the user launch the app. From database or api maybe
-                      child: Text("Here goes some motivational words. Changes randomly when user launch the app. \n -Author.",
+                      child: Text("\" If something stands between you and your success, move it. Never be denied.\" \n -Dwayne Johnson.",
                         style: TextStyle(
                           color: Colors.white,
 
@@ -289,7 +289,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  //todo(2) create better dialog for activity tracker
+  //todo(2) create better dialog for activity tracker = target part, exercise name, sets
   _showAddDialog() async {
     await showDialog(
         context: context,
@@ -297,7 +297,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               backgroundColor: Color(0xFF1F3546),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
-              title: Text("New Event"),
+              title: Text("What have you achieve today?"),
               titleTextStyle: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
