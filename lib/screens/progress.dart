@@ -279,7 +279,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     : kBottomNavigationBarHeight + 50,
                 child: FloatingActionButton(
                   //todo(3) create fab to open new charts screen
-                  onPressed: () {},
+                  onPressed: () {
+                    Scaffold.of(context).showSnackBar(
+                        new SnackBar(content: new Text("Progress charts coming soon.")));
+                  },
                   child: Icon(Icons.bar_chart_rounded),
                 ),
               )
