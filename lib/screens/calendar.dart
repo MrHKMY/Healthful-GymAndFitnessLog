@@ -304,7 +304,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   backgroundColor: Color(0xFF1F3546),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                                  title: Text("What have you achieve today?"),
+                                  title: Text("Today's Achievement: "),
                                   titleTextStyle: TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
@@ -451,6 +451,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   ),
                                   actions: <Widget>[
                                     TextButton(
+                                        child: Text("Cancel",
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ) ,),
+                                        onPressed: (){
+                                          _eventController.clear();
+                                          _chosenValue= null;
+                                          counter = 0;
+                                          Navigator.pop(context);
+                                        }),
+                                    TextButton(
                                       child: Text("Save"),
                                       style: TextButton.styleFrom(
                                         primary: Colors.white,
@@ -471,6 +482,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         Activities _newActivity = Activities(
                                             activity: _eventController.text,
                                             date: a.substring(0, 10));
+                                        //TODO update activity table database, need to include muscle focus and set count
                                         _actID = await _dbHelper.insertActivity(_newActivity);
                                         setState(() {
                                           if (_events[_calendarController.selectedDay] != null) {
@@ -500,8 +512,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-
-  //todo(2) create better dialog for activity tracker = target part, exercise name, sets
   _showAddDialog() async {
 
     final menu = new DropdownButtonHideUnderline(
