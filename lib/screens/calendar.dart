@@ -35,13 +35,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
   SharedPreferences prefs;
   int _actID = 0;
   DatabaseHelper _dbHelper = DatabaseHelper();
+
   //int _counter = 0;
   String _chosenValue;
   int minValue = 0;
   int maxValue;
   ValueChanged<int> onChanged;
   int counter = 0;
-
 
   Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
     Map<String, dynamic> newMap = {};
@@ -91,7 +91,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         backgroundColor: Colors.black,
         body: Stack(children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             color: Colors.black,
             //height: 500,
             height: double.infinity,
@@ -108,7 +108,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(5),
                       child: Row(children: [
                         CircleAvatar(
                           maxRadius: 25,
@@ -142,7 +142,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ]),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      margin: EdgeInsets.symmetric(horizontal: 0),
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           color: Color(0xFF1F3546),
@@ -161,7 +161,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           color: Color(0xFF1F3546),
                           borderRadius: BorderRadius.circular(20)),
                       margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                       child: TableCalendar(
                         events: _events,
                         formatAnimation: FormatAnimation.slide,
@@ -171,10 +171,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         calendarStyle: CalendarStyle(
                             weekdayStyle: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                                //fontWeight: FontWeight.bold
+                            ),
                             weekendStyle: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                                //fontWeight: FontWeight.bold
+                            ),
                             outsideStyle: TextStyle(color: Colors.grey[700]),
                             unavailableStyle:
                                 TextStyle(color: Colors.grey[700]),
@@ -183,15 +185,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             canEventMarkersOverflow: true,
                             //cellMargin: EdgeInsets.all(20),
                             contentPadding:
-                                EdgeInsets.symmetric(horizontal: 20),
+                                EdgeInsets.symmetric(horizontal: 40,),
                             eventDayStyle: TextStyle(color: Colors.white)),
                         daysOfWeekStyle: DaysOfWeekStyle(
                           weekdayStyle: TextStyle(
                               color: Color(0xFF30A9B2),
-                              fontWeight: FontWeight.bold),
+                          ),
                           weekendStyle: TextStyle(
                               color: Color(0xFF3DD94C),
-                              fontWeight: FontWeight.bold),
+                              //fontWeight: FontWeight.bold
+                          ),
                         ),
                         headerStyle: HeaderStyle(
                             leftChevronIcon: Icon(
@@ -255,17 +258,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
                     ..._selectedEvents.map((event) => Container(
+                      //TODO add onGesture to open history when tapped
                           decoration: BoxDecoration(
                             color: Color(0xFF1F3546),
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Color(0xFF30A9B2)),
+                            //border: Border.all(color: Color(0xFF30A9B2)),
                           ),
-                          height: MediaQuery.of(context).size.height / 15,
+                          height: MediaQuery.of(context).size.height / 20,
                           width: double.infinity,
                           margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                              EdgeInsets.symmetric(horizontal: 0, vertical: 2),
                           child: Padding(
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.all(0),
                             child: Center(
                               child: Text(
                                 event,
@@ -298,214 +302,235 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return StatefulBuilder(
-                              builder: (context, setState) {
-                                return AlertDialog(
-                                  backgroundColor: Color(0xFF1F3546),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                                  title: Text("Today's Achievement: "),
-                                  titleTextStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  content: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          width: double.infinity,
-                                          //margin: EdgeInsets.only(left: 25, right: 25),
-                                          padding: EdgeInsets.only(left: 10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          child: new DropdownButtonHideUnderline(
-                                            child: DropdownButton<String>(
-                                              focusColor: Colors.green,
-                                              dropdownColor: Colors.black,
-                                              value: _chosenValue,
-                                              //style: TextStyle(color: Colors.pink),
-                                              hint: Text(
-                                                "Muscle Focus",
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                              iconEnabledColor: Colors.red,
-                                              items: <String>[
-                                                "Chest",
-                                                "Abs",
-                                                "Biceps",
-                                                "Triceps",
-                                                "Shoulders",
-                                                "Forearm",
-                                                "Hips",
-                                                "Thigh",
-                                                "Calves",
-                                                "Whole Body",
-                                              ].map<DropdownMenuItem<String>>((String value) {
-                                                return DropdownMenuItem<String>(
-                                                    value: value,
-                                                    child: Text(
-                                                      value,
-                                                      style: TextStyle(color: Colors.white),
-                                                    ));
-                                              }).toList(),
-                                              onChanged: (String newValue) {
-                                                setState(() {
-                                                  _chosenValue = newValue;
-                                                });
-                                              },
-                                            ),
-                                          )
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          width: double.infinity,
-                                          //margin: EdgeInsets.only(left: 25, right: 25),
-                                          padding: EdgeInsets.only(left: 10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          child: TextField(
-                                              controller: _eventController,
-                                              decoration: InputDecoration(
-                                                hintText: "Exercise Name: ",
-                                                hintStyle: TextStyle(color: Colors.grey),
-                                              ),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        Text("Set Count: ",
-                                        style: TextStyle(
-                                          color: Colors.white
-                                        ),),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 30, right: 30),
-                                          //padding: EdgeInsets.only(left: 10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: [
-                                              IconButton(
-                                                icon: Icon(
-                                                  Icons.remove,
-                                                  color: Theme.of(context).accentColor,
-                                                ),
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 4.0, horizontal: 18.0),
-                                                iconSize: 32.0,
-                                                color: Theme.of(context).primaryColor,
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if ( counter >= 1)
-                                                    counter--;
-                                                  });
-                                                },
-                                              ),
-                                              Text(
-                                                '$counter',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              IconButton(
-                                                icon: Icon(
-                                                  Icons.add,
-                                                  color: Theme.of(context).accentColor,
-                                                ),
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 4.0, horizontal: 18.0),
-                                                iconSize: 32.0,
-                                                color: Theme.of(context).primaryColor,
-                                                onPressed: () {
-                                                  setState(() {
-                                                    counter++;
-                                                    //onChanged(counter);
-                                                  });
-                                                },
-                                              ),
-                                            ],
+                          return StatefulBuilder(builder: (context, setState) {
+                            return AlertDialog(
+                              backgroundColor: Color(0xFF1F3546),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              title: Text("Today's Achievement: "),
+                              titleTextStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        width: double.infinity,
+                                        //margin: EdgeInsets.only(left: 25, right: 25),
+                                        padding: EdgeInsets.only(left: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10),
                                           ),
                                         ),
-                                      ],
+                                        child: new DropdownButtonHideUnderline(
+                                          child: DropdownButton<String>(
+                                            focusColor: Colors.green,
+                                            dropdownColor: Colors.black,
+                                            value: _chosenValue,
+                                            //style: TextStyle(color: Colors.pink),
+                                            hint: Text(
+                                              "Muscle Focus",
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            iconEnabledColor: Colors.red,
+                                            items: <String>[
+                                              "Chest",
+                                              "Abs",
+                                              "Biceps",
+                                              "Triceps",
+                                              "Shoulders",
+                                              "Forearm",
+                                              "Hips",
+                                              "Thigh",
+                                              "Calves",
+                                              "Whole Body",
+                                            ].map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                              return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(
+                                                    value,
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ));
+                                            }).toList(),
+                                            onChanged: (String newValue) {
+                                              setState(() {
+                                                _chosenValue = newValue;
+                                              });
+                                            },
+                                          ),
+                                        )),
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                        child: Text("Cancel",
-                                          style: TextStyle(
-                                            color: Colors.white
-                                          ) ,),
-                                        onPressed: (){
-                                          _eventController.clear();
-                                          _chosenValue= null;
-                                          counter = 0;
-                                          Navigator.pop(context);
-                                        }),
-                                    TextButton(
-                                      child: Text("Save"),
-                                      style: TextButton.styleFrom(
-                                        primary: Colors.white,
-                                        backgroundColor: Colors.teal,
-                                        shadowColor: Colors.black,
-                                        elevation: 5,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10.0),
+                                    Container(
+                                      width: double.infinity,
+                                      //margin: EdgeInsets.only(left: 25, right: 25),
+                                      padding: EdgeInsets.only(left: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
                                         ),
                                       ),
-                                      onPressed: () async {
-                                        if (_eventController.text.isEmpty) {
-                                          return;
-                                        }
-                                        //Save activity to Database
-                                        String a = _calendarController.selectedDay.toString();
-
-                                        Activities _newActivity = Activities(
-                                            activity: _eventController.text,
-                                            date: a.substring(0, 10));
-                                        //TODO update activity table database, need to include muscle focus and set count
-                                        _actID = await _dbHelper.insertActivity(_newActivity);
-                                        setState(() {
-                                          if (_events[_calendarController.selectedDay] != null) {
-                                            _events[_calendarController.selectedDay]
-                                                .add(_eventController.text);
-                                          } else {
-                                            _events[_calendarController.selectedDay] = [
-                                              _eventController.text
-                                            ];
-                                          }
-                                          prefs.setString(
-                                              "events", json.encode(encodeMap(_events)));
-                                          _eventController.clear();
-                                          _chosenValue= null;
-                                          counter = 0;
-                                          Navigator.pop(context);
-                                        });
-                                      },
-                                    )
+                                      child: TextField(
+                                          controller: _eventController,
+                                          decoration: InputDecoration(
+                                            hintText: "Exercise Name: ",
+                                            hintStyle:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Text(
+                                      "Set Count: ",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(left: 30, right: 30),
+                                      //padding: EdgeInsets.only(left: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.remove,
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 4.0,
+                                                horizontal: 18.0),
+                                            iconSize: 32.0,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            onPressed: () {
+                                              setState(() {
+                                                if (counter >= 1) counter--;
+                                              });
+                                            },
+                                          ),
+                                          Text(
+                                            '$counter',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.add,
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 4.0,
+                                                horizontal: 18.0),
+                                            iconSize: 32.0,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            onPressed: () {
+                                              setState(() {
+                                                counter++;
+                                                //onChanged(counter);
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
-                                );
-                              });
-                        });;
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () {
+                                      _eventController.clear();
+                                      _chosenValue = null;
+                                      counter = 0;
+                                      Navigator.pop(context);
+                                    }),
+                                TextButton(
+                                  child: Text("Save"),
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.white,
+                                    backgroundColor: Colors.teal,
+                                    shadowColor: Colors.black,
+                                    elevation: 5,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (_eventController.text.isEmpty) {
+                                      return;
+                                    }
+                                    //Save activity to Database
+                                    String a = _calendarController.selectedDay
+                                        .toString();
+
+                                    Activities _newActivity = Activities(
+                                        activity: _eventController.text,
+                                        focus: _chosenValue,
+                                        setCount: counter,
+                                        date: a.substring(0, 10));
+                                    _actID = await _dbHelper
+                                        .insertActivity(_newActivity);
+                                    setState(() {
+                                      if (_events[_calendarController
+                                              .selectedDay] !=
+                                          null) {
+                                        _events[_calendarController.selectedDay]
+                                            .add(_eventController.text);
+                                      } else {
+                                        _events[
+                                            _calendarController.selectedDay] = [
+                                          _eventController.text
+                                        ];
+                                      }
+                                      prefs.setString("events",
+                                          json.encode(encodeMap(_events)));
+                                      //_focus = _chosenValue;
+                                      // prefs.setString(
+                                      //   "focus", _chosenValue);
+                                      //print(_events);
+                                      _eventController.clear();
+                                      _chosenValue = null;
+                                      counter = 0;
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                )
+                              ],
+                            );
+                          });
+                        });
+                    ;
                   })),
         ]),
       ),
@@ -513,7 +538,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   _showAddDialog() async {
-
     final menu = new DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         focusColor: Colors.green,
@@ -560,8 +584,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     await showDialog(
         context: context,
         builder: (context) {
-          return StatefulBuilder(
-              builder: (context, setState) {
+          return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
               backgroundColor: Color(0xFF1F3546),
               shape: RoundedRectangleBorder(

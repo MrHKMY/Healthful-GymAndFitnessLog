@@ -15,7 +15,7 @@ class DatabaseHelper {
       join(await getDatabasesPath(), "calendar.db"),
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE tasks (id INTEGER PRIMARY KEY, Activity TEXT, $columnDate TIMESTAMP DEFAULT (datetime('now','localtime')))",
+          "CREATE TABLE tasks (id INTEGER PRIMARY KEY, Activity TEXT, Focus TEXT, SetCount INTEGER, $columnDate TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
           "CREATE TABLE progress (id INTEGER PRIMARY KEY, BodyPart TEXT, Center REAL, Left REAL, Right REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
@@ -45,6 +45,17 @@ class DatabaseHelper {
     return List.generate(activityMap.length, (index) {
       return Activities(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["Date"]);
     });
+  }
+
+  Future<String> retrieveFocus(String event) async {
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT Focus FROM tasks WHERE Activity = '$event'");
+    String focus;
+    if(response.length > 0) {
+      focus = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      focus.substring(2);
+    }
+    return focus;
   }
 
   Future<int> insertProgress(Progress progress) async {
