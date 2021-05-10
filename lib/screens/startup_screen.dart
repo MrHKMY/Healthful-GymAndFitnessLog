@@ -454,6 +454,8 @@ class _StartUpScreenState extends State<StartUpScreen> {
                             //Navigator.of(context).pop();
                             //TODO if from first time launch use pushReplacement, if edit from profile use navigator.pop || maybe duplicate the file with different name
 
+                            //TODO get user workout frequency per week to be use for the charts
+
                             Navigator.of(context).pushReplacement(new ScaleRoute(
                                 page: new ProvidedStylesExample()));
                             //Navigator.pop(context, SlideRightRoute(page: ProfileScreen()));

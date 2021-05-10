@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/activities.dart';
@@ -43,6 +44,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
   ValueChanged<int> onChanged;
   int counter = 0;
 
+  var list = <String> [
+    "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
+    "\"All progress takes place outside the comfort zone.\" \n -Michael John Bobak",
+    "\"If you think lifting is dangerous, try being weak. Being weak is dangerous.\" \n -Bret Contreras",
+    "\"The clock is ticking. Are you becoming the person you want to be?\" \n -Greg Plitt",
+    "\"The only place where success comes before work is in the dictionary.\" \n -Vidal Sassoon",
+    "\"Whether you think you can, or you think you can’t, you’re right.\" \n -Henry Ford",
+    "\"The successful warrior is the average man, with laser-like focus.\" \n -Bruce Lee",
+    "\"You must expect great things of yourself before you can do them.\" \n -Michael Jordan",
+    "\"Action is the foundational key to all success.\" \n -Pablo Picasso",
+    "\"Well done is better than well said.\" \n -Benjamin Franklin",
+    "\"All our dreams can come true if we have the courage to pursue them.\" \n -Walt Disney",
+    "\"Today I will do what others won’t, so tomorrow I can accomplish what others can’t.\" \n -Jerry Rice",
+    "\"A champion is someone who gets up when they can’t.\" \n -Jack Dempsey",
+    "\"If something stands between you and your success, move it. Never be denied.\" \n -Dwayne Johnson",
+    "\"You have to think it before you can do it. The mind is what makes it all possible.\" \n -Kai Greene",
+    "\"Things work out best for those who make the best of how things work out.\" \n -John Wooden",
+    "\"Success is walking from failure to failure with no loss of enthusiasm.\" \n -Winston Churchill",
+    "\"We are what we repeatedly do. Excellence then is not an act but a habit.\" \n -Aristotle",
+    "\"Don’t count the days, make the days count.\" \n -Muhammad Ali",
+    "\"Scratches at level 6 with deeper grooves at level 7.\" \n -JerryRigEverything",];
+  var rand = new Random();
+
+
   Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
     Map<String, dynamic> newMap = {};
     map.forEach((key, value) {
@@ -85,6 +110,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    int i = rand.nextInt(list.length);
+    String quotes = list[i];
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
@@ -127,7 +156,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               future: _dbHelper.retrieveUserInfo("Name"),
                               builder: (context, snapshot) {
                                 return Text(
-                                  snapshot.data.toString(),
+                                  snapshot.data.toString() != "null"
+                                      ? snapshot.data.toString()
+                                      : "",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 3,
                                   style: TextStyle(
@@ -142,16 +173,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ]),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 0),
+                      margin: EdgeInsets.symmetric(horizontal: 20),
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          color: Color(0xFF1F3546),
+                          //color: Color(0xFF1F3546),
                           borderRadius: BorderRadius.circular(10)),
-                      //Todo make the quotes randomly changes when the user launch the app. From database or api maybe
-                      child: Text(
-                        "\" If something stands between you and your success, move it. Never be denied.\" \n -Dwayne Johnson.",
-                        style: TextStyle(
-                          color: Colors.white,
+                      child: Center(
+                        child: Text(
+                          quotes,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -532,6 +564,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         });
                     ;
                   })),
+          //TODO add another button to show history screen
         ]),
       ),
     );

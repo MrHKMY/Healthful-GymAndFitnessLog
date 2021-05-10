@@ -174,7 +174,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             future: _dbHelper.retrieveUserInfo("Name"),
                             builder: (context, snapshot) {
                               return Text(
-                                snapshot.data.toString(),
+                                snapshot.data.toString() != "null"
+                                    ? snapshot.data.toString()
+                                    : "Anonymous",
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 3,
                                 style: TextStyle(
@@ -215,7 +217,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     builder: (context, snapshot) {
                                       return Text(
                                         //todo this not updated if user loaded profile first, before user input weight in progress
-                                        snapshot.data.toString(),
+                                        snapshot.data.toString() != "null"
+                                            ? snapshot.data.toString()
+                                            : "?",
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,
@@ -247,7 +251,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     return Text(
                                       //todo show 0.00 double/float for height instead of 0.0
                                       //b.toString(),
-                                      snapshot.data.toString(),
+                                      snapshot.data.toString() != "null"
+                                          ? snapshot.data.toString()
+                                          : "?",
                                       style: TextStyle(
                                           fontSize: 22,
                                           fontWeight: FontWeight.bold,
@@ -309,7 +315,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   future: _dbHelper.retrieveUserInfo("Age"),
                                   builder: (context, snapshot) {
                                     return Text(
-                                      snapshot.data.toString(),
+                                      snapshot.data.toString() != "null"
+                                          ? snapshot.data.toString()
+                                          : "?",
                                       style: TextStyle(color: Colors.grey),
                                     );
                                   }),
@@ -345,7 +353,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   future: _dbHelper.retrieveUserInfo("Gender"),
                                   builder: (context, snapshot) {
                                     return Text(
-                                      snapshot.data.toString(),
+                                      snapshot.data.toString() != "null"
+                                          ? snapshot.data.toString()
+                                          : "?",
                                       style: TextStyle(color: Colors.grey),
                                     );
                                   }),
@@ -381,7 +391,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   future: _dbHelper.retrieveUserInfo("Goals"),
                                   builder: (context, snapshot) {
                                     return Text(
-                                      snapshot.data.toString(),
+                                      snapshot.data.toString() != "null"
+                                          ? snapshot.data.toString()
+                                          : "?",
                                       style: TextStyle(color: Colors.grey),
                                     );
                                   }),
@@ -417,7 +429,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   future: getBmiValue(),
                                   builder: (context, snapshot) {
                                     return Text(
-                                      snapshot.data.toString(),
+                                      snapshot.data.toString() != "null"
+                                          ? snapshot.data.toString()
+                                          : "?",
                                       //todo make bmi text color based on bmi value chart
                                       style: TextStyle(color: Colors.grey),
                                     );
@@ -430,6 +444,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           GestureDetector(
                             onTap: () {
                               //_showDialog("Info");
+                              //TODO remove below navigator and create edit profile screen then use navigator.pop
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
