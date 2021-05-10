@@ -114,6 +114,13 @@ class DatabaseHelper {
     return infoID;
   }
 
+  Future<int> updateInfo(UserInfo userInfo) async {
+    Database _db = await database();
+    await _db.update("userInfo", userInfo.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+    });
+  }
+
   Future<String> retrieveUserInfo(String info) async {
     Database _db = await database();
     var response = await _db.rawQuery("SELECT $info FROM userInfo");

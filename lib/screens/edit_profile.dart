@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 
-class StartUpScreen extends StatefulWidget {
+class EditProfileScreen extends StatefulWidget {
   @override
-  _StartUpScreenState createState() => _StartUpScreenState();
+  _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
-class _StartUpScreenState extends State<StartUpScreen> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   bool _visible = false;
   Timer timer;
   TextEditingController nameInputController,
@@ -37,9 +37,9 @@ class _StartUpScreenState extends State<StartUpScreen> {
     _visible = false;
     timer = Timer(
         Duration(milliseconds: 100),
-        () => setState(() {
-              _visible = true;
-            }));
+            () => setState(() {
+          _visible = true;
+        }));
     nameInputController = TextEditingController();
     heightInputController = TextEditingController();
     ageInputController = TextEditingController();
@@ -71,35 +71,35 @@ class _StartUpScreenState extends State<StartUpScreen> {
 
     final menu = new DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-      focusColor: Colors.green,
-      dropdownColor: Color(0xFF1F3546),
-      value: _chosenValue,
-      //style: TextStyle(color: Colors.pink),
-      hint: Text(
-        "Fitness Goals",
-        style: TextStyle(color: Colors.grey),
-      ),
-      iconEnabledColor: Colors.red,
-      items: <String>[
-        "Increase overall fitness",
-        "Gain muscle",
-        "Lose fat",
-        "Increase cardio resistance",
-        "Increase strength",
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: TextStyle(color: Colors.white),
-            ));
-      }).toList(),
-      onChanged: (String newValue) {
-        setState(() {
-          _chosenValue = newValue;
-        });
-      },
-    ));
+          focusColor: Colors.green,
+          dropdownColor: Color(0xFF1F3546),
+          value: _chosenValue,
+          //style: TextStyle(color: Colors.pink),
+          hint: Text(
+            "Fitness Goals",
+            style: TextStyle(color: Colors.grey),
+          ),
+          iconEnabledColor: Colors.red,
+          items: <String>[
+            "Increase overall fitness",
+            "Gain muscle",
+            "Lose fat",
+            "Increase cardio resistance",
+            "Increase strength",
+          ].map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  style: TextStyle(color: Colors.white),
+                ));
+          }).toList(),
+          onChanged: (String newValue) {
+            setState(() {
+              _chosenValue = newValue;
+            });
+          },
+        ));
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -221,7 +221,7 @@ class _StartUpScreenState extends State<StartUpScreen> {
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: Text(
-                      "Setup Your Profile:",
+                      "Update Profile:",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -419,46 +419,47 @@ class _StartUpScreenState extends State<StartUpScreen> {
                       ),
                       Container(
                           child: TextButton(
-                        child: Text(
-                          "Save",
-                        ),
-                        style: TextButton.styleFrom(
-                            primary: Colors.white,
-                            backgroundColor: Colors.green,
-                            shadowColor: Colors.black,
-                            elevation: 5),
-                        onPressed: () async {
-                          if (nameInputController.text.isEmpty ||
-                              ageInputController.text.isEmpty ||
-                              heightInputController.text.isEmpty ||
-                              _chosenValue == null) {
-                            return;
-                          }
-                          UserInfo _newInfo = UserInfo(
-                            name: nameInputController.text,
-                            age: int.parse(ageInputController.text),
-                            gender: _selectedGender,
-                            height: double.parse(heightInputController.text),
-                            goals: _chosenValue,
-                            //bodyPart: part,
-                            //center: double.parse(weightInputController.text),
-                          );
-                          //date: a.substring(0, 10));
-                          _userInfo = await _dbHelper.insertInfo(_newInfo);
-                          setState(() {
-                            //getProgress(part);
-                            nameInputController.clear();
-                            ageInputController.clear();
-                            heightInputController.clear();
-                            //Navigator.of(context).pop();
-                            //TODO get user workout frequency per week to be use for the charts
+                            child: Text(
+                              "Save",
+                            ),
+                            style: TextButton.styleFrom(
+                                primary: Colors.white,
+                                backgroundColor: Colors.green,
+                                shadowColor: Colors.black,
+                                elevation: 5),
+                            onPressed: () async {
+                              if (nameInputController.text.isEmpty ||
+                                  ageInputController.text.isEmpty ||
+                                  heightInputController.text.isEmpty ||
+                                  _chosenValue == null) {
+                                return;
+                              }
+                              UserInfo _newInfo = UserInfo(
+                                id: 1,
+                                name: nameInputController.text,
+                                age: int.parse(ageInputController.text),
+                                gender: _selectedGender,
+                                height: double.parse(heightInputController.text),
+                                goals: _chosenValue,
+                                //bodyPart: part,
+                                //center: double.parse(weightInputController.text),
+                              );
+                              //date: a.substring(0, 10));
+                              _userInfo = await _dbHelper.updateInfo(_newInfo);
+                              setState(() {
+                                //getProgress(part);
+                                nameInputController.clear();
+                                ageInputController.clear();
+                                heightInputController.clear();
+                                Navigator.of(context).pop();
+                                //TODO get user workout frequency per week to be use for the charts
 
-                            Navigator.of(context).pushReplacement(new ScaleRoute(
-                                page: new ProvidedStylesExample()));
-                            //Navigator.pop(context, SlideRightRoute(page: ProfileScreen()));
-                          });
-                        },
-                      )),
+                                // Navigator.of(context).pop(new ScaleRoute(
+                                //     page: new ProvidedStylesExample()));
+                                //Navigator.pop(context, SlideRightRoute(page: ProfileScreen()));
+                              });
+                            },
+                          )),
                     ],
                   ),
                 ),

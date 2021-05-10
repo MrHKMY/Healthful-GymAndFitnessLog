@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 
 import 'package:calendar/database_helper.dart';
 
+import 'package:calendar/screens/edit_profile.dart';
+
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -444,12 +446,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           GestureDetector(
                             onTap: () {
                               //_showDialog("Info");
-                              //TODO remove below navigator and create edit profile screen then use navigator.pop
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => StartUpScreen()));
-                            },
+                              //TODO remove below navigator if possible
+                              Navigator.push(context,MaterialPageRoute(builder: (context) => EditProfileScreen())).then((value) { setState(() {});
+
+                              },
+                              );},
                             child: Row(
                               children: [
                                 SizedBox(
