@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/activities.dart';
 import 'package:calendar/model/progress.dart';
+import 'package:calendar/screens/history.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -289,28 +290,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         //calendarController = _calendarController,
                       ),
                     ),
-                    ..._selectedEvents.map((event) => Container(
-                      //TODO add onGesture to open history when tapped
-                          decoration: BoxDecoration(
-                            color: Color(0xFF1F3546),
-                            borderRadius: BorderRadius.circular(10),
-                            //border: Border.all(color: Color(0xFF30A9B2)),
-                          ),
-                          height: MediaQuery.of(context).size.height / 20,
-                          width: double.infinity,
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 0, vertical: 2),
-                          child: Padding(
-                            padding: const EdgeInsets.all(0),
-                            child: Center(
-                              child: Text(
-                                event,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 14),
+                    ..._selectedEvents.map((event) => GestureDetector(
+                      onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HistoryScreen())),
+                      child: Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xFF1F3546),
+                              borderRadius: BorderRadius.circular(10),
+                              //border: Border.all(color: Color(0xFF30A9B2)),
+                            ),
+                            height: MediaQuery.of(context).size.height / 20,
+                            width: double.infinity,
+                            margin:
+                                EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+                            child: Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: Center(
+                                child: Text(
+                                  event,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
-                        )),
+                    )),
                   ],
                 ),
               ),

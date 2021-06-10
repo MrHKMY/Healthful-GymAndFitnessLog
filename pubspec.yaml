@@ -32,11 +32,20 @@ dependencies:
   cupertino_radio_choice: ^1.0.1+1
   after_layout: ^1.1.0
   rotated_corner_decoration: ^2.0.0
+  cupertino_icons: ^1.0.2
+  flutter_launcher_icons: ^0.9.0
+
+flutter_icons:
+  image_path: "assets/images/circle_icon.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/images/circle_icon.png"
+  android: true
+  ios: true
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+
 
 dev_dependencies:
   flutter_test:
