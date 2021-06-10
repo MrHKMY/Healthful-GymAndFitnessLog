@@ -371,9 +371,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               child: TextField(
                                 controller: heightInputController,
                                 keyboardType: TextInputType.number,
-                                //todo need restriction for height input (in cm/m only)
                                 decoration: InputDecoration(
-                                  hintText: "Height: ",
+                                  hintText: "Height (metre): ",
                                   hintStyle: TextStyle(color: Colors.grey),
                                 ),
                                 inputFormatters: [

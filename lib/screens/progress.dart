@@ -281,7 +281,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   //todo(3) create fab to open new charts screen
                   onPressed: () {
                     Scaffold.of(context).showSnackBar(
-                        new SnackBar(content: new Text("Progress charts coming soon.")));
+                        new SnackBar(content: new Text("Progress charts coming soon."),
+                        duration: Duration(seconds: 2),));
                   },
                   child: Icon(Icons.bar_chart_rounded),
                 ),

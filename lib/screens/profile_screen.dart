@@ -229,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       );
                                     }),
                                 Text(
-                                  "Weight",
+                                  "Weight (kg)",
                                   style: TextStyle(color: Colors.grey),
                                 ),
                               ],
@@ -251,7 +251,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     // double b = double.parse(a);
                                     // b = num.parse(b.toStringAsFixed(3));
                                     return Text(
-                                      //todo show 0.00 double/float for height instead of 0.0
                                       //b.toString(),
                                       snapshot.data.toString() != "null"
                                           ? snapshot.data.toString()
@@ -263,7 +262,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     );
                                   }),
                               Text(
-                                "Height",
+                                "Height (m)",
                                 style: TextStyle(color: Colors.grey),
                               ),
                             ],
@@ -434,8 +433,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       snapshot.data.toString() != "null"
                                           ? snapshot.data.toString()
                                           : "?",
-                                      //todo make bmi text color based on bmi value chart
-                                      style: TextStyle(color: Colors.grey),
+                                      style: TextStyle(color: getColor(snapshot.data.toString())),
                                     );
                                   }),
                             ],
@@ -494,7 +492,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
-              title: Text("Enter Weight"),
+              title: Text("Enter Weight (in Kg)"),
               content: TextField(
                 controller: weightInputController,
                 autofocus: true,
@@ -546,5 +544,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 )
               ],
             ));
+  }
+
+  getColor(String bmi) {
+    double a = double.parse(bmi);
+    if (a < 18.5) return Colors.orange;
+    if (a >= 18.5 && a <= 24.9) return Colors.green;
+    if (a >= 25.0 && a <= 29.9) return Colors.yellow;
+    if (a >= 30 ) return Colors.red;
   }
 }
