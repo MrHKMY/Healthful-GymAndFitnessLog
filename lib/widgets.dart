@@ -7,8 +7,10 @@ import 'package:flutter/services.dart';
 class HistoryWidget extends StatelessWidget {
   final String activity;
   final String date;
+  final String focus;
+  final int setCount;
 
-  HistoryWidget({this.activity, this.date});
+  HistoryWidget({this.activity, this.date, this.focus, this.setCount});
 
   @override
   Widget build(BuildContext context) {
@@ -21,24 +23,31 @@ class HistoryWidget extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 24),
         margin: EdgeInsets.only(bottom: 2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              activity ?? "Unnamed Task",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  activity ?? "Unnamed Task",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text(
+                    date ?? 'No description added.',
+                    style: TextStyle(
+                        fontSize: 12, color: Colors.grey[500], height: 1.5),
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 2),
-              child: Text(
-                date ?? 'No description added.',
-                style: TextStyle(
-                    fontSize: 12, color: Colors.grey[500], height: 1.5),
-              ),
-            )
+            Text("Sets: " + setCount.toString()),
+            Text(focus.toString())
           ],
         ),
       ),
