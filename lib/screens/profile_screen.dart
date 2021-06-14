@@ -429,13 +429,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               FutureBuilder(
                                   future: getBmiValue(),
                                   builder: (context, snapshot) {
-                                    return Text(
-                                      snapshot.data.toString() != "null"
-                                          ? snapshot.data.toString()
-                                          : "?",
-                                      style: TextStyle(color: getColor(snapshot.data.toString())),
-                                    );
-                                  }),
+    switch (snapshot.connectionState) {
+    // Uncompleted State
+      case ConnectionState.none:
+      case ConnectionState.waiting:
+        return Center(child: CircularProgressIndicator());
+        break;
+      default:
+      // Completed with error
+        if (snapshot.hasError)
+          return Container(
+              child: Text(snapshot.error.toString()));
+        return Text(
+          snapshot.data.toString() != "null"
+              ? snapshot.data.toString()
+              : "?",
+          style: TextStyle(color: getColor(snapshot.data.toString())),
+        );
+    }}),
                             ],
                           ),
                           SizedBox(

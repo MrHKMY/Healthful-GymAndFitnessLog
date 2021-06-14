@@ -43,7 +43,7 @@ class DatabaseHelper {
     Database _db = await database();
     List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM tasks ORDER BY id DESC");
     return List.generate(activityMap.length, (index) {
-      return Activities(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["Date"]);
+      return Activities(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["Date"], setCount: activityMap[index]["SetCount"], focus: activityMap[index]["Focus"]);
     });
   }
 

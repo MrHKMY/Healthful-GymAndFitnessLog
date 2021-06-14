@@ -4,6 +4,7 @@ import 'package:calendar/database_helper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:calendar/widgets.dart';
+import 'package:flutter/services.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key key}) : super(key: key);
@@ -18,6 +19,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Workout History"),
+        elevation: 10,
+        centerTitle: true,
+        backgroundColor: Color(0xFF1F3546),
+        brightness: Brightness.light,
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
+      ),
       backgroundColor: Color(0xff465466),
       body: Container(
         width: double.infinity,
@@ -35,6 +45,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             return HistoryWidget(
                               activity: snapshot.data[index].activity,
                               date: snapshot.data[index].date,
+                              setCount: snapshot.data[index].setCount,
+                              focus: snapshot.data[index].focus,
                             );
                           },
                         );
