@@ -15,7 +15,8 @@ class HistoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+      color: Color(0xFF1F3546),
+      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 3,
       //margin: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
@@ -32,7 +33,7 @@ class HistoryWidget extends StatelessWidget {
                 Text(
                   activity ?? "Unnamed Task",
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.bold),
                 ),
@@ -46,8 +47,14 @@ class HistoryWidget extends StatelessWidget {
                 )
               ],
             ),
-            Text("Sets: " + setCount.toString()),
-            Text(focus.toString())
+            Text(
+              focus.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+            Text(
+              "Sets: " + setCount.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
           ],
         ),
       ),
@@ -253,7 +260,6 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   @override
   Widget build(BuildContext context) {
-
     ThemeData themeData = Theme.of(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -265,7 +271,8 @@ class _CountDownTimerState extends State<CountDownTimer>
           backgroundColor: Color(0xFF1F3546),
           brightness: Brightness.light,
           backwardsCompatibility: false,
-          systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarColor: Colors.black),
         ),
         backgroundColor: Colors.black,
         body: SafeArea(
@@ -412,9 +419,10 @@ class _CountDownTimerState extends State<CountDownTimer>
                                       icon: Icon(animationController.isAnimating
                                           ? Icons.pause
                                           : Icons.play_arrow),
-                                      label: Text(animationController.isAnimating
-                                          ? "Pause"
-                                          : "Start"));
+                                      label: Text(
+                                          animationController.isAnimating
+                                              ? "Pause"
+                                              : "Start"));
                                 }),
                           ],
                         ),
