@@ -28,7 +28,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         backwardsCompatibility: false,
         systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
       ),
-      backgroundColor: Color(0xff465466),
+      backgroundColor: Colors.black,
       body: Container(
         width: double.infinity,
         child: Stack(
