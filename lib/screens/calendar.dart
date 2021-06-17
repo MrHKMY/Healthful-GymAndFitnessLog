@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:calendar/widgets.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class CalendarScreen extends StatefulWidget {
   final BuildContext menuScreenContext;
@@ -45,7 +46,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   ValueChanged<int> onChanged;
   int counter = 0;
 
-  var list = <String> [
+  var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
     "\"All progress takes place outside the comfort zone.\" \n -Michael John Bobak",
     "\"If you think lifting is dangerous, try being weak. Being weak is dangerous.\" \n -Bret Contreras",
@@ -65,9 +66,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
     "\"Success is walking from failure to failure with no loss of enthusiasm.\" \n -Winston Churchill",
     "\"We are what we repeatedly do. Excellence then is not an act but a habit.\" \n -Aristotle",
     "\"Don’t count the days, make the days count.\" \n -Muhammad Ali",
-    "\"Scratches at level 6 with deeper grooves at level 7.\" \n -JerryRigEverything",];
+    "\"Scratches at level 6 with deeper grooves at level 7.\" \n -JerryRigEverything",
+  ];
   var rand = new Random();
-
 
   Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
     Map<String, dynamic> newMap = {};
@@ -111,7 +112,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     int i = rand.nextInt(list.length);
     String quotes = list[i];
 
@@ -137,41 +137,52 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 child: Column(
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      child: Row(children: [
-                        CircleAvatar(
-                          maxRadius: 25,
-                          backgroundColor: Colors.black,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            backgroundImage: ExactAssetImage(
-                                "assets/images/profile_image.png"),
-                            maxRadius: 60,
-                          ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: FutureBuilder(
-                              future: _dbHelper.retrieveUserInfo("Name"),
-                              builder: (context, snapshot) {
-                                return Text(
-                                  snapshot.data.toString() != "null"
-                                      ? snapshot.data.toString()
-                                      : "",
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontFamily: "Times"),
-                                );
-                              },
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          width: 200,
+                          decoration: BoxDecoration(
+                              color: Colors.teal,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(50),
+                                  bottomRight: Radius.circular(50))),
+                          padding: EdgeInsets.all(5),
+                          child: Row(children: [
+                            CircleAvatar(
+                              maxRadius: 25,
+                              backgroundColor: Colors.black,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                backgroundImage: ExactAssetImage(
+                                    "assets/images/profile_image.png"),
+                                maxRadius: 60,
+                              ),
                             ),
-                          ),
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: FutureBuilder(
+                                  future: _dbHelper.retrieveUserInfo("Name"),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data.toString() != "null"
+                                          ? snapshot.data.toString()
+                                          : "",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontFamily: "Times"),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ]),
                         ),
-                      ]),
+                      ],
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 20),
@@ -188,45 +199,251 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         ),
                       ),
                     ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                            width: 150,
+                            height: 150,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 0),
+                            decoration: BoxDecoration(
+                                color: Color(0xFF1F3546),
+                                borderRadius: BorderRadius.circular(20)),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 10),
+                            child: SfRadialGauge(
+                                title: GaugeTitle(
+                                  text: "Weekly Workout Goals:",
+                                  textStyle: TextStyle(color: Colors.white),
+                                ),
+                                axes: <RadialAxis>[
+                                  RadialAxis(
+                                      minimum: 0,
+                                      maximum: 100,
+                                      showLabels: false,
+                                      showTicks: false,
+                                      radiusFactor: 1,
+                                      canScaleToFit: false,
+                                      axisLineStyle: AxisLineStyle(
+                                        thickness: 0.15,
+                                        cornerStyle: CornerStyle.bothCurve,
+                                        color: Color.fromARGB(30, 0, 169, 181),
+                                        thicknessUnit: GaugeSizeUnit.factor,
+                                      ),
+                                      pointers: <GaugePointer>[
+                                        RangePointer(
+                                            value: 70,
+                                            width: 0.15,
+                                            sizeUnit: GaugeSizeUnit.factor,
+                                            cornerStyle: CornerStyle.bothCurve,
+                                            gradient: const SweepGradient(
+                                                colors: <Color>[
+                                                  Color(0xFF00a9b5),
+                                                  Colors.green,
+                                                ],
+                                                stops: <double>[
+                                                  0.25,
+                                                  0.75
+                                                ])),
+                                      ],
+                                      annotations: <GaugeAnnotation>[
+                                        GaugeAnnotation(
+                                            positionFactor: 0.1,
+                                            angle: 90,
+                                            widget: Text(
+                                              //progressValue.toStringAsFixed(0) + ' / 100',
+                                              "70%",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white),
+                                            ))
+                                      ])
+                                ])),
+                        Flexible(
+                          flex: 2,
+                          child: Container(
+                            height: 150,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Color(0xFF1F3546),
+                                borderRadius: BorderRadius.circular(20)),
+                            margin:
+                                EdgeInsets.only(right: 5, top: 5, bottom: 5),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  "Water: 2 / 8",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SfLinearGauge(
+                                  minimum: 0,
+                                  maximum: 100,
+                                  showAxisTrack: true,
+                                  showTicks: false,
+                                  showLabels: false,
+                                  axisTrackStyle: LinearAxisTrackStyle(
+                                    color: Colors.white30,
+                                    edgeStyle: LinearEdgeStyle.bothCurve,
+                                    thickness: 10,
+                                  ),
+                                  barPointers: [
+                                    LinearBarPointer(
+                                      value: 20,
+                                      shaderCallback: (bounds) =>
+                                          LinearGradient(
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                              colors: [
+                                            Colors.blue,
+                                            Colors.blue
+                                          ]).createShader(bounds),
+                                      thickness: 10,
+                                      edgeStyle: LinearEdgeStyle.bothCurve,
+                                      position: LinearElementPosition.cross,
+                                      color: Colors.green,
+                                      animationType: LinearAnimationType.ease,
+                                      animationDuration: 2500,
+                                    )
+                                  ],
+                                  // markerPointers: [LinearShapePointer(
+                                  //     value: 80,
+                                  //     shapeType: LinearShapePointerType.circle,
+                                  //   position: LinearElementPosition.cross,
+                                  // )],
+                                ),
+                                Text(
+                                  "Calorie Intake: 1553 / 2000",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SfLinearGauge(
+                                  minimum: 0,
+                                  maximum: 100,
+                                  showAxisTrack: true,
+                                  showTicks: false,
+                                  showLabels: false,
+                                  axisTrackStyle: LinearAxisTrackStyle(
+                                    color: Colors.white30,
+                                    edgeStyle: LinearEdgeStyle.bothCurve,
+                                    thickness: 10,
+                                  ),
+                                  barPointers: [
+                                    LinearBarPointer(
+                                      value: 80,
+                                      shaderCallback: (bounds) =>
+                                          LinearGradient(
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                              colors: [
+                                            Colors.yellow,
+                                            Colors.yellow
+                                          ]).createShader(bounds),
+                                      thickness: 10,
+                                      edgeStyle: LinearEdgeStyle.bothCurve,
+                                      position: LinearElementPosition.cross,
+                                      color: Colors.green,
+                                      animationType: LinearAnimationType.ease,
+                                      animationDuration: 2500,
+                                    )
+                                  ],
+                                ),
+                                Text(
+                                  "Supplements:",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                //Todo Change this gauge to icon or counter to show post/pre workout supplement
+                                SfLinearGauge(
+                                  minimum: 0,
+                                  maximum: 100,
+                                  showAxisTrack: true,
+                                  showTicks: false,
+                                  showLabels: false,
+                                  axisTrackStyle: LinearAxisTrackStyle(
+                                    color: Colors.white30,
+                                    edgeStyle: LinearEdgeStyle.bothCurve,
+                                    thickness: 10,
+                                  ),
+                                  barPointers: [
+                                    LinearBarPointer(
+                                      value: 50,
+                                      shaderCallback: (bounds) =>
+                                          LinearGradient(
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                              colors: [
+                                            Colors.green,
+                                            Colors.green
+                                          ]).createShader(bounds),
+                                      thickness: 10,
+                                      edgeStyle: LinearEdgeStyle.bothCurve,
+                                      position: LinearElementPosition.cross,
+                                      color: Colors.green,
+                                      animationType: LinearAnimationType.ease,
+                                      animationDuration: 2500,
+                                    )
+                                  ],
+                                  // markerPointers: [LinearShapePointer(
+                                  //     value: 80,
+                                  //     shapeType: LinearShapePointerType.circle,
+                                  //   position: LinearElementPosition.cross,
+                                  // )],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
                           color: Color(0xFF1F3546),
                           borderRadius: BorderRadius.circular(20)),
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
                       child: TableCalendar(
                         events: _events,
+                        //availableCalendarFormats: const{ CalendarFormat.month: "Month"},
+                        availableGestures: AvailableGestures.horizontalSwipe,
                         formatAnimation: FormatAnimation.slide,
                         initialCalendarFormat: CalendarFormat.month,
                         startingDayOfWeek: StartingDayOfWeek.monday,
                         calendarController: _calendarController,
                         calendarStyle: CalendarStyle(
                             weekdayStyle: TextStyle(
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold
+                              color: Colors.white,
+                              //fontWeight: FontWeight.bold
                             ),
                             weekendStyle: TextStyle(
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold
+                              color: Colors.white,
+                              //fontWeight: FontWeight.bold
                             ),
                             outsideStyle: TextStyle(color: Colors.grey[700]),
                             unavailableStyle:
                                 TextStyle(color: Colors.grey[700]),
                             outsideWeekendStyle:
                                 TextStyle(color: Colors.grey[700]),
-                            canEventMarkersOverflow: true,
-                            //cellMargin: EdgeInsets.all(20),
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 40,),
+                            canEventMarkersOverflow: false,
+                            //cellMargin: EdgeInsets.all(5),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 5,
+                            ),
                             eventDayStyle: TextStyle(color: Colors.white)),
                         daysOfWeekStyle: DaysOfWeekStyle(
                           weekdayStyle: TextStyle(
-                              color: Color(0xFF30A9B2),
+                            color: Color(0xFF30A9B2),
                           ),
                           weekendStyle: TextStyle(
-                              color: Color(0xFF3DD94C),
-                              //fontWeight: FontWeight.bold
+                            color: Color(0xFF3DD94C),
+                            //fontWeight: FontWeight.bold
                           ),
                         ),
                         headerStyle: HeaderStyle(
@@ -256,15 +473,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(color: Colors.black),
                                 ),
-                                margin: const EdgeInsets.all(4.0),
-                                width: 8,
-                                height: 8,
+                                margin: const EdgeInsets.all(4),
+                                width: 9,
+                                height: 9,
                               ),
                             ];
                           },
                           selectedDayBuilder: (context, date, events) =>
+                          //Todo Tap on selectedDay will also update today's gauge and charts water, calorie, supplement
                               Container(
-                            margin: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.all(0),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 color: Color(0xFF30B25B),
@@ -275,7 +493,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             ),
                           ),
                           todayDayBuilder: (context, date, events) => Container(
-                              margin: const EdgeInsets.all(4),
+                              margin: const EdgeInsets.all(0),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 //color: Color(0xFF30A9B2),
@@ -291,8 +509,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
                     ..._selectedEvents.map((event) => GestureDetector(
-                      onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HistoryScreen())),
-                      child: Container(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HistoryScreen())),
+                          child: Container(
+                            //padding: EdgeInsets.symmetric(horizontal: 50),
                             decoration: BoxDecoration(
                               color: Color(0xFF1F3546),
                               borderRadius: BorderRadius.circular(10),
@@ -300,8 +522,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             ),
                             height: MediaQuery.of(context).size.height / 20,
                             width: double.infinity,
-                            margin:
-                                EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 2),
                             child: Padding(
                               padding: const EdgeInsets.all(0),
                               child: Center(
@@ -313,7 +535,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               ),
                             ),
                           ),
-                    )),
+                        )),
                   ],
                 ),
               ),
