@@ -2,6 +2,7 @@ import 'package:calendar/model/progress.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:calendar/model/activities.dart';
+import 'package:calendar/model/nutrition.dart';
 
 import 'model/userInfo.dart';
 
@@ -18,10 +19,19 @@ class DatabaseHelper {
           "CREATE TABLE tasks (id INTEGER PRIMARY KEY, Activity TEXT, Focus TEXT, SetCount INTEGER, $columnDate TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
-          "CREATE TABLE progress (id INTEGER PRIMARY KEY, BodyPart TEXT, Center REAL, Left REAL, Right REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
+          "CREATE TABLE progress (id INTEGER PRIMARY KEY, BodyPart TEXT, Center REAL, Left REAL, Right REAL, $columnDate TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
           "CREATE TABLE userInfo (id INTEGER PRIMARY KEY, Name TEXT, Gender TEXT, Age INTEGER, Height REAL, Goals TEXT)",
+        );
+        await db.execute(
+          "CREATE TABLE water (id INTEGER PRIMARY KEY, Litre REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
+        );
+        await db.execute(
+          "CREATE TABLE calorie (id INTEGER PRIMARY KEY, Food TEXT, Calorie REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
+        );
+        await db.execute(
+          "CREATE TABLE supplement (id INTEGER PRIMARY KEY, Supplement TEXT, PostPre TEXT, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         return db;
       },
@@ -129,6 +139,36 @@ class DatabaseHelper {
       //theName.substring(2);
       return theName;
     }
+  }
+
+  Future<int> insertWater(Water water) async {
+    int actID = 0;
+    Database _db = await database();
+    await _db.insert("water", water.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+      actID = value;
+    });
+    return actID;
+  }
+
+  Future<int> insertCalorie(Calorie calorie) async {
+    int actID = 0;
+    Database _db = await database();
+    await _db.insert("calorie", calorie.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+      actID = value;
+    });
+    return actID;
+  }
+
+  Future<int> insertSupplement(Supplement supplement) async {
+    int actID = 0;
+    Database _db = await database();
+    await _db.insert("supplement", supplement.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+      actID = value;
+    });
+    return actID;
   }
 
 }

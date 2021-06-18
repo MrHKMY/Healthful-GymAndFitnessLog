@@ -439,7 +439,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // Completed with error
         if (snapshot.hasError)
           return Container(
-              child: Text(snapshot.error.toString()));
+              child: Text("?",style: TextStyle(color: Colors.grey)));
         return Text(
           snapshot.data.toString() != "null"
               ? snapshot.data.toString()
@@ -543,6 +543,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Progress _newProgress = Progress(
                       bodyPart: part,
                       center: double.parse(weightInputController.text),
+                        //date: a.substring(0, 10));
                     );
                     //date: a.substring(0, 10));
                     _progressID = await _dbHelper.insertProgress(_newProgress);
