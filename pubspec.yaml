@@ -35,6 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.9.0
   syncfusion_flutter_gauges: ^19.1.69
+  fab_circular_menu: ^1.0.2
 
 flutter_icons:
   image_path: "assets/images/circle_icon.png"
