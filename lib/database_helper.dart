@@ -171,4 +171,14 @@ class DatabaseHelper {
     return actID;
   }
 
+  Future<String> retrieveWater() async {
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT SUM (Litre) FROM water WHERE DATE(Date) = DATE('now','localtime')");
+    if(response.length > 0) {
+      String theWater = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      theWater.substring(2);
+      return theWater;
+    }
+  }
+
 }

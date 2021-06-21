@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/activities.dart';
+import 'package:calendar/model/nutrition.dart';
 import 'package:calendar/model/progress.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -39,6 +40,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   SharedPreferences prefs;
   int _actID = 0;
   DatabaseHelper _dbHelper = DatabaseHelper();
+  int waterID = 0;
 
   //int _counter = 0;
   String _chosenValue;
@@ -46,6 +48,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   int maxValue;
   ValueChanged<int> onChanged;
   int counter = 0;
+
 
   var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
@@ -115,6 +118,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     int i = rand.nextInt(list.length);
     String quotes = list[i];
+    String totalWater;
+
+
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -275,50 +281,81 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
+                                FutureBuilder(
+                                    future: _dbHelper.retrieveWater(),
+                                    builder: (context, snapshot) {
+                                      return Text.rich(TextSpan(
+                                          text: "Water : ",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: snapshot.data.toString() !=
+                                                      "null"
+                                                  ? snapshot.data.toString()
+                                                  : "0",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: " / 10"
+                                            )
+                                          ]));
+                                    }),
+
+                                FutureBuilder(
+                                    future: _dbHelper.retrieveWater(),
+                                    builder: (context, snapshot) {
+                                      String a =
+                                          snapshot.data.toString() != "null"
+                                              ? snapshot.data.toString()
+                                              : "0";
+                                      var doubleValue = double.parse(a);
+
+                                      return SfLinearGauge(
+                                        minimum: 0,
+                                        maximum: 10,
+                                        showAxisTrack: true,
+                                        showTicks: false,
+                                        showLabels: false,
+                                        axisTrackStyle: LinearAxisTrackStyle(
+                                          color: Colors.white30,
+                                          edgeStyle: LinearEdgeStyle.bothCurve,
+                                          thickness: 10,
+                                        ),
+                                        barPointers: [
+                                          LinearBarPointer(
+                                            value: doubleValue,
+                                            shaderCallback: (bounds) =>
+                                                LinearGradient(
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                    colors: [
+                                                  Colors.lightBlueAccent,
+                                                      Colors.blue
+                                                ]).createShader(bounds),
+                                            thickness: 10,
+                                            edgeStyle:
+                                                LinearEdgeStyle.bothCurve,
+                                            position:
+                                                LinearElementPosition.cross,
+                                            color: Colors.green,
+                                            animationType:
+                                                LinearAnimationType.ease,
+                                            animationDuration: 2500,
+                                          )
+                                        ],
+                                        // markerPointers: [LinearShapePointer(
+                                        //     value: 80,
+                                        //     shapeType: LinearShapePointerType.circle,
+                                        //   position: LinearElementPosition.cross,
+                                        // )],
+                                      );
+                                    }),
                                 Text(
-                                  "Water: 2 / 8",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SfLinearGauge(
-                                  minimum: 0,
-                                  maximum: 100,
-                                  showAxisTrack: true,
-                                  showTicks: false,
-                                  showLabels: false,
-                                  axisTrackStyle: LinearAxisTrackStyle(
-                                    color: Colors.white30,
-                                    edgeStyle: LinearEdgeStyle.bothCurve,
-                                    thickness: 10,
-                                  ),
-                                  barPointers: [
-                                    LinearBarPointer(
-                                      value: 20,
-                                      shaderCallback: (bounds) =>
-                                          LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              colors: [
-                                            Colors.blue,
-                                            Colors.blue
-                                          ]).createShader(bounds),
-                                      thickness: 10,
-                                      edgeStyle: LinearEdgeStyle.bothCurve,
-                                      position: LinearElementPosition.cross,
-                                      color: Colors.green,
-                                      animationType: LinearAnimationType.ease,
-                                      animationDuration: 2500,
-                                    )
-                                  ],
-                                  // markerPointers: [LinearShapePointer(
-                                  //     value: 80,
-                                  //     shapeType: LinearShapePointerType.circle,
-                                  //   position: LinearElementPosition.cross,
-                                  // )],
-                                ),
-                                Text(
-                                  "Calorie Intake: 1553 / 2000",
+                                  "Calorie Intake : 1553 / 2000",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -342,7 +379,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                               begin: Alignment.centerLeft,
                                               end: Alignment.centerRight,
                                               colors: [
-                                            Colors.yellow,
+                                            Colors.yellow[300],
                                             Colors.yellow
                                           ]).createShader(bounds),
                                       thickness: 10,
@@ -355,7 +392,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   ],
                                 ),
                                 Text(
-                                  "Supplements:",
+                                  "Supplements :",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -380,7 +417,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                               begin: Alignment.centerLeft,
                                               end: Alignment.centerRight,
                                               colors: [
-                                            Colors.green,
+                                            Colors.lightGreenAccent,
                                             Colors.green
                                           ]).createShader(bounds),
                                       thickness: 10,
@@ -544,8 +581,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
           FabCircularMenu(
               fabMargin: EdgeInsets.only(
-                  right: 30,
-                  bottom: kBottomNavigationBarHeight + 30),
+                  right: 30, bottom: kBottomNavigationBarHeight + 30),
               ringWidth: 64,
               ringDiameter: 250,
               fabColor: Colors.teal,
@@ -553,8 +589,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
               children: <Widget>[
                 IconButton(
                     icon: Icon(Icons.local_drink),
-                    onPressed: () {
-                      print('Watch');
+                    onPressed: () async {
+                      Water addWater = Water(
+                        litre: 1,
+                      );
+                      waterID = await _dbHelper.insertWater(addWater);
+                      setState(() {
+                        //getProgress(part);
+                      });
+                      print('Added Water');
                     }),
                 IconButton(
                     icon: Icon(Icons.food_bank),
