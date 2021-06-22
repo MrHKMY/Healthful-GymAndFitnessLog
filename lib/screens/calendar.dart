@@ -48,6 +48,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   int maxValue;
   ValueChanged<int> onChanged;
   int counter = 0;
+  double waterCount = 0;
+  String waterCountString;
+
 
 
   var list = <String>[
@@ -106,6 +109,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
     _events = {};
     _selectedEvents = [];
     prefsData();
+    getTotalWater();
+
+  }
+  Future<double> getTotalWater() async {
+    waterCountString = await _dbHelper.retrieveWater();
+    //waterCount = double.parse(waterCountString);
+
+
+    waterCount = waterCountString != "null" ? double.parse(waterCountString) : 0;
+    print("Water Count : $waterCount");
+    // snapshot.data.toString() != "null"
+    // ? snapshot.data.toString()
+    //     : "0";
+
+    return waterCount;
   }
 
   @override
@@ -118,7 +136,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     int i = rand.nextInt(list.length);
     String quotes = list[i];
-    String totalWater;
+    getTotalWater();
+
+
 
 
 
@@ -293,14 +313,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             TextSpan(
                                               text: snapshot.data.toString() !=
                                                       "null"
-                                                  ? snapshot.data.toString()
+                                                  ? waterCountString
                                                   : "0",
                                               style: TextStyle(
                                                 color: Colors.white,
                                               ),
                                             ),
                                             TextSpan(
-                                              text: " / 10"
+                                              text: " / 15"
                                             )
                                           ]));
                                     }),
@@ -316,7 +336,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                                       return SfLinearGauge(
                                         minimum: 0,
-                                        maximum: 10,
+                                        maximum: 15,
                                         showAxisTrack: true,
                                         showTicks: false,
                                         showLabels: false,
@@ -327,7 +347,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         ),
                                         barPointers: [
                                           LinearBarPointer(
-                                            value: doubleValue,
+                                            value: waterCount,
                                             shaderCallback: (bounds) =>
                                                 LinearGradient(
                                                     begin: Alignment.centerLeft,
@@ -585,13 +605,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ringWidth: 64,
               ringDiameter: 250,
               fabColor: Colors.teal,
-              ringColor: Color(0xFF30A9B2),
+              ringColor: Colors.teal[700],
+              fabOpenIcon: Image.asset(
+            "assets/images/goals_icon.png",
+            scale: 12,
+          ),
               children: <Widget>[
                 IconButton(
-                    icon: Icon(Icons.local_drink),
+                    icon: Image.asset(
+                      "assets/images/water_glass.png",
+                      scale: 20,
+                    ),
                     onPressed: () async {
+                      Scaffold.of(context).showSnackBar(
+                          new SnackBar(content: new Text("Water intake recorded."),
+                            duration: Duration(seconds: 1),));
                       Water addWater = Water(
                         litre: 1,
+
                       );
                       waterID = await _dbHelper.insertWater(addWater);
                       setState(() {
@@ -600,13 +631,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       print('Added Water');
                     }),
                 IconButton(
-                    icon: Icon(Icons.food_bank),
+                    icon: Image.asset(
+                      "assets/images/proteins4.png",
+                      scale: 15,
+                    ),
                     onPressed: () {
                       print('Home');
                     }),
                 IconButton(
-                    icon: Icon(Icons.directions_run),
-                    color: Colors.white,
+                    icon: Image.asset(
+                      "assets/images/dumbbell5.png",
+                      scale: 1,
+                    ),
                     onPressed: () {
                       showDialog(
                           context: context,
