@@ -25,7 +25,7 @@ class DatabaseHelper {
           "CREATE TABLE userInfo (id INTEGER PRIMARY KEY, Name TEXT, Gender TEXT, Age INTEGER, Height REAL, Goals TEXT)",
         );
         await db.execute(
-          "CREATE TABLE water (id INTEGER PRIMARY KEY, Litre REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
+          "CREATE TABLE water (id INTEGER PRIMARY KEY, Litre INTEGER, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
           "CREATE TABLE calorie (id INTEGER PRIMARY KEY, Food TEXT, Calorie REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
@@ -176,7 +176,7 @@ class DatabaseHelper {
     var response = await _db.rawQuery("SELECT SUM (Litre) FROM water WHERE DATE(Date) = DATE('now','localtime')");
     if(response.length > 0) {
       String theWater = response.last.values.toString().substring(1, response.last.values.toString().length-1);
-      theWater.substring(2);
+      //theWater.substring(2);
       return theWater;
     }
   }
