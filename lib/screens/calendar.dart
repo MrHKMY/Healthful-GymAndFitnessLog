@@ -148,7 +148,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         backgroundColor: Colors.black,
         body: Stack(children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
             color: Colors.black,
             //height: 500,
             height: double.infinity,
@@ -211,21 +211,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         ),
                       ],
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          //color: Color(0xFF1F3546),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: Text(
-                          quotes,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   margin: EdgeInsets.symmetric(horizontal: 20),
+                    //   padding: EdgeInsets.all(10),
+                    //   decoration: BoxDecoration(
+                    //       //color: Color(0xFF1F3546),
+                    //       borderRadius: BorderRadius.circular(10)),
+                    //   child: Center(
+                    //     child: Text(
+                    //       "",
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -238,7 +238,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 color: Color(0xFF1F3546),
                                 borderRadius: BorderRadius.circular(20)),
                             margin: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 10),
+                                horizontal: 10, vertical: 10),
                             child: SfRadialGauge(
                                 title: GaugeTitle(
                                   text: "Weekly Workout Goals:",
@@ -297,7 +297,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 color: Color(0xFF1F3546),
                                 borderRadius: BorderRadius.circular(20)),
                             margin:
-                                EdgeInsets.only(right: 5, top: 5, bottom: 5),
+                                EdgeInsets.only(right: 10, top: 5, bottom: 5),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -465,7 +465,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       decoration: BoxDecoration(
                           color: Color(0xFF1F3546),
                           borderRadius: BorderRadius.circular(20)),
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
                       child: TableCalendar(
                         events: _events,
                         //availableCalendarFormats: const{ CalendarFormat.month: "Month"},
@@ -572,16 +572,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               MaterialPageRoute(
                                   builder: (context) => HistoryScreen())),
                           child: Container(
-                            //padding: EdgeInsets.symmetric(horizontal: 50),
+                            padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                               color: Color(0xFF1F3546),
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(20),
                               //border: Border.all(color: Color(0xFF30A9B2)),
                             ),
                             height: MediaQuery.of(context).size.height / 20,
                             width: double.infinity,
                             margin: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 2),
+                                horizontal: 10, vertical: 2),
                             child: Padding(
                               padding: const EdgeInsets.all(0),
                               child: Center(
@@ -602,7 +602,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           FabCircularMenu(
               fabMargin: EdgeInsets.only(
                   right: 30, bottom: kBottomNavigationBarHeight + 30),
-              ringWidth: 64,
+              ringWidth: 60,
               ringDiameter: 250,
               fabColor: Colors.teal,
               ringColor: Colors.teal[700],
@@ -613,8 +613,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
               children: <Widget>[
                 IconButton(
                     icon: Image.asset(
-                      "assets/images/water_glass.png",
-                      scale: 20,
+                      "assets/images/water9.png",
+                      //color: Colors.white,
+                      scale: 1,
                     ),
                     onPressed: () async {
                       Scaffold.of(context).showSnackBar(
@@ -632,15 +633,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     }),
                 IconButton(
                     icon: Image.asset(
-                      "assets/images/proteins4.png",
-                      scale: 15,
+                      "assets/images/protein.png",
+                      scale: 1,
                     ),
                     onPressed: () {
                       print('Home');
                     }),
                 IconButton(
                     icon: Image.asset(
-                      "assets/images/dumbbell5.png",
+                      "assets/images/dumbbell2.png",
                       scale: 1,
                     ),
                     onPressed: () {
