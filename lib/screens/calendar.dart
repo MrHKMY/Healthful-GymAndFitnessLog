@@ -50,6 +50,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   int counter = 0;
   double waterCount = 0;
   String waterCountString;
+  double workoutGoals = 0;
 
 
 
@@ -112,17 +113,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
     getTotalWater();
 
   }
+
   Future<double> getTotalWater() async {
     waterCountString = await _dbHelper.retrieveWater();
     //waterCount = double.parse(waterCountString);
-
-
     waterCount = waterCountString != "null" ? double.parse(waterCountString) : 0;
-    print("Water Count : $waterCount");
+    //print("Water Count : $waterCount");
     // snapshot.data.toString() != "null"
     // ? snapshot.data.toString()
     //     : "0";
-
     return waterCount;
   }
 
@@ -240,6 +239,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             margin: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
                             child: SfRadialGauge(
+                                enableLoadingAnimation: true,
+                                animationDuration: 4500,
                                 title: GaugeTitle(
                                   text: "Weekly Workout Goals:",
                                   textStyle: TextStyle(color: Colors.white),
@@ -247,7 +248,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 axes: <RadialAxis>[
                                   RadialAxis(
                                       minimum: 0,
-                                      maximum: 100,
+                                      maximum: 10,
                                       showLabels: false,
                                       showTicks: false,
                                       radiusFactor: 1,
@@ -260,7 +261,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       ),
                                       pointers: <GaugePointer>[
                                         RangePointer(
-                                            value: 70,
+                                          enableAnimation: true,
+                                            animationDuration: 4500,
+                                            animationType: AnimationType.easeOutBack,
+                                            value: workoutGoals,
                                             width: 0.15,
                                             sizeUnit: GaugeSizeUnit.factor,
                                             cornerStyle: CornerStyle.bothCurve,
@@ -278,13 +282,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         GaugeAnnotation(
                                             positionFactor: 0.1,
                                             angle: 90,
-                                            widget: Text(
-                                              //progressValue.toStringAsFixed(0) + ' / 100',
-                                              "70%",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white),
-                                            ))
+                                            widget: Text.rich(TextSpan(
+                                                text: workoutGoals.toString() !=
+                                                    "null"
+                                                    ? workoutGoals.toString()
+                                                    : "0",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: "%",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18
+                                                    ),
+                                                  ),
+                                                ])))
                                       ])
                                 ])),
                         Flexible(
@@ -645,241 +660,246 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       scale: 1,
                     ),
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return StatefulBuilder(
-                                builder: (context, setState) {
-                              return AlertDialog(
-                                backgroundColor: Color(0xFF1F3546),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                title: Text("Today's Achievement: "),
-                                titleTextStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          width: double.infinity,
-                                          //margin: EdgeInsets.only(left: 25, right: 25),
-                                          padding: EdgeInsets.only(left: 10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          child:
-                                              new DropdownButtonHideUnderline(
-                                            child: DropdownButton<String>(
-                                              focusColor: Colors.green,
-                                              dropdownColor: Colors.black,
-                                              value: _chosenValue,
-                                              //style: TextStyle(color: Colors.pink),
-                                              hint: Text(
-                                                "Muscle Focus",
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                              iconEnabledColor: Colors.red,
-                                              items: <String>[
-                                                "Chest",
-                                                "Abs",
-                                                "Biceps",
-                                                "Triceps",
-                                                "Shoulders",
-                                                "Forearm",
-                                                "Hips",
-                                                "Thigh",
-                                                "Calves",
-                                                "Whole Body",
-                                              ].map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                    value: value,
-                                                    child: Text(
-                                                      value,
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ));
-                                              }).toList(),
-                                              onChanged: (String newValue) {
-                                                setState(() {
-                                                  _chosenValue = newValue;
-                                                });
-                                              },
-                                            ),
-                                          )),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        width: double.infinity,
-                                        //margin: EdgeInsets.only(left: 25, right: 25),
-                                        padding: EdgeInsets.only(left: 10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10),
-                                          ),
-                                        ),
-                                        child: TextField(
-                                            controller: _eventController,
-                                            decoration: InputDecoration(
-                                              hintText: "Exercise Name: ",
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            )),
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text(
-                                        "Set Count: ",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            left: 30, right: 30),
-                                        //padding: EdgeInsets.only(left: 10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.remove,
-                                                color: Theme.of(context)
-                                                    .accentColor,
-                                              ),
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 4.0,
-                                                  horizontal: 18.0),
-                                              iconSize: 32.0,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (counter >= 1) counter--;
-                                                });
-                                              },
-                                            ),
-                                            Text(
-                                              '$counter',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.add,
-                                                color: Theme.of(context)
-                                                    .accentColor,
-                                              ),
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 4.0,
-                                                  horizontal: 18.0),
-                                              iconSize: 32.0,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              onPressed: () {
-                                                setState(() {
-                                                  counter++;
-                                                  //onChanged(counter);
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                      child: Text(
-                                        "Cancel",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      onPressed: () {
-                                        _eventController.clear();
-                                        _chosenValue = null;
-                                        counter = 0;
-                                        Navigator.pop(context);
-                                      }),
-                                  TextButton(
-                                    child: Text("Save"),
-                                    style: TextButton.styleFrom(
-                                      primary: Colors.white,
-                                      backgroundColor: Colors.teal,
-                                      shadowColor: Colors.black,
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                    onPressed: () async {
-                                      if (_eventController.text.isEmpty) {
-                                        return;
-                                      }
-                                      //Save activity to Database
-                                      String a = _calendarController.selectedDay
-                                          .toString();
+                      // ignore: unnecessary_statements
+                      workoutGoals++;
+                      setState(() {
 
-                                      Activities _newActivity = Activities(
-                                          activity: _eventController.text,
-                                          focus: _chosenValue,
-                                          setCount: counter,
-                                          date: a.substring(0, 10));
-                                      _actID = await _dbHelper
-                                          .insertActivity(_newActivity);
-                                      setState(() {
-                                        if (_events[_calendarController
-                                                .selectedDay] !=
-                                            null) {
-                                          _events[_calendarController
-                                                  .selectedDay]
-                                              .add(_eventController.text);
-                                        } else {
-                                          _events[_calendarController
-                                              .selectedDay] = [
-                                            _eventController.text
-                                          ];
-                                        }
-                                        prefs.setString("events",
-                                            json.encode(encodeMap(_events)));
-                                        //_focus = _chosenValue;
-                                        // prefs.setString(
-                                        //   "focus", _chosenValue);
-                                        //print(_events);
-                                        _eventController.clear();
-                                        _chosenValue = null;
-                                        counter = 0;
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                  )
-                                ],
-                              );
-                            });
-                          });
+                      });
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (context) {
+                      //       return StatefulBuilder(
+                      //           builder: (context, setState) {
+                      //         return AlertDialog(
+                      //           backgroundColor: Color(0xFF1F3546),
+                      //           shape: RoundedRectangleBorder(
+                      //               borderRadius:
+                      //                   BorderRadius.all(Radius.circular(20))),
+                      //           title: Text("Today's Achievement: "),
+                      //           titleTextStyle: TextStyle(
+                      //               color: Colors.white,
+                      //               fontSize: 20,
+                      //               fontWeight: FontWeight.bold),
+                      //           content: SingleChildScrollView(
+                      //             child: Column(
+                      //               children: [
+                      //                 Container(
+                      //                     width: double.infinity,
+                      //                     //margin: EdgeInsets.only(left: 25, right: 25),
+                      //                     padding: EdgeInsets.only(left: 10),
+                      //                     decoration: BoxDecoration(
+                      //                       color: Colors.black,
+                      //                       borderRadius: BorderRadius.all(
+                      //                         Radius.circular(10),
+                      //                       ),
+                      //                     ),
+                      //                     child:
+                      //                         new DropdownButtonHideUnderline(
+                      //                       child: DropdownButton<String>(
+                      //                         focusColor: Colors.green,
+                      //                         dropdownColor: Colors.black,
+                      //                         value: _chosenValue,
+                      //                         //style: TextStyle(color: Colors.pink),
+                      //                         hint: Text(
+                      //                           "Muscle Focus",
+                      //                           style: TextStyle(
+                      //                               color: Colors.grey),
+                      //                         ),
+                      //                         iconEnabledColor: Colors.red,
+                      //                         items: <String>[
+                      //                           "Chest",
+                      //                           "Abs",
+                      //                           "Biceps",
+                      //                           "Triceps",
+                      //                           "Shoulders",
+                      //                           "Forearm",
+                      //                           "Hips",
+                      //                           "Thigh",
+                      //                           "Calves",
+                      //                           "Whole Body",
+                      //                         ].map<DropdownMenuItem<String>>(
+                      //                             (String value) {
+                      //                           return DropdownMenuItem<String>(
+                      //                               value: value,
+                      //                               child: Text(
+                      //                                 value,
+                      //                                 style: TextStyle(
+                      //                                     color: Colors.white),
+                      //                               ));
+                      //                         }).toList(),
+                      //                         onChanged: (String newValue) {
+                      //                           setState(() {
+                      //                             _chosenValue = newValue;
+                      //                           });
+                      //                         },
+                      //                       ),
+                      //                     )),
+                      //                 SizedBox(
+                      //                   height: 10,
+                      //                 ),
+                      //                 Container(
+                      //                   width: double.infinity,
+                      //                   //margin: EdgeInsets.only(left: 25, right: 25),
+                      //                   padding: EdgeInsets.only(left: 10),
+                      //                   decoration: BoxDecoration(
+                      //                     color: Colors.black,
+                      //                     borderRadius: BorderRadius.all(
+                      //                       Radius.circular(10),
+                      //                     ),
+                      //                   ),
+                      //                   child: TextField(
+                      //                       controller: _eventController,
+                      //                       decoration: InputDecoration(
+                      //                         hintText: "Exercise Name: ",
+                      //                         hintStyle:
+                      //                             TextStyle(color: Colors.grey),
+                      //                       ),
+                      //                       style: TextStyle(
+                      //                         color: Colors.white,
+                      //                       )),
+                      //                 ),
+                      //                 SizedBox(
+                      //                   height: 15,
+                      //                 ),
+                      //                 Text(
+                      //                   "Set Count: ",
+                      //                   style: TextStyle(color: Colors.white),
+                      //                 ),
+                      //                 Container(
+                      //                   margin: EdgeInsets.only(
+                      //                       left: 30, right: 30),
+                      //                   //padding: EdgeInsets.only(left: 10),
+                      //                   decoration: BoxDecoration(
+                      //                     color: Colors.black,
+                      //                     borderRadius: BorderRadius.all(
+                      //                       Radius.circular(10),
+                      //                     ),
+                      //                   ),
+                      //                   child: Row(
+                      //                     mainAxisAlignment:
+                      //                         MainAxisAlignment.spaceAround,
+                      //                     children: [
+                      //                       IconButton(
+                      //                         icon: Icon(
+                      //                           Icons.remove,
+                      //                           color: Theme.of(context)
+                      //                               .accentColor,
+                      //                         ),
+                      //                         padding: EdgeInsets.symmetric(
+                      //                             vertical: 4.0,
+                      //                             horizontal: 18.0),
+                      //                         iconSize: 32.0,
+                      //                         color: Theme.of(context)
+                      //                             .primaryColor,
+                      //                         onPressed: () {
+                      //                           setState(() {
+                      //                             if (counter >= 1) counter--;
+                      //                           });
+                      //                         },
+                      //                       ),
+                      //                       Text(
+                      //                         '$counter',
+                      //                         textAlign: TextAlign.center,
+                      //                         style: TextStyle(
+                      //                           color: Colors.white,
+                      //                           fontSize: 18.0,
+                      //                           fontWeight: FontWeight.w500,
+                      //                         ),
+                      //                       ),
+                      //                       IconButton(
+                      //                         icon: Icon(
+                      //                           Icons.add,
+                      //                           color: Theme.of(context)
+                      //                               .accentColor,
+                      //                         ),
+                      //                         padding: EdgeInsets.symmetric(
+                      //                             vertical: 4.0,
+                      //                             horizontal: 18.0),
+                      //                         iconSize: 32.0,
+                      //                         color: Theme.of(context)
+                      //                             .primaryColor,
+                      //                         onPressed: () {
+                      //                           setState(() {
+                      //                             counter++;
+                      //                             //onChanged(counter);
+                      //                           });
+                      //                         },
+                      //                       ),
+                      //                     ],
+                      //                   ),
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //           actions: <Widget>[
+                      //             TextButton(
+                      //                 child: Text(
+                      //                   "Cancel",
+                      //                   style: TextStyle(color: Colors.white),
+                      //                 ),
+                      //                 onPressed: () {
+                      //                   _eventController.clear();
+                      //                   _chosenValue = null;
+                      //                   counter = 0;
+                      //                   Navigator.pop(context);
+                      //                 }),
+                      //             TextButton(
+                      //               child: Text("Save"),
+                      //               style: TextButton.styleFrom(
+                      //                 primary: Colors.white,
+                      //                 backgroundColor: Colors.teal,
+                      //                 shadowColor: Colors.black,
+                      //                 elevation: 5,
+                      //                 shape: RoundedRectangleBorder(
+                      //                   borderRadius:
+                      //                       BorderRadius.circular(10.0),
+                      //                 ),
+                      //               ),
+                      //               onPressed: () async {
+                      //                 if (_eventController.text.isEmpty) {
+                      //                   return;
+                      //                 }
+                      //                 //Save activity to Database
+                      //                 String a = _calendarController.selectedDay
+                      //                     .toString();
+                      //
+                      //                 Activities _newActivity = Activities(
+                      //                     activity: _eventController.text,
+                      //                     focus: _chosenValue,
+                      //                     setCount: counter,
+                      //                     date: a.substring(0, 10));
+                      //                 _actID = await _dbHelper
+                      //                     .insertActivity(_newActivity);
+                      //                 setState(() {
+                      //                   if (_events[_calendarController
+                      //                           .selectedDay] !=
+                      //                       null) {
+                      //                     _events[_calendarController
+                      //                             .selectedDay]
+                      //                         .add(_eventController.text);
+                      //                   } else {
+                      //                     _events[_calendarController
+                      //                         .selectedDay] = [
+                      //                       _eventController.text
+                      //                     ];
+                      //                   }
+                      //                   prefs.setString("events",
+                      //                       json.encode(encodeMap(_events)));
+                      //                   //_focus = _chosenValue;
+                      //                   // prefs.setString(
+                      //                   //   "focus", _chosenValue);
+                      //                   //print(_events);
+                      //                   _eventController.clear();
+                      //                   _chosenValue = null;
+                      //                   counter = 0;
+                      //                   Navigator.pop(context);
+                      //                 });
+                      //               },
+                      //             )
+                      //           ],
+                      //         );
+                      //       });
+                      //     });
                     })
               ])
           // Positioned(
