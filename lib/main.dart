@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "CalendarTest",
-      theme: ThemeData(primarySwatch: Colors.blue),
+      title: "Healthful",
+      theme: ThemeData(primarySwatch: Colors.teal),
       home: Splash(),
       initialRoute: "/",
       routes: {

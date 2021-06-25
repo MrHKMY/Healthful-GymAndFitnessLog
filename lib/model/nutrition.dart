@@ -35,7 +35,7 @@ class Calorie {
 class Supplement {
   final int id;
   final String supplement;
-  final double type;
+  final String type;
   //final String date;
 
   Supplement({this.id, this.supplement, this.type});
