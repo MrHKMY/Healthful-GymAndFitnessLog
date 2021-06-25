@@ -181,4 +181,12 @@ class DatabaseHelper {
     }
   }
 
+  Future<List<Supplement>> retrieveSupplement() async {
+    Database _db = await database();
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM supplement WHERE DATE(Date) = DATE('now','localtime')");
+    return List.generate(activityMap.length, (index) {
+      return Supplement(id: activityMap[index]["id"], supplement: activityMap[index]["Supplement"], type: activityMap[index]["PostPre"]);
+    });
+  }
+
 }
