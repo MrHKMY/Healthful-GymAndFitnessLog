@@ -51,7 +51,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   double waterCount = 0;
   String waterCountString;
   double workoutGoals = 0;
-  var iconColor = null;
+  var iconColor;
 
   var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
@@ -205,21 +205,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         ),
                       ],
                     ),
-                    // Container(
-                    //   margin: EdgeInsets.symmetric(horizontal: 20),
-                    //   padding: EdgeInsets.all(10),
-                    //   decoration: BoxDecoration(
-                    //       //color: Color(0xFF1F3546),
-                    //       borderRadius: BorderRadius.circular(10)),
-                    //   child: Center(
-                    //     child: Text(
-                    //       "",
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                    Container(
+                      margin: EdgeInsets.only(left: 15, right: 15, top: 10),
+                      padding: EdgeInsets.all(0),
+                      decoration: BoxDecoration(
+                          //color: Color(0xFF1F3546),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: Text(
+                          quotes,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -333,58 +333,38 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                               TextSpan(text: " / 15")
                                             ]));
                                       }),
-                                  FutureBuilder(
-                                      future: _dbHelper.retrieveWater(),
-                                      builder: (context, snapshot) {
-                                        String a =
-                                            snapshot.data.toString() != "null"
-                                                ? snapshot.data.toString()
-                                                : "0";
-                                        var doubleValue = double.parse(a);
-
-                                        return SfLinearGauge(
-                                          minimum: 0,
-                                          maximum: 15,
-                                          showAxisTrack: true,
-                                          showTicks: false,
-                                          showLabels: false,
-                                          axisTrackStyle: LinearAxisTrackStyle(
-                                            color: Colors.white30,
-                                            edgeStyle:
-                                                LinearEdgeStyle.bothCurve,
-                                            thickness: 10,
-                                          ),
-                                          barPointers: [
-                                            LinearBarPointer(
-                                              value: waterCount,
-                                              shaderCallback: (bounds) =>
-                                                  LinearGradient(
-                                                      begin:
-                                                          Alignment.centerLeft,
-                                                      end:
-                                                          Alignment.centerRight,
-                                                      colors: [
-                                                    Colors.lightBlueAccent,
-                                                    Colors.blue
-                                                  ]).createShader(bounds),
-                                              thickness: 10,
-                                              edgeStyle:
-                                                  LinearEdgeStyle.bothCurve,
-                                              position:
-                                                  LinearElementPosition.cross,
-                                              color: Colors.green,
-                                              animationType:
-                                                  LinearAnimationType.ease,
-                                              animationDuration: 2500,
-                                            )
-                                          ],
-                                          // markerPointers: [LinearShapePointer(
-                                          //     value: 80,
-                                          //     shapeType: LinearShapePointerType.circle,
-                                          //   position: LinearElementPosition.cross,
-                                          // )],
-                                        );
-                                      }),
+                                  SfLinearGauge(
+                                    minimum: 0,
+                                    maximum: 15,
+                                    animationDuration: 4000,
+                                    showAxisTrack: true,
+                                    showTicks: false,
+                                    showLabels: false,
+                                    axisTrackStyle: LinearAxisTrackStyle(
+                                      color: Colors.white30,
+                                      edgeStyle: LinearEdgeStyle.bothCurve,
+                                      thickness: 10,
+                                    ),
+                                    barPointers: [
+                                      LinearBarPointer(
+                                        value: waterCount,
+                                        thickness: 10,
+                                        enableAnimation: true,
+                                        animationDuration: 2500,
+                                        edgeStyle: LinearEdgeStyle.bothCurve,
+                                        position: LinearElementPosition.cross,
+                                        animationType: LinearAnimationType.ease,
+                                        shaderCallback: (bounds) =>
+                                            LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                colors: [
+                                              Colors.lightBlueAccent,
+                                              Colors.blue
+                                            ]).createShader(bounds),
+                                      ),
+                                    ],
+                                  ),
                                   Text(
                                     "Calorie Intake : 1553 / 2000",
                                     style: TextStyle(
@@ -410,8 +390,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 begin: Alignment.centerLeft,
                                                 end: Alignment.centerRight,
                                                 colors: [
-                                              Colors.yellow[300],
-                                              Colors.yellow
+                                              Colors.yellow[200],
+                                              Colors.yellow[600]
                                             ]).createShader(bounds),
                                         thickness: 10,
                                         edgeStyle: LinearEdgeStyle.bothCurve,
@@ -422,35 +402,62 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       )
                                     ],
                                   ),
-                                  Text(
-                                    "Supplements :",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  FutureBuilder(
+                                      future: _dbHelper.retrieveSuppCount(),
+                                      builder: (context, snapshot) {
+                                        return Text.rich(TextSpan(
+                                            text: "Supplement : ",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: snapshot.data
+                                                            .toString() !=
+                                                        "null"
+                                                    ? snapshot.data.toString()
+                                                    : "0",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              TextSpan(text: " / 6")
+                                            ]));
+                                      }),
                                   SizedBox(
-                                      height: 10,
+                                      height: 20,
+                                      width: 180,
                                       child: FutureBuilder(
                                           initialData: [],
-                                          future: _dbHelper.retrieveSupplement(),
+                                          future:
+                                              _dbHelper.retrieveSupplement(),
                                           builder: (context, snapshot) {
-                                            return ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: snapshot.data.length,
-                                              itemBuilder: (context, index) {
-                                                if (snapshot.data[index].type == "Post") {
-                                                  iconColor = Colors.orange;
-                                                } else {
-                                                  iconColor = Colors.green;
-                                                }
-                                                return Icon(
-                                                    Icons.ac_unit,
+                                            return Center(
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: snapshot.data.length,
+                                                itemBuilder: (context, index) {
+                                                  if (snapshot
+                                                          .data[index].type ==
+                                                      "Post") {
+                                                    iconColor = Colors.green;
+                                                  } else {
+                                                    iconColor = Colors.orange;
+                                                  }
+                                                  return Icon(
+                                                    Icons.local_fire_department,
                                                     color: iconColor,
-                                                );
-                                              },
+                                                    size: 20,
+                                                  );
+                                                },
+                                              ),
                                             );
-                                          }) //Todo Change this gauge to icon or counter to show post/pre workout supplement
+                                          })
+                                      //Todo Change this gauge to icon or counter to show post/pre workout supplement
                                       // SfLinearGauge(
+                                      //   animationDuration: 4000,
                                       //   minimum: 0,
                                       //   maximum: 100,
                                       //   showAxisTrack: true,
@@ -463,7 +470,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       //   ),
                                       //   barPointers: [
                                       //     LinearBarPointer(
-                                      //       value: 50,
+                                      //       value: 20,
+                                      //       enableAnimation: true,
+                                      //       animationType: LinearAnimationType.ease,
+                                      //       animationDuration: 2500,
+                                      //       thickness: 10,
+                                      //       edgeStyle: LinearEdgeStyle.bothCurve,
+                                      //       position: LinearElementPosition.cross,
                                       //       shaderCallback: (bounds) =>
                                       //           LinearGradient(
                                       //               begin: Alignment.centerLeft,
@@ -472,21 +485,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       //             Colors.lightGreenAccent,
                                       //             Colors.green
                                       //           ]).createShader(bounds),
-                                      //       thickness: 10,
-                                      //       edgeStyle: LinearEdgeStyle.bothCurve,
-                                      //       position: LinearElementPosition.cross,
-                                      //       color: Colors.green,
-                                      //       animationType: LinearAnimationType.ease,
-                                      //       animationDuration: 2500,
                                       //     )
                                       //   ],
-                                      //   // markerPointers: [LinearShapePointer(
-                                      //   //     value: 80,
-                                      //   //     shapeType: LinearShapePointerType.circle,
-                                      //   //   position: LinearElementPosition.cross,
-                                      //   // )],
                                       // ),
-                                      ),
+                                      )
                                 ]),
                           ),
                         )
@@ -671,15 +673,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       scale: 1,
                     ),
                     onPressed: () {
-                      print('Added Supplements');
-                      Supplement addSupplement = Supplement(
-                        supplement: "Protein",
-                        type: "Pre",
-                      );
-                      _dbHelper.insertSupplement(addSupplement);
-                      setState(() {
-
-                      });
+                      _showAddDialog();
                     }),
                 IconButton(
                     icon: Image.asset(
@@ -1176,58 +1170,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   _showAddDialog() async {
-    final menu = new DropdownButtonHideUnderline(
-      child: DropdownButton<String>(
-        focusColor: Colors.green,
-        dropdownColor: Colors.black,
-        value: _chosenValue,
-        //style: TextStyle(color: Colors.pink),
-        hint: Text(
-          "Muscle Focus",
-          style: TextStyle(color: Colors.grey),
-        ),
-        iconEnabledColor: Colors.red,
-        items: <String>[
-          "Chest",
-          "Abs",
-          "Biceps",
-          "Triceps",
-          "Shoulders",
-          "Forearm",
-          "Hips",
-          "Thigh",
-          "Calves",
-          "Whole Body",
-        ].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-                style: TextStyle(color: Colors.white),
-              ));
-        }).toList(),
-        onChanged: (String newValue) {
-          setState(() {
-            _chosenValue = newValue;
-          });
-        },
-      ),
-    );
 
-    int minValue;
-    int maxValue;
-    ValueChanged<int> onChanged;
-    int counter = 0;
 
     await showDialog(
         context: context,
         builder: (context) {
-          return StatefulBuilder(builder: (context, setState) {
+          return StatefulBuilder(
+              builder: (context, setState) {
             return AlertDialog(
               backgroundColor: Color(0xFF1F3546),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
-              title: Text("What have you achieve today?"),
+              title: Text("Supplement Intake"),
               titleTextStyle: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -1245,125 +1199,50 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           Radius.circular(10),
                         ),
                       ),
-                      child: menu,
                     ),
                     SizedBox(
                       height: 10,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      //margin: EdgeInsets.only(left: 25, right: 25),
-                      padding: EdgeInsets.only(left: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: TextField(
-                          controller: _eventController,
-                          decoration: InputDecoration(
-                            hintText: "Exercise Name: ",
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
-                          style: TextStyle(
-                            color: Colors.white,
-                          )),
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 4.0, horizontal: 18.0),
-                            iconSize: 32.0,
-                            color: Theme.of(context).primaryColor,
-                            onPressed: () {
-                              setState(() {
-                                if (counter > minValue) {
-                                  counter--;
-                                }
-                                onChanged(counter);
-                              });
-                            },
-                          ),
-                          Text(
-                            '$counter',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 4.0, horizontal: 18.0),
-                            iconSize: 32.0,
-                            color: Theme.of(context).primaryColor,
-                            onPressed: () {
-                              setState(() {
-                                if (counter < maxValue) {
-                                  counter++;
-                                }
-                                onChanged(counter);
-                              });
-                            },
-                          ),
-                        ],
-                      ),
                     ),
                   ],
                 ),
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text("Save"),
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                    backgroundColor: Colors.teal,
-                    shadowColor: Colors.black,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.white),
                     ),
-                  ),
-                  onPressed: () async {
-                    if (_eventController.text.isEmpty) {
-                      return;
-                    }
-                    //Save activity to Database
-                    String a = _calendarController.selectedDay.toString();
-
-                    Activities _newActivity = Activities(
-                        activity: _eventController.text,
-                        date: a.substring(0, 10));
-                    _actID = await _dbHelper.insertActivity(_newActivity);
-                    setState(() {
-                      if (_events[_calendarController.selectedDay] != null) {
-                        _events[_calendarController.selectedDay]
-                            .add(_eventController.text);
-                      } else {
-                        _events[_calendarController.selectedDay] = [
-                          _eventController.text
-                        ];
-                      }
-                      prefs.setString(
-                          "events", json.encode(encodeMap(_events)));
-                      _eventController.clear();
+                    onPressed: () {
                       Navigator.pop(context);
-                    });
-                  },
-                )
+                    }),
+                TextButton(
+                    child: Text("Save"),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.teal,
+                      shadowColor: Colors.black,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Scaffold.of(context).showSnackBar(new SnackBar(
+                      //   content: new Text("Supplement intake recorded."),
+                      //   duration: Duration(seconds: 1),
+                      // ));
+                      Supplement addSupplement = Supplement(
+                        supplement: "Protein",
+                        type: "Pre",
+                      );
+                      _dbHelper.insertSupplement(addSupplement);
+                      print("Added supplement");
+                      setState(() {
+                        _dbHelper.retrieveSuppCount();
+                      });
+                      Navigator.pop(context);
+//TODO the supplement gauge didnt update after close the dialog
+                    })
               ],
             );
           });

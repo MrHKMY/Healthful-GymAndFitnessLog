@@ -189,4 +189,14 @@ class DatabaseHelper {
     });
   }
 
+  Future<String> retrieveSuppCount() async {
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT COUNT (*) FROM supplement WHERE DATE(Date) = DATE('now','localtime')");
+    if(response.length > 0) {
+      String theSupp = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      //theWater.substring(2);
+      return theSupp;
+    }
+  }
+
 }
