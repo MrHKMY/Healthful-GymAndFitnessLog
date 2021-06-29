@@ -1,11 +1,7 @@
 import 'dart:async';
 
 import 'package:calendar/database_helper.dart';
-import 'package:calendar/main.dart';
 import 'package:calendar/model/userInfo.dart';
-import 'package:calendar/route_animation.dart';
-import 'package:calendar/screens/profile_screen.dart';
-import 'package:calendar/widgets.dart';
 import 'package:cupertino_radio_choice/cupertino_radio_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

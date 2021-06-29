@@ -105,13 +105,15 @@ class DatabaseHelper {
   }
 
   Future<String> retrieve1Part(String bodypart) async {
+
+    String theProgress;
     Database _db = await database();
     var response = await _db.rawQuery("SELECT Center FROM progress WHERE BodyPart = '$bodypart'");
     if(response.length > 0) {
-      String theProgress = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      theProgress = response.last.values.toString().substring(1, response.last.values.toString().length-1);
       theProgress.substring(2);
-      return theProgress;
     }
+    return theProgress;
   }
 
   Future<int> insertInfo(UserInfo userInfo) async {
@@ -132,13 +134,14 @@ class DatabaseHelper {
   }
 
   Future<String> retrieveUserInfo(String info) async {
+    String theName;
     Database _db = await database();
     var response = await _db.rawQuery("SELECT $info FROM userInfo");
     if(response.length > 0) {
-      String theName = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      theName = response.last.values.toString().substring(1, response.last.values.toString().length-1);
       //theName.substring(2);
-      return theName;
     }
+    return theName;
   }
 
   Future<int> insertWater(Water water) async {
@@ -172,13 +175,14 @@ class DatabaseHelper {
   }
 
   Future<String> retrieveWater() async {
+    String theWater;
     Database _db = await database();
     var response = await _db.rawQuery("SELECT SUM (Litre) FROM water WHERE DATE(Date) = DATE('now','localtime')");
     if(response.length > 0) {
-      String theWater = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      theWater = response.last.values.toString().substring(1, response.last.values.toString().length-1);
       //theWater.substring(2);
-      return theWater;
     }
+    return theWater;
   }
 
   Future<List<Supplement>> retrieveSupplement() async {
@@ -190,13 +194,14 @@ class DatabaseHelper {
   }
 
   Future<String> retrieveSuppCount() async {
+    String theSupp;
     Database _db = await database();
     var response = await _db.rawQuery("SELECT COUNT (*) FROM supplement WHERE DATE(Date) = DATE('now','localtime')");
     if(response.length > 0) {
-      String theSupp = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      theSupp= response.last.values.toString().substring(1, response.last.values.toString().length-1);
       //theWater.substring(2);
-      return theSupp;
     }
+    return theSupp;
   }
 
 }

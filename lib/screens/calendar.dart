@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:calendar/database_helper.dart';
-import 'package:calendar/model/activities.dart';
 import 'package:calendar/model/nutrition.dart';
-import 'package:calendar/model/progress.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +11,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:calendar/widgets.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -43,15 +40,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
   int waterID = 0;
 
   //int _counter = 0;
-  String _chosenValue;
   int minValue = 0;
   int maxValue;
   ValueChanged<int> onChanged;
   int counter = 0;
-  double waterCount = 0;
+  double waterCount;
   String waterCountString;
   double workoutGoals = 0;
   var iconColor;
+  String quotes = "a";
 
   var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
@@ -110,17 +107,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
     _selectedEvents = [];
     prefsData();
     getTotalWater();
+    randomQuotes();
+  }
+
+  randomQuotes() {
+    int i = rand.nextInt(list.length);
+    quotes = list[i];
   }
 
   Future<double> getTotalWater() async {
     waterCountString = await _dbHelper.retrieveWater();
-    //waterCount = double.parse(waterCountString);
+    print(waterCountString);
     waterCount =
         waterCountString != "null" ? double.parse(waterCountString) : 0;
-    //print("Water Count : $waterCount");
-    // snapshot.data.toString() != "null"
-    // ? snapshot.data.toString()
-    //     : "0";
+    print(waterCount);
     return waterCount;
   }
 
@@ -132,10 +132,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int i = rand.nextInt(list.length);
-    String quotes = list[i];
-    getTotalWater();
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
@@ -235,7 +231,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 horizontal: 10, vertical: 10),
                             child: SfRadialGauge(
                                 enableLoadingAnimation: true,
-                                animationDuration: 4500,
+                                animationDuration: 2500,
                                 title: GaugeTitle(
                                   text: "Weekly Workout Goals:",
                                   textStyle: TextStyle(color: Colors.white),
@@ -257,7 +253,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       pointers: <GaugePointer>[
                                         RangePointer(
                                             enableAnimation: true,
-                                            animationDuration: 4500,
+                                            animationDuration: 2500,
                                             animationType:
                                                 AnimationType.easeOutBack,
                                             value: workoutGoals,
@@ -333,38 +329,53 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                               TextSpan(text: " / 15")
                                             ]));
                                       }),
-                                  SfLinearGauge(
-                                    minimum: 0,
-                                    maximum: 15,
-                                    animationDuration: 4000,
-                                    showAxisTrack: true,
-                                    showTicks: false,
-                                    showLabels: false,
-                                    axisTrackStyle: LinearAxisTrackStyle(
-                                      color: Colors.white30,
-                                      edgeStyle: LinearEdgeStyle.bothCurve,
-                                      thickness: 10,
-                                    ),
-                                    barPointers: [
-                                      LinearBarPointer(
-                                        value: waterCount,
-                                        thickness: 10,
-                                        enableAnimation: true,
-                                        animationDuration: 2500,
-                                        edgeStyle: LinearEdgeStyle.bothCurve,
-                                        position: LinearElementPosition.cross,
-                                        animationType: LinearAnimationType.ease,
-                                        shaderCallback: (bounds) =>
-                                            LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                                colors: [
-                                              Colors.lightBlueAccent,
-                                              Colors.blue
-                                            ]).createShader(bounds),
-                                      ),
-                                    ],
-                                  ),
+                                  FutureBuilder(
+                                      future: _dbHelper.retrieveWater(),
+                                      builder: (context, snapshot) {
+                                        String a =
+                                            snapshot.data.toString() != "null"
+                                                ? snapshot.data.toString()
+                                                : "0";
+                                        var doubleValue = double.parse(a);
+
+                                        return SfLinearGauge(
+                                          minimum: 0,
+                                          maximum: 15,
+                                          showAxisTrack: true,
+                                          showTicks: false,
+                                          showLabels: false,
+                                          axisTrackStyle: LinearAxisTrackStyle(
+                                            color: Colors.white30,
+                                            edgeStyle:
+                                                LinearEdgeStyle.bothCurve,
+                                            thickness: 10,
+                                          ),
+                                          barPointers: [
+                                            LinearBarPointer(
+                                              value: doubleValue,
+                                              shaderCallback: (bounds) =>
+                                                  LinearGradient(
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
+                                                      colors: [
+                                                    Colors.lightBlueAccent,
+                                                    Colors.blue
+                                                  ]).createShader(bounds),
+                                              thickness: 10,
+                                              edgeStyle:
+                                                  LinearEdgeStyle.bothCurve,
+                                              position:
+                                                  LinearElementPosition.cross,
+                                              color: Colors.green,
+                                              animationType:
+                                                  LinearAnimationType.ease,
+                                              animationDuration: 2500,
+                                            )
+                                          ],
+                                        );
+                                      }),
                                   Text(
                                     "Calorie Intake : 1553 / 2000",
                                     style: TextStyle(
@@ -641,7 +652,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ringWidth: 60,
               ringDiameter: 250,
               fabColor: Colors.teal,
-              ringColor: Colors.teal[700],
+              ringColor: Colors.teal[400],
               fabOpenIcon: Image.asset(
                 "assets/images/goals_icon.png",
                 scale: 12,
@@ -654,16 +665,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       scale: 1,
                     ),
                     onPressed: () async {
-                      Scaffold.of(context).showSnackBar(new SnackBar(
-                        content: new Text("Water intake recorded."),
-                        duration: Duration(seconds: 1),
-                      ));
                       Water addWater = Water(
                         litre: 1,
                       );
                       waterID = await _dbHelper.insertWater(addWater);
+                      ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                        content: new Text("Water intake recorded."),
+                        duration: Duration(seconds: 1),
+                      ));
                       setState(() {
-                        //getProgress(part);
+                        getTotalWater();
                       });
                       print('Added Water');
                     }),
@@ -1170,82 +1181,69 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   _showAddDialog() async {
-
-
     await showDialog(
         context: context,
         builder: (context) {
-          return StatefulBuilder(
-              builder: (context, setState) {
-            return AlertDialog(
-              backgroundColor: Color(0xFF1F3546),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              title: Text("Supplement Intake"),
-              titleTextStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      //margin: EdgeInsets.only(left: 25, right: 25),
-                      padding: EdgeInsets.only(left: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
+          return AlertDialog(
+            backgroundColor: Color(0xFF1F3546),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            title: Text("Supplement Intake"),
+            titleTextStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    //margin: EdgeInsets.only(left: 25, right: 25),
+                    padding: EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
-              actions: <Widget>[
-                TextButton(
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              TextButton(
+                  child: Text("Save"),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.teal,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    onPressed: () {
+                  ),
+                  onPressed: () async {
+                    Supplement addSupplement = Supplement(
+                      supplement: "Protein",
+                      type: "Post",
+                    );
+                    await _dbHelper.insertSupplement(addSupplement);
+                    print("Added supplement");
+                    setState(() {
                       Navigator.pop(context);
-                    }),
-                TextButton(
-                    child: Text("Save"),
-                    style: TextButton.styleFrom(
-                      primary: Colors.white,
-                      backgroundColor: Colors.teal,
-                      shadowColor: Colors.black,
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    onPressed: () {
-                      // Scaffold.of(context).showSnackBar(new SnackBar(
-                      //   content: new Text("Supplement intake recorded."),
-                      //   duration: Duration(seconds: 1),
-                      // ));
-                      Supplement addSupplement = Supplement(
-                        supplement: "Protein",
-                        type: "Pre",
-                      );
-                      _dbHelper.insertSupplement(addSupplement);
-                      print("Added supplement");
-                      setState(() {
-                        _dbHelper.retrieveSuppCount();
-                      });
-                      Navigator.pop(context);
-//TODO the supplement gauge didnt update after close the dialog
-                    })
-              ],
-            );
-          });
+                    });
+                  })
+            ],
+          );
         });
   }
 }
