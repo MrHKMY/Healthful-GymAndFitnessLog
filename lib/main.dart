@@ -1,5 +1,4 @@
 import 'package:after_layout/after_layout.dart';
-import 'package:calendar/model/progress.dart';
 import 'package:calendar/screens/profile_screen.dart';
 import 'package:calendar/screens/calendar.dart';
 import 'package:calendar/screens/history.dart';
@@ -9,8 +8,6 @@ import 'package:calendar/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 void main() {
@@ -70,7 +67,6 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
         ),
       ),
     );
-    throw UnimplementedError();
   }
 }
 

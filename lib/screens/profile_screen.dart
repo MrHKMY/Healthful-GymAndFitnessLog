@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:calendar/model/progress.dart';
-import 'package:calendar/model/userInfo.dart';
-import 'package:calendar/screens/startup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
