@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -49,6 +50,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   double workoutGoals = 0;
   var iconColor;
   String quotes = "a";
+  String selected;
 
   var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
@@ -465,41 +467,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 },
                                               ),
                                             );
-                                          })
-                                      //Todo Change this gauge to icon or counter to show post/pre workout supplement
-                                      // SfLinearGauge(
-                                      //   animationDuration: 4000,
-                                      //   minimum: 0,
-                                      //   maximum: 100,
-                                      //   showAxisTrack: true,
-                                      //   showTicks: false,
-                                      //   showLabels: false,
-                                      //   axisTrackStyle: LinearAxisTrackStyle(
-                                      //     color: Colors.white30,
-                                      //     edgeStyle: LinearEdgeStyle.bothCurve,
-                                      //     thickness: 10,
-                                      //   ),
-                                      //   barPointers: [
-                                      //     LinearBarPointer(
-                                      //       value: 20,
-                                      //       enableAnimation: true,
-                                      //       animationType: LinearAnimationType.ease,
-                                      //       animationDuration: 2500,
-                                      //       thickness: 10,
-                                      //       edgeStyle: LinearEdgeStyle.bothCurve,
-                                      //       position: LinearElementPosition.cross,
-                                      //       shaderCallback: (bounds) =>
-                                      //           LinearGradient(
-                                      //               begin: Alignment.centerLeft,
-                                      //               end: Alignment.centerRight,
-                                      //               colors: [
-                                      //             Colors.lightGreenAccent,
-                                      //             Colors.green
-                                      //           ]).createShader(bounds),
-                                      //     )
-                                      //   ],
-                                      // ),
-                                      )
+                                          }))
                                 ]),
                           ),
                         )
@@ -684,7 +652,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       scale: 1,
                     ),
                     onPressed: () {
-                      _showAddDialog();
+                      _showSupplementDialog();
                     }),
                 IconButton(
                     icon: Image.asset(
@@ -932,318 +900,151 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       //     });
                     })
               ])
-          // Positioned(
-          //     bottom: MediaQuery.of(context).viewInsets.bottom > 0
-          //         ? 0.0
-          //         : kBottomNavigationBarHeight + 30,
-          //     right: 30,
-          //     child: FloatingActionButton(
-          //         backgroundColor: Color(0xFF30A9B2),
-          //         child: Icon(Icons.add),
-          //         onPressed: () {
-          //           showDialog(
-          //               context: context,
-          //               builder: (context) {
-          //                 return StatefulBuilder(builder: (context, setState) {
-          //                   return AlertDialog(
-          //                     backgroundColor: Color(0xFF1F3546),
-          //                     shape: RoundedRectangleBorder(
-          //                         borderRadius:
-          //                             BorderRadius.all(Radius.circular(20))),
-          //                     title: Text("Today's Achievement: "),
-          //                     titleTextStyle: TextStyle(
-          //                         color: Colors.white,
-          //                         fontSize: 20,
-          //                         fontWeight: FontWeight.bold),
-          //                     content: SingleChildScrollView(
-          //                       child: Column(
-          //                         children: [
-          //                           Container(
-          //                               width: double.infinity,
-          //                               //margin: EdgeInsets.only(left: 25, right: 25),
-          //                               padding: EdgeInsets.only(left: 10),
-          //                               decoration: BoxDecoration(
-          //                                 color: Colors.black,
-          //                                 borderRadius: BorderRadius.all(
-          //                                   Radius.circular(10),
-          //                                 ),
-          //                               ),
-          //                               child: new DropdownButtonHideUnderline(
-          //                                 child: DropdownButton<String>(
-          //                                   focusColor: Colors.green,
-          //                                   dropdownColor: Colors.black,
-          //                                   value: _chosenValue,
-          //                                   //style: TextStyle(color: Colors.pink),
-          //                                   hint: Text(
-          //                                     "Muscle Focus",
-          //                                     style:
-          //                                         TextStyle(color: Colors.grey),
-          //                                   ),
-          //                                   iconEnabledColor: Colors.red,
-          //                                   items: <String>[
-          //                                     "Chest",
-          //                                     "Abs",
-          //                                     "Biceps",
-          //                                     "Triceps",
-          //                                     "Shoulders",
-          //                                     "Forearm",
-          //                                     "Hips",
-          //                                     "Thigh",
-          //                                     "Calves",
-          //                                     "Whole Body",
-          //                                   ].map<DropdownMenuItem<String>>(
-          //                                       (String value) {
-          //                                     return DropdownMenuItem<String>(
-          //                                         value: value,
-          //                                         child: Text(
-          //                                           value,
-          //                                           style: TextStyle(
-          //                                               color: Colors.white),
-          //                                         ));
-          //                                   }).toList(),
-          //                                   onChanged: (String newValue) {
-          //                                     setState(() {
-          //                                       _chosenValue = newValue;
-          //                                     });
-          //                                   },
-          //                                 ),
-          //                               )),
-          //                           SizedBox(
-          //                             height: 10,
-          //                           ),
-          //                           Container(
-          //                             width: double.infinity,
-          //                             //margin: EdgeInsets.only(left: 25, right: 25),
-          //                             padding: EdgeInsets.only(left: 10),
-          //                             decoration: BoxDecoration(
-          //                               color: Colors.black,
-          //                               borderRadius: BorderRadius.all(
-          //                                 Radius.circular(10),
-          //                               ),
-          //                             ),
-          //                             child: TextField(
-          //                                 controller: _eventController,
-          //                                 decoration: InputDecoration(
-          //                                   hintText: "Exercise Name: ",
-          //                                   hintStyle:
-          //                                       TextStyle(color: Colors.grey),
-          //                                 ),
-          //                                 style: TextStyle(
-          //                                   color: Colors.white,
-          //                                 )),
-          //                           ),
-          //                           SizedBox(
-          //                             height: 15,
-          //                           ),
-          //                           Text(
-          //                             "Set Count: ",
-          //                             style: TextStyle(color: Colors.white),
-          //                           ),
-          //                           Container(
-          //                             margin:
-          //                                 EdgeInsets.only(left: 30, right: 30),
-          //                             //padding: EdgeInsets.only(left: 10),
-          //                             decoration: BoxDecoration(
-          //                               color: Colors.black,
-          //                               borderRadius: BorderRadius.all(
-          //                                 Radius.circular(10),
-          //                               ),
-          //                             ),
-          //                             child: Row(
-          //                               mainAxisAlignment:
-          //                                   MainAxisAlignment.spaceAround,
-          //                               children: [
-          //                                 IconButton(
-          //                                   icon: Icon(
-          //                                     Icons.remove,
-          //                                     color:
-          //                                         Theme.of(context).accentColor,
-          //                                   ),
-          //                                   padding: EdgeInsets.symmetric(
-          //                                       vertical: 4.0,
-          //                                       horizontal: 18.0),
-          //                                   iconSize: 32.0,
-          //                                   color:
-          //                                       Theme.of(context).primaryColor,
-          //                                   onPressed: () {
-          //                                     setState(() {
-          //                                       if (counter >= 1) counter--;
-          //                                     });
-          //                                   },
-          //                                 ),
-          //                                 Text(
-          //                                   '$counter',
-          //                                   textAlign: TextAlign.center,
-          //                                   style: TextStyle(
-          //                                     color: Colors.white,
-          //                                     fontSize: 18.0,
-          //                                     fontWeight: FontWeight.w500,
-          //                                   ),
-          //                                 ),
-          //                                 IconButton(
-          //                                   icon: Icon(
-          //                                     Icons.add,
-          //                                     color:
-          //                                         Theme.of(context).accentColor,
-          //                                   ),
-          //                                   padding: EdgeInsets.symmetric(
-          //                                       vertical: 4.0,
-          //                                       horizontal: 18.0),
-          //                                   iconSize: 32.0,
-          //                                   color:
-          //                                       Theme.of(context).primaryColor,
-          //                                   onPressed: () {
-          //                                     setState(() {
-          //                                       counter++;
-          //                                       //onChanged(counter);
-          //                                     });
-          //                                   },
-          //                                 ),
-          //                               ],
-          //                             ),
-          //                           ),
-          //                         ],
-          //                       ),
-          //                     ),
-          //                     actions: <Widget>[
-          //                       TextButton(
-          //                           child: Text(
-          //                             "Cancel",
-          //                             style: TextStyle(color: Colors.white),
-          //                           ),
-          //                           onPressed: () {
-          //                             _eventController.clear();
-          //                             _chosenValue = null;
-          //                             counter = 0;
-          //                             Navigator.pop(context);
-          //                           }),
-          //                       TextButton(
-          //                         child: Text("Save"),
-          //                         style: TextButton.styleFrom(
-          //                           primary: Colors.white,
-          //                           backgroundColor: Colors.teal,
-          //                           shadowColor: Colors.black,
-          //                           elevation: 5,
-          //                           shape: RoundedRectangleBorder(
-          //                             borderRadius: BorderRadius.circular(10.0),
-          //                           ),
-          //                         ),
-          //                         onPressed: () async {
-          //                           if (_eventController.text.isEmpty) {
-          //                             return;
-          //                           }
-          //                           //Save activity to Database
-          //                           String a = _calendarController.selectedDay
-          //                               .toString();
-          //
-          //                           Activities _newActivity = Activities(
-          //                               activity: _eventController.text,
-          //                               focus: _chosenValue,
-          //                               setCount: counter,
-          //                               date: a.substring(0, 10));
-          //                           _actID = await _dbHelper
-          //                               .insertActivity(_newActivity);
-          //                           setState(() {
-          //                             if (_events[_calendarController
-          //                                     .selectedDay] !=
-          //                                 null) {
-          //                               _events[_calendarController.selectedDay]
-          //                                   .add(_eventController.text);
-          //                             } else {
-          //                               _events[
-          //                                   _calendarController.selectedDay] = [
-          //                                 _eventController.text
-          //                               ];
-          //                             }
-          //                             prefs.setString("events",
-          //                                 json.encode(encodeMap(_events)));
-          //                             //_focus = _chosenValue;
-          //                             // prefs.setString(
-          //                             //   "focus", _chosenValue);
-          //                             //print(_events);
-          //                             _eventController.clear();
-          //                             _chosenValue = null;
-          //                             counter = 0;
-          //                             Navigator.pop(context);
-          //                           });
-          //                         },
-          //                       )
-          //                     ],
-          //                   );
-          //                 });
-          //               });
-          //           ;
-          //         })),
           //TODO add another button to show history screen
         ]),
       ),
     );
   }
 
-  _showAddDialog() async {
+  _showSupplementDialog() async {
     await showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            backgroundColor: Color(0xFF1F3546),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            title: Text("Supplement Intake"),
-            titleTextStyle: TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-            content: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    //margin: EdgeInsets.only(left: 25, right: 25),
-                    padding: EdgeInsets.only(left: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Color(0xFF1F3546),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              title: Text("Supplement Intake"),
+              titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              content: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selected = 'first';
+                      });
+                    },
+                    child: Container(
+                      //padding: EdgeInsets.all(10),
+                      width: 100,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: selected == 'first'
+                                ? Colors.orange
+                                : Colors.grey),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "PRE",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: selected == 'first'
+                                    ? Colors.orange
+                                    : Colors.grey),
+                          ),
+                          Text(
+                            "Workout",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: selected == 'first'
+                                    ? Colors.orange
+                                    : Colors.grey),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
+                  SizedBox(width: 5),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selected = 'second';
+                      });
+                    },
+                    child: Container(
+                      width: 100,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: selected == 'second'
+                                ? Colors.green
+                                : Colors.grey),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "POST",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: selected == 'second'
+                                    ? Colors.green
+                                    : Colors.grey),
+                          ),
+                          Text(
+                            "Workout",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: selected == 'second'
+                                    ? Colors.green
+                                    : Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
-              TextButton(
-                  child: Text("Save"),
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                    backgroundColor: Colors.teal,
-                    shadowColor: Colors.black,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+              actions: <Widget>[
+                TextButton(
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.white),
                     ),
-                  ),
-                  onPressed: () async {
-                    Supplement addSupplement = Supplement(
-                      supplement: "Protein",
-                      type: "Post",
-                    );
-                    await _dbHelper.insertSupplement(addSupplement);
-                    print("Added supplement");
-                    setState(() {
+                    onPressed: () {
+                      selected = null;
                       Navigator.pop(context);
-                    });
-                  })
-            ],
-          );
+                    }),
+                TextButton(
+                    child: Text("Save"),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.teal,
+                      shadowColor: Colors.black,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    onPressed: () async {
+                      Supplement addSupplement = Supplement(
+                        supplement: "Protein",
+                        type: "Post",
+                      );
+                      await _dbHelper.insertSupplement(addSupplement);
+                      print("Added supplement");
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    })
+              ],
+            );
+          });
         });
   }
 }
