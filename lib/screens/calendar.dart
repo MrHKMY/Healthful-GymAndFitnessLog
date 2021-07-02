@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:calendar/database_helper.dart';
+import 'package:calendar/model/activities.dart';
 import 'package:calendar/model/nutrition.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -51,6 +52,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   var iconColor;
   String quotes = "a";
   String selected;
+  String _chosenValue;
 
   var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
@@ -124,6 +126,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
         waterCountString != "null" ? double.parse(waterCountString) : 0;
     print(waterCount);
     return waterCount;
+  }
+
+  refreshWidget() {
+    setState(() {});
   }
 
   @override
@@ -231,6 +237,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 borderRadius: BorderRadius.circular(20)),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
+                            //TODO Get user's weekly workout frequencies
                             child: SfRadialGauge(
                                 enableLoadingAnimation: true,
                                 animationDuration: 2500,
@@ -249,7 +256,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       axisLineStyle: AxisLineStyle(
                                         thickness: 0.15,
                                         cornerStyle: CornerStyle.bothCurve,
-                                        color: Color.fromARGB(30, 0, 169, 181),
+                                        color: Colors.white12,
                                         thicknessUnit: GaugeSizeUnit.factor,
                                       ),
                                       pointers: <GaugePointer>[
@@ -328,6 +335,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                   color: Colors.white,
                                                 ),
                                               ),
+                                              //TODO Get user's water intake frequencies
                                               TextSpan(text: " / 15")
                                             ]));
                                       }),
@@ -342,12 +350,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                                         return SfLinearGauge(
                                           minimum: 0,
+                                          //TODO Get user's water intake frequencies
                                           maximum: 15,
                                           showAxisTrack: true,
                                           showTicks: false,
                                           showLabels: false,
                                           axisTrackStyle: LinearAxisTrackStyle(
-                                            color: Colors.white30,
+                                            color: Colors.white12,
                                             edgeStyle:
                                                 LinearEdgeStyle.bothCurve,
                                             thickness: 10,
@@ -391,7 +400,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     showTicks: false,
                                     showLabels: false,
                                     axisTrackStyle: LinearAxisTrackStyle(
-                                      color: Colors.white30,
+                                      color: Colors.white12,
                                       edgeStyle: LinearEdgeStyle.bothCurve,
                                       thickness: 10,
                                     ),
@@ -409,7 +418,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         thickness: 10,
                                         edgeStyle: LinearEdgeStyle.bothCurve,
                                         position: LinearElementPosition.cross,
-                                        color: Colors.green,
                                         animationType: LinearAnimationType.ease,
                                         animationDuration: 2500,
                                       )
@@ -434,6 +442,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                   color: Colors.white,
                                                 ),
                                               ),
+                                              //TODO Get user's daily supplement intake frequency
                                               TextSpan(text: " / 6")
                                             ]));
                                       }),
@@ -442,31 +451,41 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       width: 180,
                                       child: FutureBuilder(
                                           initialData: [],
-                                          future:
-                                              _dbHelper.retrieveSupplement(),
+                                          future: _dbHelper.retrieveSupplement(),
                                           builder: (context, snapshot) {
-                                            return Center(
-                                              child: ListView.builder(
-                                                shrinkWrap: true,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: snapshot.data.length,
-                                                itemBuilder: (context, index) {
-                                                  if (snapshot
-                                                          .data[index].type ==
-                                                      "Post") {
-                                                    iconColor = Colors.green;
-                                                  } else {
-                                                    iconColor = Colors.orange;
-                                                  }
-                                                  return Icon(
-                                                    Icons.local_fire_department,
-                                                    color: iconColor,
-                                                    size: 20,
-                                                  );
-                                                },
-                                              ),
-                                            );
+                                            if (snapshot.data.toString() == "[]") {
+                                              return Icon(
+                                                Icons.local_fire_department,
+                                                color: Colors.grey,
+                                                size: 20,
+                                              );
+                                            } else {
+                                              return Center(
+                                                child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                  Axis.horizontal,
+                                                  itemCount: snapshot.data
+                                                      .length,
+                                                  itemBuilder: (context,
+                                                      index) {
+                                                    if (snapshot
+                                                        .data[index].type ==
+                                                        "Post") {
+                                                      iconColor = Colors.green;
+                                                    } else {
+                                                      iconColor = Colors.orange;
+                                                    }
+                                                    return Icon(
+                                                      Icons
+                                                          .local_fire_department,
+                                                      color: iconColor,
+                                                      size: 20,
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            }
                                           }))
                                 ]),
                           ),
@@ -660,250 +679,232 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       scale: 1,
                     ),
                     onPressed: () {
-                      // ignore: unnecessary_statements
-                      workoutGoals++;
-                      setState(() {});
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (context) {
-                      //       return StatefulBuilder(
-                      //           builder: (context, setState) {
-                      //         return AlertDialog(
-                      //           backgroundColor: Color(0xFF1F3546),
-                      //           shape: RoundedRectangleBorder(
-                      //               borderRadius:
-                      //                   BorderRadius.all(Radius.circular(20))),
-                      //           title: Text("Today's Achievement: "),
-                      //           titleTextStyle: TextStyle(
-                      //               color: Colors.white,
-                      //               fontSize: 20,
-                      //               fontWeight: FontWeight.bold),
-                      //           content: SingleChildScrollView(
-                      //             child: Column(
-                      //               children: [
-                      //                 Container(
-                      //                     width: double.infinity,
-                      //                     //margin: EdgeInsets.only(left: 25, right: 25),
-                      //                     padding: EdgeInsets.only(left: 10),
-                      //                     decoration: BoxDecoration(
-                      //                       color: Colors.black,
-                      //                       borderRadius: BorderRadius.all(
-                      //                         Radius.circular(10),
-                      //                       ),
-                      //                     ),
-                      //                     child:
-                      //                         new DropdownButtonHideUnderline(
-                      //                       child: DropdownButton<String>(
-                      //                         focusColor: Colors.green,
-                      //                         dropdownColor: Colors.black,
-                      //                         value: _chosenValue,
-                      //                         //style: TextStyle(color: Colors.pink),
-                      //                         hint: Text(
-                      //                           "Muscle Focus",
-                      //                           style: TextStyle(
-                      //                               color: Colors.grey),
-                      //                         ),
-                      //                         iconEnabledColor: Colors.red,
-                      //                         items: <String>[
-                      //                           "Chest",
-                      //                           "Abs",
-                      //                           "Biceps",
-                      //                           "Triceps",
-                      //                           "Shoulders",
-                      //                           "Forearm",
-                      //                           "Hips",
-                      //                           "Thigh",
-                      //                           "Calves",
-                      //                           "Whole Body",
-                      //                         ].map<DropdownMenuItem<String>>(
-                      //                             (String value) {
-                      //                           return DropdownMenuItem<String>(
-                      //                               value: value,
-                      //                               child: Text(
-                      //                                 value,
-                      //                                 style: TextStyle(
-                      //                                     color: Colors.white),
-                      //                               ));
-                      //                         }).toList(),
-                      //                         onChanged: (String newValue) {
-                      //                           setState(() {
-                      //                             _chosenValue = newValue;
-                      //                           });
-                      //                         },
-                      //                       ),
-                      //                     )),
-                      //                 SizedBox(
-                      //                   height: 10,
-                      //                 ),
-                      //                 Container(
-                      //                   width: double.infinity,
-                      //                   //margin: EdgeInsets.only(left: 25, right: 25),
-                      //                   padding: EdgeInsets.only(left: 10),
-                      //                   decoration: BoxDecoration(
-                      //                     color: Colors.black,
-                      //                     borderRadius: BorderRadius.all(
-                      //                       Radius.circular(10),
-                      //                     ),
-                      //                   ),
-                      //                   child: TextField(
-                      //                       controller: _eventController,
-                      //                       decoration: InputDecoration(
-                      //                         hintText: "Exercise Name: ",
-                      //                         hintStyle:
-                      //                             TextStyle(color: Colors.grey),
-                      //                       ),
-                      //                       style: TextStyle(
-                      //                         color: Colors.white,
-                      //                       )),
-                      //                 ),
-                      //                 SizedBox(
-                      //                   height: 15,
-                      //                 ),
-                      //                 Text(
-                      //                   "Set Count: ",
-                      //                   style: TextStyle(color: Colors.white),
-                      //                 ),
-                      //                 Container(
-                      //                   margin: EdgeInsets.only(
-                      //                       left: 30, right: 30),
-                      //                   //padding: EdgeInsets.only(left: 10),
-                      //                   decoration: BoxDecoration(
-                      //                     color: Colors.black,
-                      //                     borderRadius: BorderRadius.all(
-                      //                       Radius.circular(10),
-                      //                     ),
-                      //                   ),
-                      //                   child: Row(
-                      //                     mainAxisAlignment:
-                      //                         MainAxisAlignment.spaceAround,
-                      //                     children: [
-                      //                       IconButton(
-                      //                         icon: Icon(
-                      //                           Icons.remove,
-                      //                           color: Theme.of(context)
-                      //                               .accentColor,
-                      //                         ),
-                      //                         padding: EdgeInsets.symmetric(
-                      //                             vertical: 4.0,
-                      //                             horizontal: 18.0),
-                      //                         iconSize: 32.0,
-                      //                         color: Theme.of(context)
-                      //                             .primaryColor,
-                      //                         onPressed: () {
-                      //                           setState(() {
-                      //                             if (counter >= 1) counter--;
-                      //                           });
-                      //                         },
-                      //                       ),
-                      //                       Text(
-                      //                         '$counter',
-                      //                         textAlign: TextAlign.center,
-                      //                         style: TextStyle(
-                      //                           color: Colors.white,
-                      //                           fontSize: 18.0,
-                      //                           fontWeight: FontWeight.w500,
-                      //                         ),
-                      //                       ),
-                      //                       IconButton(
-                      //                         icon: Icon(
-                      //                           Icons.add,
-                      //                           color: Theme.of(context)
-                      //                               .accentColor,
-                      //                         ),
-                      //                         padding: EdgeInsets.symmetric(
-                      //                             vertical: 4.0,
-                      //                             horizontal: 18.0),
-                      //                         iconSize: 32.0,
-                      //                         color: Theme.of(context)
-                      //                             .primaryColor,
-                      //                         onPressed: () {
-                      //                           setState(() {
-                      //                             counter++;
-                      //                             //onChanged(counter);
-                      //                           });
-                      //                         },
-                      //                       ),
-                      //                     ],
-                      //                   ),
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //           actions: <Widget>[
-                      //             TextButton(
-                      //                 child: Text(
-                      //                   "Cancel",
-                      //                   style: TextStyle(color: Colors.white),
-                      //                 ),
-                      //                 onPressed: () {
-                      //                   _eventController.clear();
-                      //                   _chosenValue = null;
-                      //                   counter = 0;
-                      //                   Navigator.pop(context);
-                      //                 }),
-                      //             TextButton(
-                      //               child: Text("Save"),
-                      //               style: TextButton.styleFrom(
-                      //                 primary: Colors.white,
-                      //                 backgroundColor: Colors.teal,
-                      //                 shadowColor: Colors.black,
-                      //                 elevation: 5,
-                      //                 shape: RoundedRectangleBorder(
-                      //                   borderRadius:
-                      //                       BorderRadius.circular(10.0),
-                      //                 ),
-                      //               ),
-                      //               onPressed: () async {
-                      //                 if (_eventController.text.isEmpty) {
-                      //                   return;
-                      //                 }
-                      //                 //Save activity to Database
-                      //                 String a = _calendarController.selectedDay
-                      //                     .toString();
-                      //
-                      //                 Activities _newActivity = Activities(
-                      //                     activity: _eventController.text,
-                      //                     focus: _chosenValue,
-                      //                     setCount: counter,
-                      //                     date: a.substring(0, 10));
-                      //                 _actID = await _dbHelper
-                      //                     .insertActivity(_newActivity);
-                      //                 setState(() {
-                      //                   if (_events[_calendarController
-                      //                           .selectedDay] !=
-                      //                       null) {
-                      //                     _events[_calendarController
-                      //                             .selectedDay]
-                      //                         .add(_eventController.text);
-                      //                   } else {
-                      //                     _events[_calendarController
-                      //                         .selectedDay] = [
-                      //                       _eventController.text
-                      //                     ];
-                      //                   }
-                      //                   prefs.setString("events",
-                      //                       json.encode(encodeMap(_events)));
-                      //                   //_focus = _chosenValue;
-                      //                   // prefs.setString(
-                      //                   //   "focus", _chosenValue);
-                      //                   //print(_events);
-                      //                   _eventController.clear();
-                      //                   _chosenValue = null;
-                      //                   counter = 0;
-                      //                   Navigator.pop(context);
-                      //                 });
-                      //               },
-                      //             )
-                      //           ],
-                      //         );
-                      //       });
-                      //     });
-                    })
+                      _showWorkoutDialog();
+                      //TODO update WorkoutGoals range gauge
+                    }
+                    )
               ])
           //TODO add another button to show history screen
         ]),
       ),
     );
+  }
+
+  _showWorkoutDialog() async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Color(0xFF1F3546),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              title: Center(child: Text("Today's Achievement: ")),
+              titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                        width: double.infinity,
+                        //margin: EdgeInsets.only(left: 25, right: 25),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: new DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            focusColor: Colors.green,
+                            dropdownColor: Colors.black,
+                            value: _chosenValue,
+                            //style: TextStyle(color: Colors.pink),
+                            hint: Text(
+                              "Muscle Focus",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            iconEnabledColor: Colors.red,
+                            items: <String>[
+                              "Chest",
+                              "Abs",
+                              "Biceps",
+                              "Triceps",
+                              "Shoulders",
+                              "Forearm",
+                              "Hips",
+                              "Thigh",
+                              "Calves",
+                              "Whole Body",
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.white),
+                                  ));
+                            }).toList(),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                _chosenValue = newValue;
+                              });
+                            },
+                          ),
+                        )),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      //margin: EdgeInsets.only(left: 25, right: 25),
+                      padding: EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: TextField(
+                          controller: _eventController,
+                          decoration: InputDecoration(
+                            hintText: "Exercise Name: ",
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                          style: TextStyle(
+                            color: Colors.white,
+                          )),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "Set Count: ",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 30, right: 30),
+                      //padding: EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.remove,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 4.0, horizontal: 18.0),
+                            iconSize: 32.0,
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              setState(() {
+                                if (counter >= 1) counter--;
+                              });
+                            },
+                          ),
+                          Text(
+                            '$counter',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.add,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 4.0, horizontal: 18.0),
+                            iconSize: 32.0,
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              setState(() {
+                                counter++;
+                                //onChanged(counter);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      _eventController.clear();
+                      _chosenValue = null;
+                      counter = 0;
+                      Navigator.pop(context);
+                    }),
+                TextButton(
+                  child: Text("Save"),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.teal,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (_eventController.text.isEmpty) {
+                      return;
+                    }
+                    //Save activity to Database
+                    String a = _calendarController.selectedDay.toString();
+
+                    Activities _newActivity = Activities(
+                        activity: _eventController.text,
+                        focus: _chosenValue,
+                        setCount: counter,
+                        date: a.substring(0, 10));
+                    _actID = await _dbHelper.insertActivity(_newActivity);
+                    setState(() {
+                      if (_events[_calendarController.selectedDay] != null) {
+                        _events[_calendarController.selectedDay]
+                            .add(_eventController.text);
+                      } else {
+                        _events[_calendarController.selectedDay] = [
+                          _eventController.text
+                        ];
+                      }
+                      prefs.setString(
+                          "events", json.encode(encodeMap(_events)));
+                      //_focus = _chosenValue;
+                      // prefs.setString(
+                      //   "focus", _chosenValue);
+                      //print(_events);
+                      _eventController.clear();
+                      _chosenValue = null;
+                      counter = 0;
+                      Navigator.pop(context);
+                      refreshWidget();
+                    });
+                  },
+                )
+              ],
+            );
+          });
+        });
   }
 
   _showSupplementDialog() async {
@@ -915,7 +916,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               backgroundColor: Color(0xFF1F3546),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
-              title: Text("Supplement Intake"),
+              title: Center(child: Text("Supplement Intake")),
               titleTextStyle: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -927,7 +928,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        selected = 'first';
+                        selected = 'Pre';
                       });
                     },
                     child: Container(
@@ -937,7 +938,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: selected == 'first'
+                            color: selected == 'Pre'
                                 ? Colors.orange
                                 : Colors.grey),
                       ),
@@ -949,7 +950,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: selected == 'first'
+                                color: selected == 'Pre'
                                     ? Colors.orange
                                     : Colors.grey),
                           ),
@@ -958,7 +959,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14,
-                                color: selected == 'first'
+                                color: selected == 'Pre'
                                     ? Colors.orange
                                     : Colors.grey),
                           ),
@@ -970,7 +971,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        selected = 'second';
+                        selected = 'Post';
                       });
                     },
                     child: Container(
@@ -979,7 +980,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: selected == 'second'
+                            color: selected == 'Post'
                                 ? Colors.green
                                 : Colors.grey),
                       ),
@@ -991,7 +992,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: selected == 'second'
+                                color: selected == 'Post'
                                     ? Colors.green
                                     : Colors.grey),
                           ),
@@ -1000,7 +1001,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14,
-                                color: selected == 'second'
+                                color: selected == 'Post'
                                     ? Colors.green
                                     : Colors.grey),
                           ),
@@ -1032,16 +1033,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
                     onPressed: () async {
-                      Supplement addSupplement = Supplement(
-                        supplement: "Protein",
-                        type: "Post",
-                      );
-                      await _dbHelper.insertSupplement(addSupplement);
-                      print("Added supplement");
-                      setState(() {
+                      if(selected != null) {
+                        Supplement addSupplement = Supplement(
+                          supplement: "Protein",
+                          type: selected,
+                        );
+                        await _dbHelper.insertSupplement(addSupplement);
+                        print("Added supplement");
+                        selected = null;
                         Navigator.pop(context);
-                      });
-                    })
+                        refreshWidget();
+                      }
+                    }),
               ],
             );
           });
