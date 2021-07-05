@@ -237,70 +237,84 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 borderRadius: BorderRadius.circular(20)),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
-                            //TODO Get user's weekly workout frequencies
-                            child: SfRadialGauge(
-                                enableLoadingAnimation: true,
-                                animationDuration: 2500,
-                                title: GaugeTitle(
-                                  text: "Weekly Workout Goals:",
-                                  textStyle: TextStyle(color: Colors.white),
-                                ),
-                                axes: <RadialAxis>[
-                                  RadialAxis(
-                                      minimum: 0,
-                                      maximum: 10,
-                                      showLabels: false,
-                                      showTicks: false,
-                                      radiusFactor: 1,
-                                      canScaleToFit: false,
-                                      axisLineStyle: AxisLineStyle(
-                                        thickness: 0.15,
-                                        cornerStyle: CornerStyle.bothCurve,
-                                        color: Colors.white12,
-                                        thicknessUnit: GaugeSizeUnit.factor,
-                                      ),
-                                      pointers: <GaugePointer>[
-                                        RangePointer(
-                                            enableAnimation: true,
-                                            animationDuration: 2500,
-                                            animationType:
-                                                AnimationType.easeOutBack,
-                                            value: workoutGoals,
-                                            width: 0.15,
-                                            sizeUnit: GaugeSizeUnit.factor,
-                                            cornerStyle: CornerStyle.bothCurve,
-                                            gradient: const SweepGradient(
-                                                colors: <Color>[
-                                                  Color(0xFF00a9b5),
-                                                  Colors.green,
-                                                ],
-                                                stops: <double>[
-                                                  0.25,
-                                                  0.75
-                                                ])),
-                                      ],
-                                      annotations: <GaugeAnnotation>[
-                                        GaugeAnnotation(
-                                            positionFactor: 0.1,
-                                            angle: 90,
-                                            widget: Text.rich(TextSpan(
-                                                text: workoutGoals.toString() !=
-                                                        "null"
-                                                    ? workoutGoals.toString()
-                                                    : "0",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18),
-                                                children: [
-                                                  TextSpan(
-                                                    text: "%",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18),
-                                                  ),
-                                                ])))
-                                      ])
-                                ])),
+                            child: FutureBuilder(
+                              future: _dbHelper.retrieveWorkoutCount(),
+                              builder: (context, snapshot) {
+                                String a =
+                                snapshot.data.toString() != "null"
+                                    ? snapshot.data.toString()
+                                    : "0";
+                                var doubleValue = double.parse(a);
+                                //TODO Get user's weekly workout frequencies
+                                var percentage = num.parse(((doubleValue/5)*100).toStringAsFixed(1));
+                                String percentString = percentage.toString();
+                              return SfRadialGauge(
+                                  enableLoadingAnimation: true,
+                                  animationDuration: 2500,
+                                  title: GaugeTitle(
+                                    text: "Weekly Workout Goals:",
+                                    textStyle: TextStyle(color: Colors.white),
+                                  ),
+                                  axes: <RadialAxis>[
+                                    RadialAxis(
+                                        minimum: 0,
+                                        //TODO Get user's weekly workout frequencies
+                                        maximum: 5,
+                                        showLabels: false,
+                                        showTicks: false,
+                                        radiusFactor: 1,
+                                        canScaleToFit: false,
+                                        axisLineStyle: AxisLineStyle(
+                                          thickness: 0.15,
+                                          cornerStyle: CornerStyle.bothCurve,
+                                          color: Colors.white12,
+                                          thicknessUnit: GaugeSizeUnit.factor,
+                                        ),
+                                        pointers: <GaugePointer>[
+                                          RangePointer(
+                                              enableAnimation: true,
+                                              animationDuration: 2500,
+                                              animationType:
+                                                  AnimationType.easeOutBack,
+                                              value: doubleValue,
+                                              width: 0.15,
+                                              sizeUnit: GaugeSizeUnit.factor,
+                                              cornerStyle: CornerStyle.bothCurve,
+                                              gradient: const SweepGradient(
+                                                  colors: <Color>[
+                                                    Color(0xFF00a9b5),
+                                                    Colors.green,
+                                                  ],
+                                                  stops: <double>[
+                                                    0.25,
+                                                    0.75
+                                                  ])),
+                                        ],
+                                        annotations: <GaugeAnnotation>[
+                                          GaugeAnnotation(
+                                              positionFactor: 0.1,
+                                              angle: 90,
+                                              widget: Text.rich(TextSpan(
+                                                  text: snapshot.data.toString() !=
+                                                          "null"
+                                                      ? percentString
+                                                      : "0",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "%",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18),
+                                                    ),
+                                                  ])))
+                                        ])
+                                  ]);
+                              },
+                            )
+                        ),
                         Flexible(
                           flex: 2,
                           child: Container(

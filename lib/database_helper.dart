@@ -16,7 +16,7 @@ class DatabaseHelper {
       join(await getDatabasesPath(), "calendar.db"),
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE tasks (id INTEGER PRIMARY KEY, Activity TEXT, Focus TEXT, SetCount INTEGER, $columnDate TIMESTAMP DEFAULT (datetime('now','localtime')))",
+          "CREATE TABLE workout (id INTEGER PRIMARY KEY, Activity TEXT, Focus TEXT, SetCount INTEGER, $columnDate TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
           "CREATE TABLE progress (id INTEGER PRIMARY KEY, BodyPart TEXT, Center REAL, Left REAL, Right REAL, $columnDate TIMESTAMP DEFAULT (datetime('now','localtime')))",
@@ -42,7 +42,7 @@ class DatabaseHelper {
   Future<int> insertActivity(Activities activities) async {
     int actID = 0;
     Database _db = await database();
-    await _db.insert("tasks", activities.toMap(),
+    await _db.insert("workout", activities.toMap(),
             conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
       actID = value;
     });
@@ -51,7 +51,7 @@ class DatabaseHelper {
 
   Future<List<Activities>> retrieveActivity() async {
     Database _db = await database();
-    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM tasks ORDER BY id DESC");
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM workout ORDER BY id DESC");
     return List.generate(activityMap.length, (index) {
       return Activities(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["Date"], setCount: activityMap[index]["SetCount"], focus: activityMap[index]["Focus"]);
     });
@@ -59,7 +59,7 @@ class DatabaseHelper {
 
   Future<String> retrieveFocus(String event) async {
     Database _db = await database();
-    var response = await _db.rawQuery("SELECT Focus FROM tasks WHERE Activity = '$event'");
+    var response = await _db.rawQuery("SELECT Focus FROM workout WHERE Activity = '$event'");
     String focus;
     if(response.length > 0) {
       focus = response.last.values.toString().substring(1, response.last.values.toString().length-1);
@@ -202,6 +202,17 @@ class DatabaseHelper {
       //theWater.substring(2);
     }
     return theSupp;
+  }
+
+  Future<String> retrieveWorkoutCount() async {
+    String theWorkoutCount;
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT COUNT (*) FROM workout WHERE DATE(Date) = DATE('now','localtime')");
+    if(response.length > 0) {
+      theWorkoutCount= response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      //theWater.substring(2);
+    }
+    return theWorkoutCount;
   }
 
 }
