@@ -1,4 +1,4 @@
-package com.mindscape.calendar;
+package com.mindscape.healthful;
 
 import io.flutter.embedding.android.FlutterActivity;
 
