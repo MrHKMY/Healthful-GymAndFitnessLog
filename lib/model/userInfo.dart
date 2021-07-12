@@ -5,8 +5,11 @@ class UserInfo {
   final int age;
   final double height;
   final String goals;
+  final int workCount;
+  final int waterCount;
+  final int suppCount;
 
-  UserInfo({this.id, this.name, this.gender, this.age, this.height, this.goals});
+  UserInfo({this.id, this.name, this.gender, this.age, this.height, this.goals, this.workCount, this.waterCount, this.suppCount});
 
   Map<String, dynamic> toMap() {
     return{
@@ -15,7 +18,10 @@ class UserInfo {
       "Gender" : gender,
       "Age" : age,
       "Height" : height,
-      "Goals" : goals
+      "Goals" : goals,
+      "WorkoutCount" : workCount,
+      "WaterCount" : waterCount,
+      "SupplementCount" : suppCount
     };
   }
 

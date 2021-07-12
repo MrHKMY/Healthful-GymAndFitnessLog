@@ -22,7 +22,7 @@ class DatabaseHelper {
           "CREATE TABLE progress (id INTEGER PRIMARY KEY, BodyPart TEXT, Center REAL, Left REAL, Right REAL, $columnDate TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
-          "CREATE TABLE userInfo (id INTEGER PRIMARY KEY, Name TEXT, Gender TEXT, Age INTEGER, Height REAL, Goals TEXT)",
+          "CREATE TABLE userInfo (id INTEGER PRIMARY KEY, Name TEXT, Gender TEXT, Age INTEGER, Height REAL, Goals TEXT, WorkoutCount INTEGER, WaterCount INTEGER, SupplementCount INTEGER)",
         );
         await db.execute(
           "CREATE TABLE water (id INTEGER PRIMARY KEY, Litre INTEGER, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
@@ -142,6 +142,39 @@ class DatabaseHelper {
       //theName.substring(2);
     }
     return theName;
+  }
+
+  Future<String> retrieveUserInfoWorkCount() async {
+    Database _db = await database();
+    String workout;
+    var response = await _db.rawQuery("SELECT WorkoutCount FROM userInfo");
+    if(response.length > 0) {
+      workout =
+          response.last.values.toString().substring(1, response.last.values.toString().length - 1);
+    }
+    return workout;
+  }
+
+  Future<String> retrieveUserInfoWaterCount() async {
+    Database _db = await database();
+    String water;
+    var response = await _db.rawQuery("SELECT WaterCount FROM userInfo");
+    if(response.length > 0) {
+      water =
+          response.last.values.toString().substring(1, response.last.values.toString().length - 1);
+    }
+    return water;
+  }
+
+  Future<String> retrieveUserInfoSupplementCount() async {
+    Database _db = await database();
+    String supplement;
+    var response = await _db.rawQuery("SELECT SupplementCount FROM userInfo");
+    if(response.length > 0) {
+      supplement =
+          response.last.values.toString().substring(1, response.last.values.toString().length - 1);
+    }
+    return supplement;
   }
 
   Future<int> insertWater(Water water) async {

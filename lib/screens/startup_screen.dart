@@ -4,10 +4,12 @@ import 'package:calendar/database_helper.dart';
 import 'package:calendar/main.dart';
 import 'package:calendar/model/userInfo.dart';
 import 'package:calendar/route_animation.dart';
+import 'package:calendar/screens/startup/freq_workout.dart';
 import 'package:cupertino_radio_choice/cupertino_radio_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StartUpScreen extends StatefulWidget {
   @override
@@ -437,10 +439,17 @@ class _StartUpScreenState extends State<StartUpScreen> {
                             gender: _selectedGender,
                             height: double.parse(heightInputController.text),
                             goals: _chosenValue,
+                            workCount: 5,
+                            waterCount: 8,
+                            suppCount: 4
                             //bodyPart: part,
                             //center: double.parse(weightInputController.text),
                           );
                           //date: a.substring(0, 10));
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          //prefs.setString("prefWork", "10");
+                          prefs.setString("prefWater", "10");
+                          prefs.setString("prefSupp", "5");
                           _userInfo = await _dbHelper.insertInfo(_newInfo);
                           setState(() {
                             //getProgress(part);
@@ -450,8 +459,9 @@ class _StartUpScreenState extends State<StartUpScreen> {
                             //Navigator.of(context).pop();
                             //TODO get user workout frequency per week to be use for the charts
 
+                            //TODO change navigator type to push
                             Navigator.of(context).pushReplacement(new ScaleRoute(
-                                page: new ProvidedStylesExample()));
+                                page: new FreqWorkout()));
                             //Navigator.pop(context, SlideRightRoute(page: ProfileScreen()));
                           });
                         },

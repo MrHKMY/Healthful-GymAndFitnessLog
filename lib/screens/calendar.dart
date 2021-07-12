@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/activities.dart';
 import 'package:calendar/model/nutrition.dart';
+import 'package:calendar/model/userInfo.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,11 +49,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
   int counter = 0;
   double waterCount;
   String waterCountString;
-  double workoutGoals = 0;
   var iconColor;
   String quotes = "a";
   String selected;
   String _chosenValue;
+
+  String prefWaterString;
+  double prefWaterDouble = 20;
+  String prefWorkString;
+  double prefWorkDouble = 20;
+  String prefSuppString;
+  double prefSuppDouble = 20;
+
 
   var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
@@ -96,6 +104,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   prefsData() async {
     prefs = await SharedPreferences.getInstance();
+    prefWorkString = prefs.getString('prefWork');
+    prefWaterString = prefs.getString('prefWater');
+    prefSuppString = prefs.getString('prefSupp');
+
+    prefWorkDouble = double.parse(prefWorkString);
+    prefWaterDouble = double.parse(prefWaterString);
+    prefSuppDouble = double.parse(prefSuppString);
+
     setState(() {
       _events = Map<DateTime, List<dynamic>>.from(
           decodeMap(json.decode(prefs.getString("events") ?? "{}")));
@@ -121,10 +137,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Future<double> getTotalWater() async {
     waterCountString = await _dbHelper.retrieveWater();
-    print(waterCountString);
-    waterCount =
-        waterCountString != "null" ? double.parse(waterCountString) : 0;
-    print(waterCount);
+    print("Water count: $waterCountString");
+    waterCount = waterCountString != "null" ? double.parse(waterCountString) : 0;
     return waterCount;
   }
 
@@ -140,6 +154,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
@@ -246,8 +261,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     : "0";
                                 var doubleValue = double.parse(a);
                                 //TODO Get user's weekly workout frequencies
-                                var percentage = num.parse(((doubleValue/5)*100).toStringAsFixed(1));
+                                var percentage = num.parse(((doubleValue/prefWorkDouble)*100).toStringAsFixed(0));
                                 String percentString = percentage.toString();
+                                // switch (snapshot.connectionState) {
+                                // // Uncompleted State
+                                // case ConnectionState.none:
+                                // case ConnectionState.waiting:
+                                // return Center(child: CircularProgressIndicator());
+                                // break;
+                                // default:
+                                // // Completed with error
+                                // if (snapshot.hasError)
+                                // return Container(
+                                // child: Text("?",style: TextStyle(color: Colors.grey)));
                               return SfRadialGauge(
                                   enableLoadingAnimation: true,
                                   animationDuration: 2500,
@@ -259,7 +285,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     RadialAxis(
                                         minimum: 0,
                                         //TODO Get user's weekly workout frequencies
-                                        maximum: 5,
+                                        maximum: prefWorkDouble,
                                         showLabels: false,
                                         showTicks: false,
                                         radiusFactor: 1,
@@ -312,7 +338,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                   ])))
                                         ])
                                   ]);
-                              },
+                              }
                             )
                         ),
                         Flexible(
@@ -350,7 +376,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 ),
                                               ),
                                               //TODO Get user's water intake frequencies
-                                              TextSpan(text: " / 15")
+                                              TextSpan(text: " / $prefWaterString")
                                             ]));
                                       }),
                                   FutureBuilder(
@@ -365,7 +391,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         return SfLinearGauge(
                                           minimum: 0,
                                           //TODO Get user's water intake frequencies
-                                          maximum: 15,
+                                          maximum: prefWaterDouble,
                                           showAxisTrack: true,
                                           showTicks: false,
                                           showLabels: false,
@@ -457,7 +483,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 ),
                                               ),
                                               //TODO Get user's daily supplement intake frequency
-                                              TextSpan(text: " / 6")
+                                              TextSpan(text: " / $prefSuppString")
                                             ]));
                                       }),
                                   SizedBox(

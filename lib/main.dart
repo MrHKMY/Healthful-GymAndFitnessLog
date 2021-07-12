@@ -3,6 +3,7 @@ import 'package:calendar/screens/profile_screen.dart';
 import 'package:calendar/screens/calendar.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:calendar/screens/progress.dart';
+import 'package:calendar/screens/startup/freq_workout.dart';
 import 'package:calendar/screens/startup_screen.dart';
 import 'package:calendar/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,14 +44,17 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
 
-    if (_seen) {
-      Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new ProvidedStylesExample()));
-    } else {
-      await prefs.setBool('seen', true);
-      Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new StartUpScreen()));
-    }
+    Navigator.of(context).pushReplacement(
+        new MaterialPageRoute(builder: (context) => new FreqWorkout()));
+
+    // if (_seen) {
+    //   Navigator.of(context).pushReplacement(
+    //       new MaterialPageRoute(builder: (context) => new ProvidedStylesExample()));
+    // } else {
+    //   await prefs.setBool('seen', true);
+    //   Navigator.of(context).pushReplacement(
+    //       new MaterialPageRoute(builder: (context) => new StartUpScreen()));
+    // }
   }
 
   @override
