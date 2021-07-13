@@ -1,4 +1,4 @@
-import 'package:calendar/screens/startup/freq_water.dart';
+import 'package:calendar/screens/startup/supplement_ask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,12 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:calendar/main.dart';
 import 'package:calendar/route_animation.dart';
 
-class FreqWorkout extends StatefulWidget {
+class FreqSupplement extends StatefulWidget {
   @override
-  _FreqWorkoutState createState() => _FreqWorkoutState();
+  _FreqSupplementState createState() => _FreqSupplementState();
 }
 
-class _FreqWorkoutState extends State<FreqWorkout> {
+class _FreqSupplementState extends State<FreqSupplement> {
   TextEditingController numberController;
   String theInput;
   String selected = "null";
@@ -35,7 +35,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                   SizedBox(height: 100),
                   Center(
                     child: Text(
-                      "Your weekly workout target :",
+                      "Your daily supplements target :",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -49,7 +49,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        selected = '2';
+                        selected = '8';
                         numberController.clear();
                       });
                     },
@@ -61,16 +61,16 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                         color: Color(0xFF1F3546),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            width: selected == '2' ? 3 : 1,
-                            color: selected == '2' ? Colors.teal : Colors.grey),
+                            width: selected == '8' ? 3 : 1,
+                            color: selected == '8' ? Colors.teal : Colors.grey),
                       ),
                       child: Center(
                         child: Text(
-                          "2 Days a Week",
+                          "8 Glasses (Minimum)",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: selected == '2' ? Colors.teal : Colors.grey),
+                              color: selected == '8' ? Colors.teal : Colors.grey),
                         ),
                       ),
                     ),
@@ -81,7 +81,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        selected = '4';
+                        selected = '9';
                         numberController.clear();
                       });
                     },
@@ -93,16 +93,16 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                         color: Color(0xFF1F3546),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            width: selected == '4' ? 3 : 1,
-                            color: selected == '4' ? Colors.teal : Colors.grey),
+                            width: selected == '9' ? 3 : 1,
+                            color: selected == '9' ? Colors.teal : Colors.grey),
                       ),
                       child: Center(
                         child: Text(
-                          "4 Days a Week",
+                          "9 Glasses (Recommended For Women)",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: selected == '4' ? Colors.teal : Colors.grey),
+                              color: selected == '9' ? Colors.teal : Colors.grey),
                         ),
                       ),
                     ),
@@ -113,7 +113,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        selected = '6';
+                        selected = '13';
                         numberController.clear();
                       });
                     },
@@ -125,16 +125,16 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                         color: Color(0xFF1F3546),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          width: selected == '6' ? 3 : 1,
-                            color: selected == '6' ? Colors.teal : Colors.grey),
+                            width: selected == '13' ? 3 : 1,
+                            color: selected == '13' ? Colors.teal : Colors.grey),
                       ),
                       child: Center(
                         child: Text(
-                          "6 Days a Week",
+                          "13 Glasses (Recommended For Men)",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: selected == '6' ? Colors.teal : Colors.grey),
+                              color: selected == '13' ? Colors.teal : Colors.grey),
                         ),
                       ),
                     ),
@@ -205,10 +205,10 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                           if(selected != "null"){
                             print("Done selected : $selected");
                             SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString("prefWork", selected);
+                            await SharedPreferences.getInstance();
+                            prefs.setString("prefWater", selected);
                             Navigator.of(context).push(
-                                new ScaleRoute(page: new FreqWater()));
+                                new ScaleRoute(page: new SuppAsk()));
                           }
                           // //TODO make sure only the last page use this pushReplacement
                           // Navigator.of(context).pushReplacement(
