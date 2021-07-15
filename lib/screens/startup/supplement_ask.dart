@@ -128,14 +128,8 @@ class _SuppAskState extends State<SuppAsk> {
                               Navigator.of(context).push(
                                   new ScaleRoute(page: new FreqSupplement()));
                             } else {
-                              //TODO pushReplacement does not delete the other before (water & workout)
-                              Navigator.of(context).pushReplacement(
-                                  new ScaleRoute(page: new ProvidedStylesExample()));
+                              Navigator.of(context).pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
                             }
-                            // SharedPreferences prefs =
-                            // await SharedPreferences.getInstance();
-                            // prefs.setString("prefWater", selected);
-
                           }
                         }),
                   )

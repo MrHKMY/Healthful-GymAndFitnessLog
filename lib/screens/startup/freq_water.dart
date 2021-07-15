@@ -151,14 +151,6 @@ class _FreqWaterState extends State<FreqWater> {
                     ),
                     decoration: BoxDecoration(
                       color: Color(0xFF1F3546),
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     color: Color(0xFF30A9B2),
-                      //     spreadRadius: 1,
-                      //     blurRadius: 1,
-                      //     offset: Offset(2, 2),
-                      //   ),
-                      //],
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
                       ),
@@ -210,9 +202,6 @@ class _FreqWaterState extends State<FreqWater> {
                             Navigator.of(context).push(
                                 new ScaleRoute(page: new SuppAsk()));
                           }
-                          // //TODO make sure only the last page use this pushReplacement
-                          // Navigator.of(context).pushReplacement(
-                          //     new ScaleRoute(page: new ProvidedStylesExample()));
                         }),
                   )
                 ],
