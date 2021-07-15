@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       home: Splash(),
       initialRoute: "/",
       routes: {
+        '/home': (context) => ProvidedStylesExample(),
         '/first': (context) => HistoryScreen(),
         '/second': (context) => ProgressScreen()
       },
