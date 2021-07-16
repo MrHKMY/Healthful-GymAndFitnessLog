@@ -83,7 +83,7 @@ class _FreqSupplementState extends State<FreqSupplement> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18.0,
+                            fontSize: 24.0,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

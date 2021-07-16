@@ -4,6 +4,7 @@ import 'package:calendar/screens/calendar.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:calendar/screens/progress.dart';
 import 'package:calendar/screens/startup/freq_workout.dart';
+import 'package:calendar/screens/startup/name_startup.dart';
 import 'package:calendar/screens/startup_screen.dart';
 import 'package:calendar/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,7 +47,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
     bool _seen = (prefs.getBool('seen') ?? false);
 
     Navigator.of(context).pushReplacement(
-        new MaterialPageRoute(builder: (context) => new FreqWorkout()));
+        new MaterialPageRoute(builder: (context) => new NameAsk()));
 
     // if (_seen) {
     //   Navigator.of(context).pushReplacement(

@@ -199,7 +199,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                                 await SharedPreferences.getInstance();
                             prefs.setString("prefWork", selected);
                             Navigator.of(context).push(
-                                new ScaleRoute(page: new FreqWater()));
+                                new SlideRightRoute(page: new FreqWater()));
                           }
                         }),
                   )

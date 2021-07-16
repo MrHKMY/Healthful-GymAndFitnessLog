@@ -13,8 +13,9 @@ class FreqWater extends StatefulWidget {
 
 class _FreqWaterState extends State<FreqWater> {
   TextEditingController numberController;
-  String theInput;
+  String theInput = "null";
   String selected = "null";
+  int number = 0;
 
   @override
   void initState() {
@@ -189,18 +190,21 @@ class _FreqWaterState extends State<FreqWater> {
                             elevation: 5),
                         onPressed: () async {
                           theInput = numberController.text.toString();
+                          if(theInput != "null") {
+                            number = int.parse(theInput);
+                          }
 
                           if (numberController.text.isNotEmpty) {
                             selected = numberController.text;
                           }
 
-                          if(selected != "null"){
+                          if(selected != "null" && number > 0){
                             print("Done selected : $selected");
                             SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                             prefs.setString("prefWater", selected);
                             Navigator.of(context).push(
-                                new ScaleRoute(page: new SuppAsk()));
+                                new SlideRightRoute(page: new SuppAsk()));
                           }
                         }),
                   )
