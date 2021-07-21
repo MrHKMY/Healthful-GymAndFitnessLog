@@ -12,13 +12,11 @@ class SuppAsk extends StatefulWidget {
 }
 
 class _SuppAskState extends State<SuppAsk> {
-  TextEditingController numberController;
   String theInput;
   String selected = "null";
 
   @override
   void initState() {
-    numberController = TextEditingController();
     super.initState();
   }
 
@@ -50,7 +48,6 @@ class _SuppAskState extends State<SuppAsk> {
                     onTap: () {
                       setState(() {
                         selected = 'Yes';
-                        numberController.clear();
                       });
                     },
                     child: Container(
@@ -82,7 +79,6 @@ class _SuppAskState extends State<SuppAsk> {
                     onTap: () {
                       setState(() {
                         selected = 'No';
-                        numberController.clear();
                       });
                     },
                     child: Container(
@@ -126,8 +122,11 @@ class _SuppAskState extends State<SuppAsk> {
                             print("Done selected : $selected");
                             if( selected == "Yes") {
                               Navigator.of(context).push(
-                                  new ScaleRoute(page: new FreqSupplement()));
+                                  new SlideRightRoute(page: new FreqSupplement()));
                             } else {
+                              SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                              prefs.setString("prefSupp", "0");
                               Navigator.of(context).pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
                             }
                           }

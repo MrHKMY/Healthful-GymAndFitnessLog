@@ -440,7 +440,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 //center: double.parse(weightInputController.text),
                               );
                               //date: a.substring(0, 10));
-                              _userInfo = await _dbHelper.updateInfo(_newInfo);
+                              _userInfo = await _dbHelper.updateAgeInfo(1,2);
                               setState(() {
                                 //getProgress(part);
                                 nameInputController.clear();

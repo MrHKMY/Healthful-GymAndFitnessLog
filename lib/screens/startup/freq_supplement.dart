@@ -83,7 +83,7 @@ class _FreqSupplementState extends State<FreqSupplement> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18.0,
+                            fontSize: 24.0,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -129,6 +129,7 @@ class _FreqSupplementState extends State<FreqSupplement> {
                             shadowColor: Colors.black,
                             elevation: 5),
                         onPressed: () async {
+
 
                           if(counter != 0){
                             print("Done selected : $counter");
