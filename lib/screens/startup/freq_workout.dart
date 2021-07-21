@@ -15,6 +15,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
   TextEditingController numberController;
   String theInput;
   String selected = "null";
+  int number = 1;
 
   @override
   void initState() {
@@ -188,12 +189,15 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                             elevation: 5),
                         onPressed: () async {
                           theInput = numberController.text.toString();
+                          if(theInput != "") {
+                            number = int.parse(theInput);
+                          }
 
                           if (numberController.text.isNotEmpty) {
                             selected = numberController.text;
                           }
 
-                          if(selected != "null"){
+                          if(selected != "null" && number > 0){
                             print("Done selected : $selected");
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();

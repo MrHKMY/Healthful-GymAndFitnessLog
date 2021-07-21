@@ -108,6 +108,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     prefWaterString = prefs.getString('prefWater');
     prefSuppString = prefs.getString('prefSupp');
 
+    //TODO remove the first 0 if exist eg : 01 for water and supp
     prefWorkDouble = double.parse(prefWorkString);
     prefWaterDouble = double.parse(prefWaterString);
     prefSuppDouble = double.parse(prefSuppString);

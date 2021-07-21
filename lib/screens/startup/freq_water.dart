@@ -13,9 +13,9 @@ class FreqWater extends StatefulWidget {
 
 class _FreqWaterState extends State<FreqWater> {
   TextEditingController numberController;
-  String theInput = "null";
+  String theInput;
   String selected = "null";
-  int number = 0;
+  int number = 1;
 
   @override
   void initState() {
@@ -190,7 +190,7 @@ class _FreqWaterState extends State<FreqWater> {
                             elevation: 5),
                         onPressed: () async {
                           theInput = numberController.text.toString();
-                          if(theInput != "null") {
+                          if(theInput != "") {
                             number = int.parse(theInput);
                           }
 

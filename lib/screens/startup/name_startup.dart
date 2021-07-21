@@ -1,5 +1,6 @@
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/userInfo.dart';
+import 'package:calendar/screens/startup/age_startup.dart';
 import 'package:calendar/screens/startup/freq_supplement.dart';
 import 'package:calendar/screens/startup/freq_workout.dart';
 import 'package:flutter/material.dart';
@@ -210,7 +211,7 @@ class _NameAskState extends State<NameAsk> {
                             print(nameController.text);
                             print(_selectedGender);
                             Navigator.of(context).push(
-                                new SlideRightRoute(page: new FreqWorkout()));
+                                new SlideRightRoute(page: new AgeAsk()));
                           }
                         }),
                   )

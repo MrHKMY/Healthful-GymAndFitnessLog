@@ -126,11 +126,13 @@ class DatabaseHelper {
     return infoID;
   }
 
-  Future<int> updateInfo(UserInfo userInfo) async {
+  Future<int> updateAgeInfo(int age, double height) async {
     Database _db = await database();
-    await _db.update("userInfo", userInfo.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
-    });
+    // await _db.update("userInfo", userInfo.toMap(),
+    //     conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+    // });
+    
+    await _db.rawUpdate("UPDATE userInfo SET Age = $age, Height = $height");
   }
 
   Future<String> retrieveUserInfo(String info) async {
