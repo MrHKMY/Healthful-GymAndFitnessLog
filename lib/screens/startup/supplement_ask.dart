@@ -119,7 +119,7 @@ class _SuppAskState extends State<SuppAsk> {
                         onPressed: () async {
 
                           if(selected != "null"){
-                            print("Done selected : $selected");
+                            print("Supplement : $selected");
                             if( selected == "Yes") {
                               Navigator.of(context).push(
                                   new SlideRightRoute(page: new FreqSupplement()));

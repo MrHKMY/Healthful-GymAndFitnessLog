@@ -132,7 +132,7 @@ class _FreqSupplementState extends State<FreqSupplement> {
 
 
                           if(counter != 0){
-                            print("Done selected : $counter");
+                            print("Supplement count : $counter");
                             selected = counter.toString();
                             SharedPreferences prefs =
                             await SharedPreferences.getInstance();

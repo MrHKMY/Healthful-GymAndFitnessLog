@@ -2,6 +2,7 @@ import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/userInfo.dart';
 import 'package:calendar/screens/startup/freq_supplement.dart';
 import 'package:calendar/screens/startup/freq_workout.dart';
+import 'package:calendar/screens/startup/goals_startup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +49,7 @@ class _AgeAskState extends State<AgeAsk> {
                   SizedBox(height: 100),
                   Center(
                     child: Text(
-                      "Create your profile :",
+                      "",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -77,6 +78,7 @@ class _AgeAskState extends State<AgeAsk> {
                       //textAlign: TextAlign.center,
                       controller: ageController,
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         labelText: "Age :",
                         labelStyle: TextStyle(color: Colors.grey),
@@ -111,12 +113,13 @@ class _AgeAskState extends State<AgeAsk> {
                       //textAlign: TextAlign.center,
                       controller: heightController,
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
                         labelText: "Height (meter) :",
                         labelStyle: TextStyle(color: Colors.grey),
                       ),
                       inputFormatters: [
-                        FilteringTextInputFormatter.singleLineFormatter,
+                        //FilteringTextInputFormatter.singleLineFormatter,
                         FilteringTextInputFormatter.deny(RegExp('[, -]')),
                       ],
                       style: TextStyle(color: Colors.white),
@@ -149,9 +152,8 @@ class _AgeAskState extends State<AgeAsk> {
                             //   height: _height,
                             // );
                             await _dbHelper.updateAgeInfo(_age, _height);
-
                             Navigator.of(context).push(
-                                new SlideRightRoute(page: new FreqWorkout()));
+                                new SlideRightRoute(page: new GoalsAsk()));
                           }
                         }),
                   )
