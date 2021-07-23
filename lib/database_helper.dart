@@ -135,6 +135,15 @@ class DatabaseHelper {
     await _db.rawUpdate("UPDATE userInfo SET Age = $age, Height = $height");
   }
 
+  Future<void> updateGoalsInfo(String goal) async {
+    Database _db = await database();
+    // await _db.update("userInfo", userInfo.toMap(),
+    //     conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+    // });
+
+    await _db.rawUpdate("UPDATE userInfo SET Goals = '$goal'");
+  }
+
   Future<String> retrieveUserInfo(String info) async {
     String theName;
     Database _db = await database();

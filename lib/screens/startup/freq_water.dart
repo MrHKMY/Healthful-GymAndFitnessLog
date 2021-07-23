@@ -199,7 +199,7 @@ class _FreqWaterState extends State<FreqWater> {
                           }
 
                           if(selected != "null" && number > 0){
-                            print("Done selected : $selected");
+                            print("Water target: $selected");
                             SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                             prefs.setString("prefWater", selected);

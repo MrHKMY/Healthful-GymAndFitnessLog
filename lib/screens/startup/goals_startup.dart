@@ -1,4 +1,7 @@
-import 'package:calendar/screens/startup/freq_water.dart';
+import 'package:calendar/database_helper.dart';
+import 'package:calendar/model/userInfo.dart';
+import 'package:calendar/screens/startup/freq_supplement.dart';
+import 'package:calendar/screens/startup/freq_workout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,21 +9,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:calendar/main.dart';
 import 'package:calendar/route_animation.dart';
 
-class FreqWorkout extends StatefulWidget {
+import 'package:calendar/screens/startup/freq_water.dart';
+
+class GoalsAsk extends StatefulWidget {
   @override
-  _FreqWorkoutState createState() => _FreqWorkoutState();
+  _GoalsAskState createState() => _GoalsAskState();
 }
 
-class _FreqWorkoutState extends State<FreqWorkout> {
-  TextEditingController numberController;
-  String theInput;
+class _GoalsAskState extends State<GoalsAsk> {
+  String ageInput, heightInput;
   String selected = "null";
-  int number = 1;
+  String goals;
+  DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
   void initState() {
-    numberController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -36,7 +45,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                   SizedBox(height: 100),
                   Center(
                     child: Text(
-                      "Your weekly workout target :",
+                      "Workout Goals :",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -50,11 +59,41 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        selected = '2';
-                        numberController.clear();
+                        selected = '1';
                       });
                     },
                     child: Container(
+                      width: 350,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1F3546),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            width: selected == '1' ? 3 : 1,
+                            color: selected == '1' ? Colors.teal : Colors.grey),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Lose Fat",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: selected == '1' ? Colors.teal : Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selected = '2';
+                      });
+                    },
+                    child: Container(
+                      //padding: EdgeInsets.all(10),
                       width: 350,
                       height: 60,
                       decoration: BoxDecoration(
@@ -66,7 +105,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                       ),
                       child: Center(
                         child: Text(
-                          "2 Days a Week",
+                          "Gain Muscle",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -81,8 +120,38 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
+                        selected = '3';
+                      });
+                    },
+                    child: Container(
+                      //padding: EdgeInsets.all(10),
+                      width: 350,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1F3546),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            width: selected == '3' ? 3 : 1,
+                            color: selected == '3' ? Colors.teal : Colors.grey),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Increase Body Strength",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: selected == '3' ? Colors.teal : Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
                         selected = '4';
-                        numberController.clear();
                       });
                     },
                     child: Container(
@@ -98,7 +167,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                       ),
                       child: Center(
                         child: Text(
-                          "4 Days a Week",
+                          "Increase Overall Fitness",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -113,8 +182,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        selected = '6';
-                        numberController.clear();
+                        selected = '5';
                       });
                     },
                     child: Container(
@@ -125,53 +193,18 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                         color: Color(0xFF1F3546),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          width: selected == '6' ? 3 : 1,
-                            color: selected == '6' ? Colors.teal : Colors.grey),
+                            width: selected == '5' ? 3 : 1,
+                            color: selected == '5' ? Colors.teal : Colors.grey),
                       ),
                       child: Center(
                         child: Text(
-                          "6 Days a Week",
+                          "Increase Cardio Resistance",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: selected == '6' ? Colors.teal : Colors.grey),
+                              color: selected == '5' ? Colors.teal : Colors.grey),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    width: 300,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF1F3546),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    child: TextField(
-                      onTap: () {
-                        setState(() {
-                          selected = 'null';
-                        });
-                      },
-                      textAlign: TextAlign.center,
-                      controller: numberController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: "Enter your own preference",
-                        hintStyle: TextStyle(color: Colors.grey),
-                      ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                      ],
-                      style: TextStyle(color: Colors.white),
                     ),
                   ),
 
@@ -188,24 +221,35 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                             shadowColor: Colors.black,
                             elevation: 5),
                         onPressed: () async {
-                          theInput = numberController.text.toString();
-                          if(theInput != "") {
-                            number = int.parse(theInput);
+
+                          switch (selected){
+                            case "1":
+                              goals = "Lose Fat";
+                              break;
+                            case "2" :
+                              goals = "Gain Muscle";
+                              break;
+                            case "3" :
+                              goals = "Increase Body Strength";
+                              break;
+                            case "4" :
+                              goals = "Increase Overall Fitness";
+                              break;
+                            case "5" :
+                              goals = "Increase Cardio Resistance";
+                              break;
                           }
 
-                          if (numberController.text.isNotEmpty) {
-                            selected = numberController.text;
-                          }
-
-                          if(selected != "null" && number > 0){
-                            print("Workout target : $selected");
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString("prefWork", selected);
+                          if (selected != "null") {
+                            print("Goals : $goals");
+                            _dbHelper.updateGoalsInfo(goals);
                             Navigator.of(context).push(
-                                new SlideRightRoute(page: new FreqWater()));
+                                new SlideRightRoute(page: new FreqWorkout()));
+
                           }
-                        }),
+
+                          }
+                    ),
                   )
                 ],
               ),
