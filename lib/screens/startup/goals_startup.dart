@@ -212,14 +212,19 @@ class _GoalsAskState extends State<GoalsAsk> {
                     height: 50,
                   ),
 
-                  Container(
+                  Container(width: 300,
+                    height: 40,
                     child: TextButton(
-                        child: Text("Save"),
-                        style: TextButton.styleFrom(
-                            primary: Colors.white,
-                            backgroundColor: Colors.green,
-                            shadowColor: Colors.black,
-                            elevation: 5),
+                        child: Text("Save", style: TextStyle( color: Colors.white),),
+                        style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(5),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                )
+                            )
+                        ),
                         onPressed: () async {
 
                           switch (selected){

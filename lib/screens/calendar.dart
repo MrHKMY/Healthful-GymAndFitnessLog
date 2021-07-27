@@ -104,6 +104,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   prefsData() async {
     prefs = await SharedPreferences.getInstance();
+    prefs.setBool('seen', true);
     prefWorkString = prefs.getString('prefWork');
     prefWaterString = prefs.getString('prefWater');
     prefSuppString = prefs.getString('prefSupp');
