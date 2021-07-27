@@ -45,6 +45,17 @@ class _NameAskState extends State<NameAsk> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  SizedBox(
+                    height: 50,
+                  ),
+                    Container(
+                      child: Image.asset(
+                        "assets/images/circle_icon.png",
+                        scale: 4,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      //width: width-20,
+                    ),
                   SizedBox(height: 100),
                   Center(
                     child: Text(
@@ -69,9 +80,7 @@ class _NameAskState extends State<NameAsk> {
                     decoration: BoxDecoration(
                       color: Color(0xFF1F3546),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: Colors.white,
-                      width: 2),
+                      border: Border.all(color: Colors.white, width: 2),
                     ),
                     child: TextField(
                       //textAlign: TextAlign.center,
@@ -192,26 +201,34 @@ class _NameAskState extends State<NameAsk> {
                     height: 50,
                   ),
                   Container(
+                    width: 300,
+                    height: 40,
                     child: TextButton(
-                        child: Text("Save"),
-                        style: TextButton.styleFrom(
-                            primary: Colors.white,
-                            backgroundColor: Colors.green,
-                            shadowColor: Colors.black,
-                            elevation: 5),
+                        child: Text(
+                          "Save",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(5),
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.green),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ))),
                         onPressed: () async {
                           theInput = nameController.text.trim();
-                          if (_selectedGender != "null" && theInput.isNotEmpty) {
-
+                          if (_selectedGender != "null" &&
+                              theInput.isNotEmpty) {
                             UserInfo _newInfo = UserInfo(
-                                name: theInput,
-                                gender: _selectedGender,
+                              name: theInput,
+                              gender: _selectedGender,
                             );
                             await _dbHelper.insertInfo(_newInfo);
                             print(nameController.text);
                             print(_selectedGender);
-                            Navigator.of(context).push(
-                                new SlideRightRoute(page: new AgeAsk()));
+                            Navigator.of(context)
+                                .push(new SlideRightRoute(page: new AgeAsk()));
                           }
                         }),
                   )
