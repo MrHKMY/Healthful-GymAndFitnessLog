@@ -50,7 +50,7 @@ class _NameAskState extends State<NameAsk> {
                   ),
                     Container(
                       child: Image.asset(
-                        "assets/images/circle_icon.png",
+                        "assets/images/circle_icon_transparent.png",
                         scale: 4,
                       ),
                       padding: EdgeInsets.symmetric(horizontal: 50),
