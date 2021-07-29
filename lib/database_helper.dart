@@ -57,6 +57,20 @@ class DatabaseHelper {
     });
   }
 
+  // Future<List<Activities>> getCharts() async {
+  //   var dbClient = await database;
+  //   List<Map> maps = await dbClient.query("workout",
+  //       columns: ['Date', 'SetCount']);
+  //   // Adding the fetched data to the list to bind to the chart.
+  //   List<Activities> students = [];
+  //   if (maps.length > 0) {
+  //     for (int i = 0; i < maps.length; i++) {
+  //       students.add(Activities.fromMap(maps[i] as Map<String, dynamic>));
+  //     }
+  //   }
+  //   return students;
+  // }
+
   Future<String> retrieveFocus(String event) async {
     Database _db = await database();
     var response = await _db.rawQuery("SELECT Focus FROM workout WHERE Activity = '$event'");
