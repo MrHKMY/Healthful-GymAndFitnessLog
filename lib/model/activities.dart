@@ -4,6 +4,7 @@ class Activities {
   final String focus;
   final int setCount;
   final String date;
+
   Activities({this.id, this.activity, this.focus, this.setCount, this.date});
 
   Map<String, dynamic> toMap() {

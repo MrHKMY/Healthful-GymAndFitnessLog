@@ -1,10 +1,13 @@
 import 'package:calendar/model/progress.dart';
+import 'package:calendar/screens/chart_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/widgets.dart';
+import 'package:calendar/route_animation.dart';
+
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({Key key}) : super(key: key);
@@ -283,6 +286,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     Scaffold.of(context).showSnackBar(
                         new SnackBar(content: new Text("Progress charts coming soon."),
                         duration: Duration(seconds: 2),));
+                    Navigator.of(context).push(
+                        new SlideRightRoute(page: new ChartScreen()));
                   },
                   child: Icon(Icons.bar_chart_rounded),
                 ),
