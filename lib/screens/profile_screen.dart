@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:calendar/database_helper.dart';
 
 import 'package:calendar/screens/edit_profile.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -417,34 +418,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 15,
                               ),
                               Text(
-                                "Body Mass Index (BMI)",
+                                "BMI",
                                 style: TextStyle(
                                     fontSize: 18,
                                     //fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ),
                               Spacer(),
+
+
                               FutureBuilder(
                                   future: getBmiValue(),
                                   builder: (context, snapshot) {
-    switch (snapshot.connectionState) {
-    // Uncompleted State
-      case ConnectionState.none:
-      case ConnectionState.waiting:
-        return Center(child: CircularProgressIndicator());
-        break;
-      default:
-      // Completed with error
-        if (snapshot.hasError)
-          return Container(
-              child: Text("?",style: TextStyle(color: Colors.grey)));
-        return Text(
-          snapshot.data.toString() != "null"
-              ? snapshot.data.toString()
-              : "?",
-          style: TextStyle(color: getColor(snapshot.data.toString())),
-        );
-    }}),
+                                    switch (snapshot.connectionState) {
+                                      // Uncompleted State
+                                      case ConnectionState.none:
+                                      case ConnectionState.waiting:
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                        break;
+                                      default:
+                                        // Completed with error
+                                        if (snapshot.hasError)
+                                          return Container(
+                                              child: Text("?",
+                                                  style: TextStyle(
+                                                      color: Colors.grey)));
+                                        return Flexible(
+                                          flex: 2,
+                                          child: Container(
+                                            width: 250,
+                                            child: SfLinearGauge(
+                                              minimum: 0,
+                                              maximum: 40,
+                                              showTicks: false,
+                                              showLabels: false,
+                                              axisTrackStyle:
+                                                  LinearAxisTrackStyle(
+                                                      thickness: 10,
+                                                      edgeStyle: LinearEdgeStyle
+                                                          .bothCurve),
+                                              ranges: [
+                                                LinearGaugeRange(
+                                                  startValue: 0,
+                                                  endValue: 18.5,
+                                                  color: Colors.lightBlueAccent,
+                                                ),
+                                                LinearGaugeRange(
+                                                  startValue: 18.5,
+                                                  endValue: 24.9,
+                                                  color: Colors.green,
+                                                ),
+                                                LinearGaugeRange(
+                                                  startValue: 25,
+                                                  endValue: 29.9,
+                                                  color: Colors.yellow,
+                                                ),
+                                                LinearGaugeRange(
+                                                  startValue: 30,
+                                                  endValue: 40,
+                                                  color: Colors.red,
+                                                )
+                                              ],
+                                              markerPointers: [
+                                                LinearShapePointer(
+                                                  value: double.parse(
+                                                      snapshot.data.toString()),
+                                                  shapeType: LinearShapePointerType.triangle,
+                                                  width: 10,
+                                                  height: 10,
+                                                  color: Colors.white,
+                                                  position: LinearElementPosition.cross,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                    }
+                                  }),
+                              FutureBuilder(
+                                  future: getBmiValue(),
+                                  builder: (context, snapshot) {
+                                    switch (snapshot.connectionState) {
+                                    // Uncompleted State
+                                      case ConnectionState.none:
+                                      case ConnectionState.waiting:
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                        break;
+                                      default:
+                                      // Completed with error
+                                        if (snapshot.hasError)
+                                          return Container(
+                                              child: Text("?",
+                                                  style: TextStyle(
+                                                      color: Colors.grey)));
+                                        return Text(
+                                          snapshot.data.toString() != "null"
+                                              ? snapshot.data.toString()
+                                              : "?",
+                                          style: TextStyle(
+                                              color: getColor(
+                                                  snapshot.data.toString())),
+                                        );
+                                    }
+                                  }),
                             ],
                           ),
                           SizedBox(
@@ -454,10 +532,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onTap: () {
                               //_showDialog("Info");
                               //TODO remove below navigator if possible
-                              Navigator.push(context,MaterialPageRoute(builder: (context) => EditProfileScreen())).then((value) { setState(() {});
-
-                              },
-                              );},
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          EditProfileScreen())).then(
+                                (value) {
+                                  setState(() {});
+                                },
+                              );
+                            },
                             child: Row(
                               children: [
                                 SizedBox(
@@ -541,7 +625,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Progress _newProgress = Progress(
                       bodyPart: part,
                       center: double.parse(weightInputController.text),
-                        //date: a.substring(0, 10));
+                      //date: a.substring(0, 10));
                     );
                     //date: a.substring(0, 10));
                     _progressID = await _dbHelper.insertProgress(_newProgress);
@@ -558,9 +642,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   getColor(String bmi) {
     double a = double.parse(bmi);
-    if (a < 18.5) return Colors.orange;
+    if (a < 18.5) return Colors.lightBlueAccent;
     if (a >= 18.5 && a <= 24.9) return Colors.green;
     if (a >= 25.0 && a <= 29.9) return Colors.yellow;
-    if (a >= 30 ) return Colors.red;
+    if (a >= 30) return Colors.red;
   }
 }
