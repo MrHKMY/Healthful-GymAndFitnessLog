@@ -283,9 +283,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 child: FloatingActionButton(
                   //todo(3) create fab to open new charts screen
                   onPressed: () {
-                    Scaffold.of(context).showSnackBar(
-                        new SnackBar(content: new Text("Progress charts coming soon."),
-                        duration: Duration(seconds: 2),));
                     Navigator.of(context).push(
                         new SlideRightRoute(page: new ChartScreen()));
                   },

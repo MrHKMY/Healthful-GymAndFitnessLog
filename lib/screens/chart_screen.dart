@@ -1,10 +1,11 @@
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/activities.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:slimy_card/slimy_card.dart';
 
 class ChartScreen extends StatefulWidget {
   @override
@@ -47,9 +48,11 @@ class _ChartScreenState extends State<ChartScreen> {
   Widget build(BuildContext context) {
     //getData();
 
+    List allCharts = [weightChart(), chestChart(), bicepsChart(), foreArmChart(), waistChart()];
+
     return Scaffold(
         appBar: AppBar(
-          title: Text("Progress Tracker"),
+          title: Text("All-time Charts"),
           elevation: 10,
           centerTitle: true,
           backgroundColor: Color(0xFF1F3546),
@@ -61,140 +64,616 @@ class _ChartScreenState extends State<ChartScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: SafeArea(
-            child: SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 5, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF1F3546),
-                      borderRadius: BorderRadius.circular(20)),
-                  margin: EdgeInsets.only(
-                      left: 10, right: 10, bottom: 5, top: 10),
-                  child: Column(
-                    children: [
-                  // Container(
-                  //     width: 350,
-                  //     height: 250,
-                  //     padding:
-                  //         EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  //     decoration: BoxDecoration(
-                  //         color: Color(0xFF1F3546),
-                  //         borderRadius: BorderRadius.circular(20)),
-                  //     margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
-                  //     child: SfCartesianChart(
-                  //         series: <ChartSeries<Activities, num>>[
-                  //           SplineSeries<Activities, num>(
-                  //               xAxisName: "Test",
-                  //               cardinalSplineTension: 20,
-                  //               color: Colors.green,
-                  //               animationDuration: 2,
-                  //               dataSource: activity,
-                  //               xValueMapper: (Activities sales, _) =>
-                  //                   sales.id,
-                  //               yValueMapper: (Activities sales, _) =>
-                  //                   sales.setCount,
-                  //               name: 'Workout Chart')
-                  //         ])),
-                  Text(
-                    "Frequency",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 30),
-                  FutureBuilder(
-                      future: getData(),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          // Uncompleted State
-                          case ConnectionState.none:
-                          case ConnectionState.waiting:
-                            return Center(child: CircularProgressIndicator());
-                            break;
-                          default:
-                            // Completed with error
-                            if (snapshot.hasError)
-                              return Container(
-                                  child: Text(snapshot.error.toString()));
-                            return Container(
-                                width: double.infinity,
-                                height: 250,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20)),
-                                margin: EdgeInsets.only(
-                                    left: 10, right: 10, bottom: 5),
-                                child: LineChart(LineChartData(
-                                  minY: 0,
-                                    lineTouchData: LineTouchData(
-                                      touchTooltipData: LineTouchTooltipData(
-                                        tooltipBgColor:
-                                            Colors.blueGrey.withOpacity(0.8),
-                                      ),
-                                      touchCallback: (LineTouchResponse
-                                          touchResponse) {},
-                                      handleBuiltInTouches: true,
-                                    ),
-                                    gridData: FlGridData(
-                                      show: false,
-                                    ),
-                                    titlesData: FlTitlesData(
-                                      bottomTitles: SideTitles(
-                                        showTitles: true,
-                                        reservedSize: 22,
-                                        getTextStyles: (value) =>
-                                            const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      leftTitles: SideTitles(
-                                        showTitles: true,
-                                        getTextStyles: (value) =>
-                                            const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                    borderData: FlBorderData(
-                                      show: false,
-                                      // border: const Border(
-                                      //   bottom: BorderSide(
-                                      //     color: Color(0xff4e4965),
-                                      //     width: 4,
-                                      //   ),
-                                      //   left: BorderSide(
-                                      //     color: Colors.transparent,
-                                      //   ),
-                                      //   right: BorderSide(
-                                      //     color: Colors.transparent,
-                                      //   ),
-                                      //   top: BorderSide(
-                                      //     color: Colors.transparent,
-                                      //   ),
-                                      // ),
-                                    ),
-                                    lineBarsData: [
-                                      LineChartBarData(
-                                        spots: spotData,
-                                        isCurved: true,
-                                        colors: [Color(0xff4af699)],
-                                        isStrokeCapRound: true,
-                                        belowBarData:
-                                            BarAreaData(show: true, colors: [
-                                          Color(0xff4af699).withOpacity(0.2)
-                                        ]),
-                                      ),
-                                    ])));
-                        }
-                      }),
-                    ],
-                  ),
-                ))));
+            child: CarouselSlider(
+              options: CarouselOptions(
+                enableInfiniteScroll: false,
+                height: double.infinity,
+                //autoPlay: true,
+                // autoPlayInterval: Duration(seconds: 3),
+                // autoPlayAnimationDuration: Duration(milliseconds: 800),
+                // autoPlayCurve: Curves.fastOutSlowIn,
+                // pauseAutoPlayOnTouch: true,
+              ),
+              items: allCharts.map((card){
+                return Builder(
+                    builder:(BuildContext context){
+                      return Container(
+                        height: double.infinity,
+                        child: Card(
+                          color: Colors.black,
+                          child: card,
+                        ),
+                      );
+                    }
+                );
+              }).toList(),
+            ),
+        )
+    );
   }
+
+  // ListView(
+  //   shrinkWrap: false,
+  //   padding: EdgeInsets.all(10),
+  //   children: [
+  //     SlimyCard(
+  //       color: Color(0xFF1F3546),
+  //       width: 400,
+  //       topCardHeight: 400,
+  //       bottomCardHeight: 100,
+  //       borderRadius: 20,
+  //       slimeEnabled: false,
+  //       topCardWidget: chartOne(),
+  //       bottomCardWidget: detailOne()
+  //     )
+  //   ],
+  // ),
+
+  Widget weightChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: weightOne(),
+            bottomCardWidget: weightTwo()
+        )
+      ],
+    );
+  }
+
+  Widget weightOne() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      decoration: BoxDecoration(
+          color: Color(0xFF1F3546), borderRadius: BorderRadius.circular(20)),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 10),
+      child: Column(
+        children: [
+          FutureBuilder(
+              future: getData(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                    // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                    Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotData,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
+                              ),
+                            ])));
+                }
+              }),
+          SizedBox(height: 30),
+          Text(
+            "Weight",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget weightTwo() {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            "Latest : ",
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            "Highest : ",
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            "Lowest : ",
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget bicepsChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: bicepsOne(),
+            bottomCardWidget: weightTwo()
+        )
+      ],
+    );
+  }
+
+  Widget bicepsOne() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      decoration: BoxDecoration(
+          color: Color(0xFF1F3546), borderRadius: BorderRadius.circular(20)),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 10),
+      child: Column(
+        children: [
+          FutureBuilder(
+              future: getData(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                  // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotData,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
+                              ),
+                            ])));
+                }
+              }),
+          SizedBox(height: 30),
+          Text(
+            "Upper Arm",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget chestChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: chestsOne(),
+            bottomCardWidget: weightTwo()
+        )
+      ],
+    );
+  }
+
+  Widget chestsOne() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      decoration: BoxDecoration(
+          color: Color(0xFF1F3546), borderRadius: BorderRadius.circular(20)),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 10),
+      child: Column(
+        children: [
+          FutureBuilder(
+              future: getData(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                  // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotData,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
+                              ),
+                            ])));
+                }
+              }),
+          SizedBox(height: 30),
+          Text(
+            "Chest",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget foreArmChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: foreArmOne(),
+            bottomCardWidget: weightTwo()
+        )
+      ],
+    );
+  }
+
+  Widget foreArmOne() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      decoration: BoxDecoration(
+          color: Color(0xFF1F3546), borderRadius: BorderRadius.circular(20)),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 10),
+      child: Column(
+        children: [
+          FutureBuilder(
+              future: getData(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                  // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotData,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
+                              ),
+                            ])));
+                }
+              }),
+          SizedBox(height: 30),
+          Text(
+            "Forearm",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget waistChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: waistOne(),
+            bottomCardWidget: weightTwo()
+        )
+      ],
+    );
+  }
+
+  Widget waistOne() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      decoration: BoxDecoration(
+          color: Color(0xFF1F3546), borderRadius: BorderRadius.circular(20)),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 10),
+      child: Column(
+        children: [
+          FutureBuilder(
+              future: getData(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                  // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotData,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
+                              ),
+                            ])));
+                }
+              }),
+          SizedBox(height: 30),
+          Text(
+            "Waist",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
 }

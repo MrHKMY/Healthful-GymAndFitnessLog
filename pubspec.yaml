@@ -38,6 +38,8 @@ dependencies:
   fab_circular_menu: ^1.0.2
   fl_chart: ^0.36.3
   syncfusion_flutter_charts: ^19.2.49
+  slimy_card: ^1.0.4
+  carousel_slider: ^4.0.0
 
 flutter_icons:
   image_path: "assets/images/launcher_icon.png"
