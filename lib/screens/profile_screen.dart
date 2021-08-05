@@ -91,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backwardsCompatibility: false,
         systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
@@ -193,15 +193,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Align(
-                  alignment: Alignment(0.0, -0.25),
+                  alignment: Alignment(0.0, -0.30),
                   child: FractionallySizedBox(
                     widthFactor: 0.8,
                     heightFactor: 0.1,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Color(0xFF30A9B2)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 0,
+                            blurRadius: 1,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -224,12 +231,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                            color: Colors.black),
                                       );
                                     }),
                                 Text(
                                   "Weight (kg)",
-                                  style: TextStyle(color: Colors.grey),
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ],
                             ),
@@ -257,12 +264,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: TextStyle(
                                           fontSize: 22,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                                          color: Colors.black),
                                     );
                                   }),
                               Text(
                                 "Height (m)",
-                                style: TextStyle(color: Colors.grey),
+                                style: TextStyle(color: Colors.black),
                               ),
                             ],
                           ),
@@ -274,14 +281,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Align(
                   alignment: Alignment(0.0, 0.5),
                   child: FractionallySizedBox(
-                    widthFactor: 0.8,
+                    widthFactor: 1,
                     heightFactor: 0.4,
                     child: Container(
-                      // decoration: BoxDecoration(
-                      //   color: Color(0xff465466),
-                      //   borderRadius: BorderRadius.circular(20),
-                      //   border: Border.all(color: Color(0xFF30A9B2)),
-                      // ),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        //borderRadius: BorderRadius.circular(20),
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Colors.black,
+                        //     spreadRadius: 0,
+                        //     blurRadius: 2,
+                        //     offset: Offset(2, 2),
+                        //   ),
+                        // ],
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -308,7 +323,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     //fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                    color: Colors.black),
                               ),
                               Spacer(),
                               FutureBuilder(
@@ -318,7 +333,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       snapshot.data.toString() != "null"
                                           ? snapshot.data.toString()
                                           : "?",
-                                      style: TextStyle(color: Colors.grey),
+                                      style: TextStyle(color: Colors.black),
                                     );
                                   }),
                             ],
@@ -346,7 +361,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     //fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                    color: Colors.black),
                               ),
                               Spacer(),
                               FutureBuilder(
@@ -356,7 +371,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       snapshot.data.toString() != "null"
                                           ? snapshot.data.toString()
                                           : "?",
-                                      style: TextStyle(color: Colors.grey),
+                                      style: TextStyle(color: Colors.black),
                                     );
                                   }),
                             ],
@@ -384,7 +399,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     //fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                    color: Colors.black),
                               ),
                               Spacer(),
                               FutureBuilder(
@@ -394,7 +409,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       snapshot.data.toString() != "null"
                                           ? snapshot.data.toString()
                                           : "?",
-                                      style: TextStyle(color: Colors.grey),
+                                      style: TextStyle(color: Colors.black),
                                     );
                                   }),
                             ],
@@ -422,7 +437,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     //fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                    color: Colors.black),
                               ),
                               Spacer(),
 
@@ -453,6 +468,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               maximum: 40,
                                               showTicks: false,
                                               showLabels: false,
+                                              showAxisTrack: false,
                                               axisTrackStyle:
                                                   LinearAxisTrackStyle(
                                                       thickness: 10,
@@ -487,7 +503,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   shapeType: LinearShapePointerType.triangle,
                                                   width: 10,
                                                   height: 10,
-                                                  color: Colors.white,
+                                                  color: Colors.black,
                                                   position: LinearElementPosition.cross,
                                                 )
                                               ],
@@ -578,11 +594,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              backgroundColor: Color(0xFF1F3546),
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               titleTextStyle: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
               title: Text("Enter Weight (in Kg)"),
@@ -593,7 +609,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
                 ],
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               actions: <Widget>[
                 TextButton(
@@ -603,7 +619,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: Text("Cancel"),
                     style: TextButton.styleFrom(
-                      primary: Colors.white,
+                      primary: Colors.grey,
                     )),
                 TextButton(
                   child: Text(

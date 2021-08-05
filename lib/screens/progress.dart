@@ -281,12 +281,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     ? 0.0
                     : kBottomNavigationBarHeight + 50,
                 child: FloatingActionButton(
-                  //todo(3) create fab to open new charts screen
+                  backgroundColor: Colors.teal[300],
                   onPressed: () {
                     Navigator.of(context).push(
                         new SlideRightRoute(page: new ChartScreen()));
                   },
-                  child: Icon(Icons.bar_chart_rounded),
+                  child: Icon(Icons.bar_chart_rounded, color: Colors.black,),
                 ),
               )
             ]),

@@ -2,6 +2,7 @@ import 'package:calendar/model/timerPainter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart';
 
 class HistoryWidget extends StatelessWidget {
   final String activity;
@@ -14,8 +15,9 @@ class HistoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color(0xFF1F3546),
-      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+      color: Colors.white,
+      shadowColor: Colors.black,
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 3,
       //margin: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
@@ -32,7 +34,7 @@ class HistoryWidget extends StatelessWidget {
                 Text(
                   activity ?? "Unnamed Task",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 14,
                       fontWeight: FontWeight.bold),
                 ),
@@ -48,11 +50,11 @@ class HistoryWidget extends StatelessWidget {
             ),
             Text(
               focus.toString(),
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
             Text(
               "Sets: " + setCount.toString(),
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
           ],
         ),
@@ -273,7 +275,7 @@ class _CountDownTimerState extends State<CountDownTimer>
           systemOverlayStyle:
               SystemUiOverlayStyle(statusBarColor: Colors.black),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.grey[300],
         body: SafeArea(
           child: Container(
             margin: EdgeInsets.only(
@@ -310,7 +312,7 @@ class _CountDownTimerState extends State<CountDownTimer>
                                         child: CustomPaint(
                                           painter: CustomTimerPainter(
                                               animation: animationController,
-                                              backgroundColor: Colors.white,
+                                              backgroundColor: Colors.black,
                                               color: Colors.red),
                                         ),
                                       ),
@@ -326,13 +328,13 @@ class _CountDownTimerState extends State<CountDownTimer>
                                               "30 seconds",
                                               style: TextStyle(
                                                   fontSize: 20.0,
-                                                  color: Colors.white),
+                                                  color: Colors.black),
                                             ),
                                             Text(
                                               timerString,
                                               style: TextStyle(
                                                   fontSize: 112.0,
-                                                  color: Colors.white),
+                                                  color: Colors.black),
                                             ),
                                           ],
                                         ),
@@ -403,7 +405,7 @@ class _CountDownTimerState extends State<CountDownTimer>
                                 animation: animationController,
                                 builder: (context, child) {
                                   return FloatingActionButton.extended(
-                                      backgroundColor: Colors.teal,
+                                      backgroundColor: Colors.teal[300],
                                       onPressed: () {
                                         if (animationController.isAnimating)
                                           animationController.stop();
