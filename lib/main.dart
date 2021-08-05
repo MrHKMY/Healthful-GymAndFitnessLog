@@ -23,7 +23,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Healthful",
-      theme: ThemeData(primarySwatch: Colors.teal),
+      theme: ThemeData(
+          backgroundColor: Colors.grey,
+      textTheme: TextTheme(
+        bodyText1: TextStyle(color: Colors.black)
+      ),
+      ),
+      darkTheme: ThemeData.dark(),
       home: Splash(),
       initialRoute: "/",
       routes: {
@@ -116,16 +122,16 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       PersistentBottomNavBarItem(
           icon: Icon(CupertinoIcons.calendar_today),
           title: "Home",
-          activeColorPrimary: Colors.blue[700],
-          inactiveColorPrimary: Colors.white,
+          activeColorPrimary: Colors.blue,
+          inactiveColorPrimary: Colors.black,
           activeColorSecondary: Colors.white),
 
       PersistentBottomNavBarItem(
         icon: Icon(Icons.timer),
         title: ("Timer"),
-        activeColorPrimary: Colors.green[700],
+        activeColorPrimary: Colors.green,
         activeColorSecondary: Colors.white,
-        inactiveColorPrimary: Colors.white,
+        inactiveColorPrimary: Colors.black,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -137,9 +143,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.gauge),
         title: ("Progress"),
-        activeColorPrimary: Colors.deepOrange[700],
+        activeColorPrimary: Colors.orange,
         activeColorSecondary: Colors.white,
-        inactiveColorPrimary: Colors.white,
+        inactiveColorPrimary: Colors.black,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -152,9 +158,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.profile_circled),
         title: ("Profile"),
-        activeColorPrimary: Colors.red[700],
+        activeColorPrimary: Colors.red,
         activeColorSecondary: Colors.white,
-        inactiveColorPrimary: Colors.white,
+        inactiveColorPrimary: Colors.black,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -176,7 +182,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         screens: _buildScreens(),
         items: _navBarsItems(),
         confineInSafeArea: true,
-        backgroundColor: Color(0xFF1F3546),
+        backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
@@ -210,6 +216,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         },
         hideNavigationBar: _hideNavBar,
         decoration: NavBarDecoration(
+            //border: Border.all(color: Colors.black, width: 1),
             //colorBehindNavBar: Colors.indigo,
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(25.0),

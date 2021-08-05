@@ -160,11 +160,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.grey[300],
         body: Stack(children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-            color: Colors.black,
+            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+            color: Colors.grey[300],
             //height: 500,
             height: double.infinity,
             margin: EdgeInsets.only(
@@ -185,7 +185,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         Container(
                           width: 200,
                           decoration: BoxDecoration(
-                              color: Colors.teal,
+                              color: Colors.teal[300],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  blurRadius: 2.0,
+                                  spreadRadius: 0.0,
+                                  offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                                )
+                              ],
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(50),
                                   bottomRight: Radius.circular(50))),
@@ -236,7 +244,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         child: Text(
                           quotes,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -250,7 +258,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 0),
                             decoration: BoxDecoration(
-                                color: Color(0xFF1F3546),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black,
+                                    blurRadius: 2.0,
+                                    spreadRadius: 0.0,
+                                    offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                                  )
+                                ],
                                 borderRadius: BorderRadius.circular(20)),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
@@ -281,7 +297,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   animationDuration: 2500,
                                   title: GaugeTitle(
                                     text: "Weekly Workout Goals:",
-                                    textStyle: TextStyle(color: Colors.white),
+                                    textStyle: TextStyle(color: Colors.black),
                                   ),
                                   axes: <RadialAxis>[
                                     RadialAxis(
@@ -295,7 +311,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         axisLineStyle: AxisLineStyle(
                                           thickness: 0.15,
                                           cornerStyle: CornerStyle.bothCurve,
-                                          color: Colors.white12,
+                                          color: Colors.grey[300],
                                           thicknessUnit: GaugeSizeUnit.factor,
                                         ),
                                         pointers: <GaugePointer>[
@@ -328,13 +344,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                       ? percentString
                                                       : "0",
                                                   style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: Colors.black,
                                                       fontSize: 18),
                                                   children: [
                                                     TextSpan(
                                                       text: "%",
                                                       style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: Colors.black,
                                                           fontSize: 18),
                                                     ),
                                                   ])))
@@ -350,7 +366,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                                color: Color(0xFF1F3546),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black,
+                                    blurRadius: 2.0,
+                                    spreadRadius: 0.0,
+                                    offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                                  )
+                                ],
                                 borderRadius: BorderRadius.circular(20)),
                             margin:
                                 EdgeInsets.only(right: 10, top: 5, bottom: 5),
@@ -364,7 +388,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         return Text.rich(TextSpan(
                                             text: "Water : ",
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.black,
                                             ),
                                             children: [
                                               TextSpan(
@@ -374,7 +398,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                         ? waterCountString
                                                         : "0",
                                                 style: TextStyle(
-                                                  color: Colors.white,
+                                                  color: Colors.black,
                                                 ),
                                               ),
                                               //TODO Get user's water intake frequencies
@@ -398,7 +422,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           showTicks: false,
                                           showLabels: false,
                                           axisTrackStyle: LinearAxisTrackStyle(
-                                            color: Colors.white12,
+                                            color: Colors.grey[300],
                                             edgeStyle:
                                                 LinearEdgeStyle.bothCurve,
                                             thickness: 10,
@@ -432,7 +456,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   Text(
                                     "Calorie Intake : 1553 / 2000",
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                   ),
                                   SfLinearGauge(
@@ -442,7 +466,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     showTicks: false,
                                     showLabels: false,
                                     axisTrackStyle: LinearAxisTrackStyle(
-                                      color: Colors.white12,
+                                      color: Colors.grey[300],
                                       edgeStyle: LinearEdgeStyle.bothCurve,
                                       thickness: 10,
                                     ),
@@ -471,7 +495,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         return Text.rich(TextSpan(
                                             text: "Supplement : ",
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.black,
                                             ),
                                             children: [
                                               TextSpan(
@@ -481,7 +505,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                     ? snapshot.data.toString()
                                                     : "0",
                                                 style: TextStyle(
-                                                  color: Colors.white,
+                                                  color: Colors.black,
                                                 ),
                                               ),
                                               //TODO Get user's daily supplement intake frequency
@@ -498,7 +522,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             if (snapshot.data.toString() == "[]") {
                                               return Icon(
                                                 Icons.local_fire_department,
-                                                color: Colors.grey,
+                                                color: Colors.grey[300],
                                                 size: 20,
                                               );
                                             } else {
@@ -537,7 +561,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
-                          color: Color(0xFF1F3546),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 2.0,
+                              spreadRadius: 0.0,
+                              offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                            )
+                          ],
                           borderRadius: BorderRadius.circular(20)),
                       margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
                       child: TableCalendar(
@@ -550,25 +582,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         calendarController: _calendarController,
                         calendarStyle: CalendarStyle(
                             weekdayStyle: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               //fontWeight: FontWeight.bold
                             ),
                             weekendStyle: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               //fontWeight: FontWeight.bold
                             ),
-                            outsideStyle: TextStyle(color: Colors.grey[700]),
+                            outsideStyle: TextStyle(color: Colors.grey),
                             unavailableStyle:
-                                TextStyle(color: Colors.grey[700]),
+                                TextStyle(color: Colors.grey),
                             outsideWeekendStyle:
-                                TextStyle(color: Colors.grey[700]),
+                                TextStyle(color: Colors.grey),
                             canEventMarkersOverflow: false,
                             //cellMargin: EdgeInsets.all(5),
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: 40,
                               vertical: 5,
                             ),
-                            eventDayStyle: TextStyle(color: Colors.white)),
+                            eventDayStyle: TextStyle(color: Colors.black)),
                         daysOfWeekStyle: DaysOfWeekStyle(
                           weekdayStyle: TextStyle(
                             color: Color(0xFF30A9B2),
@@ -588,7 +620,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               color: Colors.grey,
                             ),
                             centerHeaderTitle: true,
-                            titleTextStyle: TextStyle(color: Colors.white),
+                            titleTextStyle: TextStyle(color: Colors.black),
                             formatButtonVisible: false),
                         onDaySelected: (date, events, holidays) {
                           setState(() {
@@ -621,7 +653,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 shape: BoxShape.circle),
                             child: Text(
                               date.day.toString(),
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                             ),
                           ),
                           todayDayBuilder: (context, date, events) => Container(
@@ -634,7 +666,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               ),
                               child: Text(
                                 date.day.toString(),
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.black),
                               )),
                         ),
                         //calendarController = _calendarController,
@@ -650,7 +682,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                              color: Color(0xFF1F3546),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  blurRadius: 1.0,
+                                  spreadRadius: 0.0,
+                                  offset: Offset(1.0, 1.0), // shadow direction: bottom right
+                                )
+                              ],
                               borderRadius: BorderRadius.circular(20),
                               //border: Border.all(color: Color(0xFF30A9B2)),
                             ),
@@ -664,7 +704,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 child: Text(
                                   event,
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 14),
+                                      color: Colors.black, fontSize: 14),
                                 ),
                               ),
                             ),
@@ -680,8 +720,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   right: 30, bottom: kBottomNavigationBarHeight + 30),
               ringWidth: 60,
               ringDiameter: 250,
-              fabColor: Colors.teal,
-              ringColor: Colors.teal[400],
+              fabColor: Colors.teal[300],
+              ringColor: Colors.teal[300],
               fabOpenIcon: Image.asset(
                 "assets/images/goals_icon.png",
                 scale: 12,
@@ -738,12 +778,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-              backgroundColor: Color(0xFF1F3546),
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               title: Center(child: Text("Today's Achievement: ")),
               titleTextStyle: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
               content: SingleChildScrollView(
@@ -754,7 +794,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         //margin: EdgeInsets.only(left: 25, right: 25),
                         padding: EdgeInsets.only(left: 10),
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Colors.grey[300],
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
                           ),
@@ -762,7 +802,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         child: new DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             focusColor: Colors.green,
-                            dropdownColor: Colors.black,
+                            dropdownColor: Colors.teal,
                             value: _chosenValue,
                             //style: TextStyle(color: Colors.pink),
                             hint: Text(
@@ -786,7 +826,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   value: value,
                                   child: Text(
                                     value,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.black),
                                   ));
                             }).toList(),
                             onChanged: (String newValue) {
@@ -804,7 +844,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       //margin: EdgeInsets.only(left: 25, right: 25),
                       padding: EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
@@ -816,7 +856,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                           )),
                     ),
                     SizedBox(
@@ -824,13 +864,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                     Text(
                       "Set Count: ",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 30, right: 30),
                       //padding: EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
@@ -857,7 +897,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             '$counter',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 18.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -888,7 +928,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 TextButton(
                     child: Text(
                       "Cancel",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.grey),
                     ),
                     onPressed: () {
                       _eventController.clear();
@@ -955,12 +995,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-              backgroundColor: Color(0xFF1F3546),
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               title: Center(child: Text("Supplement Intake")),
               titleTextStyle: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
               content: Row(
@@ -1057,7 +1097,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 TextButton(
                     child: Text(
                       "Cancel",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.grey),
                     ),
                     onPressed: () {
                       selected = null;
