@@ -62,7 +62,7 @@ class _ChartScreenState extends State<ChartScreen> {
               SystemUiOverlayStyle(statusBarColor: Colors.black),
         ),
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Colors.grey[100],
         body: SafeArea(
             child: CarouselSlider(
               options: CarouselOptions(

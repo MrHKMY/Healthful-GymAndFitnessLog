@@ -91,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backwardsCompatibility: false,
         systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
       ),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
@@ -203,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black,
+                            color: Colors.grey,
                             spreadRadius: 0,
                             blurRadius: 1,
                             offset: Offset(2, 2),
