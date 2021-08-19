@@ -16,7 +16,7 @@ class HistoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
-      shadowColor: Colors.black,
+      shadowColor: Colors.grey,
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 3,

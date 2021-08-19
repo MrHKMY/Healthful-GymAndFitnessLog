@@ -160,11 +160,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Colors.grey[100],
         body: Stack(children: [
           Container(
             padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-            color: Colors.grey[300],
+            color: Colors.grey[100],
             //height: 500,
             height: double.infinity,
             margin: EdgeInsets.only(
@@ -261,7 +261,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black,
+                                    color: Colors.grey,
                                     blurRadius: 2.0,
                                     spreadRadius: 0.0,
                                     offset: Offset(2.0, 2.0), // shadow direction: bottom right
@@ -369,7 +369,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black,
+                                    color: Colors.grey,
                                     blurRadius: 2.0,
                                     spreadRadius: 0.0,
                                     offset: Offset(2.0, 2.0), // shadow direction: bottom right
@@ -453,42 +453,44 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           ],
                                         );
                                       }),
-                                  Text(
-                                    "Calorie Intake : 1553 / 2000",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  SfLinearGauge(
-                                    minimum: 0,
-                                    maximum: 100,
-                                    showAxisTrack: true,
-                                    showTicks: false,
-                                    showLabels: false,
-                                    axisTrackStyle: LinearAxisTrackStyle(
-                                      color: Colors.grey[300],
-                                      edgeStyle: LinearEdgeStyle.bothCurve,
-                                      thickness: 10,
-                                    ),
-                                    barPointers: [
-                                      LinearBarPointer(
-                                        value: 80,
-                                        shaderCallback: (bounds) =>
-                                            LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                                colors: [
-                                              Colors.yellow[200],
-                                              Colors.yellow[600]
-                                            ]).createShader(bounds),
-                                        thickness: 10,
-                                        edgeStyle: LinearEdgeStyle.bothCurve,
-                                        position: LinearElementPosition.cross,
-                                        animationType: LinearAnimationType.ease,
-                                        animationDuration: 2500,
-                                      )
-                                    ],
-                                  ),
+                                  //TODO CALORIE charts down here
+
+                                  // Text(
+                                  //   "Calorie Intake : 1553 / 2000",
+                                  //   style: TextStyle(
+                                  //     color: Colors.black,
+                                  //   ),
+                                  // ),
+                                  // SfLinearGauge(
+                                  //   minimum: 0,
+                                  //   maximum: 100,
+                                  //   showAxisTrack: true,
+                                  //   showTicks: false,
+                                  //   showLabels: false,
+                                  //   axisTrackStyle: LinearAxisTrackStyle(
+                                  //     color: Colors.grey[300],
+                                  //     edgeStyle: LinearEdgeStyle.bothCurve,
+                                  //     thickness: 10,
+                                  //   ),
+                                  //   barPointers: [
+                                  //     LinearBarPointer(
+                                  //       value: 80,
+                                  //       shaderCallback: (bounds) =>
+                                  //           LinearGradient(
+                                  //               begin: Alignment.centerLeft,
+                                  //               end: Alignment.centerRight,
+                                  //               colors: [
+                                  //             Colors.yellow[200],
+                                  //             Colors.yellow[600]
+                                  //           ]).createShader(bounds),
+                                  //       thickness: 10,
+                                  //       edgeStyle: LinearEdgeStyle.bothCurve,
+                                  //       position: LinearElementPosition.cross,
+                                  //       animationType: LinearAnimationType.ease,
+                                  //       animationDuration: 2500,
+                                  //     )
+                                  //   ],
+                                  // ),
                                   FutureBuilder(
                                       future: _dbHelper.retrieveSuppCount(),
                                       builder: (context, snapshot) {
@@ -564,7 +566,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
+                              color: Colors.grey,
                               blurRadius: 2.0,
                               spreadRadius: 0.0,
                               offset: Offset(2.0, 2.0), // shadow direction: bottom right
@@ -685,7 +687,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black,
+                                  color: Colors.grey,
                                   blurRadius: 1.0,
                                   spreadRadius: 0.0,
                                   offset: Offset(1.0, 1.0), // shadow direction: bottom right
@@ -881,7 +883,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           IconButton(
                             icon: Icon(
                               Icons.remove,
-                              color: Theme.of(context).accentColor,
+                              color: Colors.teal,
                             ),
                             padding: EdgeInsets.symmetric(
                                 vertical: 4.0, horizontal: 18.0),
@@ -905,7 +907,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           IconButton(
                             icon: Icon(
                               Icons.add,
-                              color: Theme.of(context).accentColor,
+                              color: Colors.teal,
                             ),
                             padding: EdgeInsets.symmetric(
                                 vertical: 4.0, horizontal: 18.0),
@@ -1018,11 +1020,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       width: 100,
                       height: 60,
                       decoration: BoxDecoration(
+                          color: selected == 'Pre'
+                              ? Colors.orange
+                              : Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: selected == 'Pre'
-                                ? Colors.orange
-                                : Colors.grey),
+                            color: Colors.black),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1032,18 +1035,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: selected == 'Pre'
-                                    ? Colors.orange
-                                    : Colors.grey),
+                                color: Colors.black),
                           ),
                           Text(
                             "Workout",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14,
-                                color: selected == 'Pre'
-                                    ? Colors.orange
-                                    : Colors.grey),
+                                color: Colors.black),
                           ),
                         ],
                       ),
@@ -1060,11 +1059,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       width: 100,
                       height: 60,
                       decoration: BoxDecoration(
+                        color: selected == 'Post'
+                        ? Colors.green
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: selected == 'Post'
-                                ? Colors.green
-                                : Colors.grey),
+                            color: Colors.black),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1074,18 +1074,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: selected == 'Post'
-                                    ? Colors.green
-                                    : Colors.grey),
+                                color: Colors.black),
                           ),
                           Text(
                             "Workout",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14,
-                                color: selected == 'Post'
-                                    ? Colors.green
-                                    : Colors.grey),
+                                color: Colors.black),
                           ),
                         ],
                       ),
