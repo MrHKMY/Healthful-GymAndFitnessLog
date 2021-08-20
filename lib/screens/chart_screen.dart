@@ -1,5 +1,6 @@
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/activities.dart';
+import 'package:calendar/model/progress.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,21 +14,21 @@ class ChartScreen extends StatefulWidget {
 }
 
 class _ChartScreenState extends State<ChartScreen> {
-  List<Activities> activity = <Activities>[];
+  List<Progress> weight = <Progress>[];
   DatabaseHelper _dbHelper = DatabaseHelper();
   List<FlSpot> spotData = [];
   int x = 1;
 
   getData() async {
-    activity = await _dbHelper.retrieveActivity();
+    weight = await _dbHelper.retrieveWeightForChart();
     //print(activity[0].setCount.toString());
-    Iterable inReverse = activity.reversed;
-    var reversed = inReverse.toList();
+     Iterable inReverse = weight.reversed;
+     var reversed = inReverse.toList();
 
     if (x == 1) {
-      for (int a = 0; a < activity.length; a++) {
-        spotData.add(FlSpot(double.parse(activity[a].id.toString()),
-            double.parse(activity[a].setCount.toString())));
+      for (int a = 0; a < reversed.length; a++) {
+        spotData.add(FlSpot(double.parse((a+1).toString()),
+            double.parse(reversed[a].center.toString())));
         x = 2;
       }
     }
@@ -163,7 +164,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           ),
                           titlesData: FlTitlesData(
                             bottomTitles: SideTitles(
-                              showTitles: true,
+                              showTitles: false,
                               reservedSize: 22,
                               getTextStyles: (value) => const TextStyle(
                                 color: Colors.white,
@@ -173,6 +174,8 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                             leftTitles: SideTitles(
                               showTitles: true,
+                              interval: 20,
+                              margin: 5,
                               getTextStyles: (value) => const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

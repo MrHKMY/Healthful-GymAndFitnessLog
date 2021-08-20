@@ -57,6 +57,14 @@ class DatabaseHelper {
     });
   }
 
+  Future<List<Progress>> retrieveWeightForChart() async {
+    Database _db = await database();
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = 'Weight' ORDER BY id DESC");
+    return List.generate(activityMap.length, (index) {
+      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"], date: activityMap[index]["Date"]);
+    });
+  }
+
   // Future<List<Activities>> getCharts() async {
   //   var dbClient = await database;
   //   List<Map> maps = await dbClient.query("workout",
