@@ -57,11 +57,21 @@ class DatabaseHelper {
     });
   }
 
-  Future<List<Progress>> retrieveWeightForChart() async {
+  Future<List<Progress>> retrieveWeightForChart(String part) async {
     Database _db = await database();
-    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = 'Weight' ORDER BY id DESC");
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = '$part' ORDER BY id DESC");
+
     return List.generate(activityMap.length, (index) {
-      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"], date: activityMap[index]["Date"]);
+      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"]);
+    });
+  }
+
+  Future<List<Progress>> retrieveChestForChart() async {
+    Database _db = await database();
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = 'Chest' ORDER BY id DESC");
+
+    return List.generate(activityMap.length, (index) {
+      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"]);
     });
   }
 

@@ -43,7 +43,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
                             return HistoryWidget(
-                              activity: snapshot.data[index].weight,
+                              activity: snapshot.data[index].activity,
                               date: snapshot.data[index].date,
                               setCount: snapshot.data[index].setCount,
                               focus: snapshot.data[index].focus,

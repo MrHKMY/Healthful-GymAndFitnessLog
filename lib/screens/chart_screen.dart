@@ -14,30 +14,103 @@ class ChartScreen extends StatefulWidget {
 }
 
 class _ChartScreenState extends State<ChartScreen> {
-  List<Progress> weight = <Progress>[];
+
   DatabaseHelper _dbHelper = DatabaseHelper();
-  List<FlSpot> spotData = [];
+  List<Progress> weight = <Progress>[];
+  List<Progress> chest = <Progress>[];
+  List<Progress> waist = <Progress>[];
+  List<Progress> hips = <Progress>[];
+  List<Progress> upperArmL = <Progress>[];
+  List<Progress> upperArmR = <Progress>[];
+  List<Progress> forearmL = <Progress>[];
+  List<Progress> forearmR = <Progress>[];
+  List<Progress> thighL = <Progress>[];
+  List<Progress> thighR = <Progress>[];
+  List<Progress> calfL = <Progress>[];
+  List<Progress> calfR = <Progress>[];
+
+  List<FlSpot> spotDataWeight = [];
+  List<FlSpot> spotDataChest = [];
+  List<FlSpot> spotDataWaist = [];
+  List<FlSpot> spotDataHips = [];
+  List<FlSpot> spotDataUpperArmL = [];
+  List<FlSpot> spotDataUpperArmR = [];
+  List<FlSpot> spotDataForearmL = [];
+  List<FlSpot> spotDataForearmR = [];
+  List<FlSpot> spotDataThighL = [];
+  List<FlSpot> spotDataThighR = [];
+  List<FlSpot> spotDataCalfL = [];
+  List<FlSpot> spotDataCalfR = [];
+
   int x = 1;
 
-  getData() async {
-    weight = await _dbHelper.retrieveWeightForChart();
-    //print(activity[0].setCount.toString());
+  getWeightChart(int a) async {
+    weight = await _dbHelper.retrieveWeightForChart("Weight");
      Iterable inReverse = weight.reversed;
      var reversed = inReverse.toList();
 
-    if (x == 1) {
+    if (a == 1) {
+      for (int x = 0; x < reversed.length; x++) {
+        spotDataWeight.add(FlSpot(double.parse((x+1).toString()),
+            double.parse(reversed[x].center.toString())));
+        a = 2;
+      }
+    }
+    return weight;
+  }
+
+  getChestChart(int b) async {
+    chest = await _dbHelper.retrieveWeightForChart("Chest");
+    Iterable inReverse = chest.reversed;
+    var reversed = inReverse.toList();
+
+    if (b == 1) {
       for (int a = 0; a < reversed.length; a++) {
-        spotData.add(FlSpot(double.parse((a+1).toString()),
+        spotDataChest.add(FlSpot(double.parse((a+1).toString()),
             double.parse(reversed[a].center.toString())));
-        x = 2;
+        b = 2;
       }
     }
 
-    print(spotData.toString());
-    // List<FlSpot> spots =
-    // activity.asMap().entries.map((e) {
-    //   return FlSpot(e.key.toDouble(), e);
-    // }).toList(),
+    print("Chest = " + spotDataChest.toString());
+    return chest;
+  }
+
+  getWaistChart(int b) async {
+
+    waist = await _dbHelper.retrieveWeightForChart("Waist");
+    //print(activity[0].setCount.toString());
+    Iterable inReverse = waist.reversed;
+    var reversed = inReverse.toList();
+
+    if (b == 1) {
+      for (int a = 0; a < reversed.length; a++) {
+        spotDataWaist.add(FlSpot(double.parse((a+1).toString()),
+            double.parse(reversed[a].center.toString())));
+        b = 2;
+      }
+    }
+
+    print("Waist = " + spotDataWaist.toString());
+    return waist;
+  }
+
+  getHipsChart(int b) async {
+    hips = await _dbHelper.retrieveWeightForChart("Hips");
+    //print(activity[0].setCount.toString());
+    Iterable inReverse = hips.reversed;
+    var reversed = inReverse.toList();
+
+    if (b == 1) {
+      for (int a = 0; a < reversed.length; a++) {
+        spotDataHips.add(FlSpot(double.parse((a+1).toString()),
+            double.parse(reversed[a].center.toString())));
+        b = 2;
+      }
+    }
+
+    print("Hips = " + spotDataChest.toString());
+    return hips;
   }
 
   @override
@@ -49,7 +122,7 @@ class _ChartScreenState extends State<ChartScreen> {
   Widget build(BuildContext context) {
     //getData();
 
-    List allCharts = [weightChart(), chestChart(), bicepsChart(), foreArmChart(), waistChart()];
+    List allCharts = [weightChart(), chestChart(), waistChart(), hipsChart()];
 
     return Scaffold(
         appBar: AppBar(
@@ -130,8 +203,9 @@ class _ChartScreenState extends State<ChartScreen> {
     return Column(
       children: [
         FutureBuilder(
-            future: getData(),
+            future: getWeightChart(1),
             builder: (context, snapshot) {
+              if (weight.isNotEmpty) {
               switch (snapshot.connectionState) {
                 // Uncompleted State
                 case ConnectionState.none:
@@ -188,7 +262,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           ),
                           lineBarsData: [
                             LineChartBarData(
-                              spots: spotData,
+                              spots: spotDataWeight,
                               isCurved: true,
                               colors: [Color(0xff4af699)],
                               isStrokeCapRound: true,
@@ -197,7 +271,8 @@ class _ChartScreenState extends State<ChartScreen> {
                               ]),
                             ),
                           ])));
-              }
+              }} else {
+                return Container(child: Text("Nope"));}
             }),
         SizedBox(height: 30),
         Text(
@@ -234,109 +309,6 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  Widget bicepsChart() {
-    return ListView(
-      shrinkWrap: false,
-      padding: EdgeInsets.all(10),
-      children: [
-        SlimyCard(
-            color: Color(0xFF1F3546),
-            width: 400,
-            topCardHeight: 400,
-            bottomCardHeight: 100,
-            borderRadius: 20,
-            slimeEnabled: false,
-            topCardWidget: bicepsOne(),
-            bottomCardWidget: weightTwo()
-        )
-      ],
-    );
-  }
-
-  Widget bicepsOne() {
-    return Column(
-      children: [
-        FutureBuilder(
-            future: getData(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-              // Uncompleted State
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
-                  break;
-                default:
-                // Completed with error
-                  if (snapshot.hasError)
-                    return Container(child: Text(snapshot.error.toString()));
-                  return Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20)),
-                      margin: EdgeInsets.only(left: 0, right: 10, bottom: 5,top: 20),
-                      child: LineChart(LineChartData(
-                          minY: 0,
-                          lineTouchData: LineTouchData(
-                            touchTooltipData: LineTouchTooltipData(
-                              tooltipBgColor:
-                              Colors.blueGrey.withOpacity(0.8),
-                            ),
-                            touchCallback:
-                                (LineTouchResponse touchResponse) {},
-                            handleBuiltInTouches: true,
-                          ),
-                          gridData: FlGridData(
-                            show: false,
-                          ),
-                          titlesData: FlTitlesData(
-                            bottomTitles: SideTitles(
-                              showTitles: true,
-                              reservedSize: 22,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                            leftTitles: SideTitles(
-                              showTitles: true,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          lineBarsData: [
-                            LineChartBarData(
-                              spots: spotData,
-                              isCurved: true,
-                              colors: [Color(0xff4af699)],
-                              isStrokeCapRound: true,
-                              belowBarData: BarAreaData(show: true, colors: [
-                                Color(0xff4af699).withOpacity(0.2)
-                              ]),
-                            ),
-                          ])));
-              }
-            }),
-        SizedBox(height: 30),
-        Text(
-          "Upper Arm",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
-
   Widget chestChart() {
     return ListView(
       shrinkWrap: false,
@@ -360,8 +332,9 @@ class _ChartScreenState extends State<ChartScreen> {
     return Column(
       children: [
         FutureBuilder(
-            future: getData(),
+            future: getChestChart( 1),
             builder: (context, snapshot) {
+              if (chest.isNotEmpty) {
               switch (snapshot.connectionState) {
               // Uncompleted State
                 case ConnectionState.none:
@@ -416,7 +389,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           ),
                           lineBarsData: [
                             LineChartBarData(
-                              spots: spotData,
+                              spots: spotDataChest,
                               isCurved: true,
                               colors: [Color(0xff4af699)],
                               isStrokeCapRound: true,
@@ -425,114 +398,13 @@ class _ChartScreenState extends State<ChartScreen> {
                               ]),
                             ),
                           ])));
+              }} else {
+                return Container(child: Text("Nope"),);
               }
             }),
         SizedBox(height: 30),
         Text(
           "Chest",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
-
-  Widget foreArmChart() {
-    return ListView(
-      shrinkWrap: false,
-      padding: EdgeInsets.all(10),
-      children: [
-        SlimyCard(
-            color: Color(0xFF1F3546),
-            width: 400,
-            topCardHeight: 400,
-            bottomCardHeight: 100,
-            borderRadius: 20,
-            slimeEnabled: false,
-            topCardWidget: foreArmOne(),
-            bottomCardWidget: weightTwo()
-        )
-      ],
-    );
-  }
-
-  Widget foreArmOne() {
-    return Column(
-      children: [
-        FutureBuilder(
-            future: getData(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-              // Uncompleted State
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
-                  break;
-                default:
-                // Completed with error
-                  if (snapshot.hasError)
-                    return Container(child: Text(snapshot.error.toString()));
-                  return Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20)),
-                      margin: EdgeInsets.only(left: 0, right: 10, bottom: 5,top: 20),
-                      child: LineChart(LineChartData(
-                          minY: 0,
-                          lineTouchData: LineTouchData(
-                            touchTooltipData: LineTouchTooltipData(
-                              tooltipBgColor:
-                              Colors.blueGrey.withOpacity(0.8),
-                            ),
-                            touchCallback:
-                                (LineTouchResponse touchResponse) {},
-                            handleBuiltInTouches: true,
-                          ),
-                          gridData: FlGridData(
-                            show: false,
-                          ),
-                          titlesData: FlTitlesData(
-                            bottomTitles: SideTitles(
-                              showTitles: true,
-                              reservedSize: 22,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                            leftTitles: SideTitles(
-                              showTitles: true,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          lineBarsData: [
-                            LineChartBarData(
-                              spots: spotData,
-                              isCurved: true,
-                              colors: [Color(0xff4af699)],
-                              isStrokeCapRound: true,
-                              belowBarData: BarAreaData(show: true, colors: [
-                                Color(0xff4af699).withOpacity(0.2)
-                              ]),
-                            ),
-                          ])));
-              }
-            }),
-        SizedBox(height: 30),
-        Text(
-          "Forearm",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -566,7 +438,231 @@ class _ChartScreenState extends State<ChartScreen> {
     return Column(
       children: [
         FutureBuilder(
-            future: getData(),
+            future: getWaistChart(1),
+            builder: (context, snapshot) {
+              if (waist.isNotEmpty) {
+                switch (snapshot.connectionState) {
+                // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                  // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(
+                            left: 0, right: 10, bottom: 5, top: 20),
+                        child:
+                        LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) =>
+                                const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) =>
+                                const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotDataWaist,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
+                              ),
+                            ])));
+                }
+              } else {
+                return Container(child: Text("Nope"));}
+
+            }),
+        SizedBox(height: 30),
+        Text(
+          "Waist",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget hipsChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: hipsOne(),
+            bottomCardWidget: weightTwo()
+        )
+      ],
+    );
+  }
+
+  Widget hipsOne() {
+    return Column(
+      children: [
+        FutureBuilder(
+            future: getHipsChart(1),
+            builder: (context, snapshot) {
+              if (hips.isNotEmpty) {
+                switch (snapshot.connectionState) {
+                // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                  // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(
+                            left: 0, right: 10, bottom: 5, top: 20),
+                        child:
+                        LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) =>
+                                const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) =>
+                                const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotDataHips,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
+                              ),
+                            ])));
+                }
+              } else {
+                return Container(child: Text("Nope"));}
+
+            }),
+        SizedBox(height: 30),
+        Text(
+          "Waist",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget bicepsChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: bicepsOne(),
+            bottomCardWidget: weightTwo()
+        )
+      ],
+    );
+  }
+
+  Widget bicepsOne() {
+    return Column(
+      children: [
+        FutureBuilder(
+            future: getWeightChart(1),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
               // Uncompleted State
@@ -622,7 +718,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           ),
                           lineBarsData: [
                             LineChartBarData(
-                              spots: spotData,
+                              spots: spotDataWeight,
                               isCurved: true,
                               colors: [Color(0xff4af699)],
                               isStrokeCapRound: true,
@@ -635,7 +731,7 @@ class _ChartScreenState extends State<ChartScreen> {
             }),
         SizedBox(height: 30),
         Text(
-          "Waist",
+          "Upper Arm",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -645,5 +741,110 @@ class _ChartScreenState extends State<ChartScreen> {
       ],
     );
   }
+
+  Widget foreArmChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: foreArmOne(),
+            bottomCardWidget: weightTwo()
+        )
+      ],
+    );
+  }
+
+  Widget foreArmOne() {
+    return Column(
+      children: [
+        FutureBuilder(
+            future: getWeightChart(1),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+              // Uncompleted State
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return Center(child: CircularProgressIndicator());
+                  break;
+                default:
+                // Completed with error
+                  if (snapshot.hasError)
+                    return Container(child: Text(snapshot.error.toString()));
+                  return Container(
+                      width: double.infinity,
+                      height: 250,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      margin: EdgeInsets.only(left: 0, right: 10, bottom: 5,top: 20),
+                      child: LineChart(LineChartData(
+                          minY: 0,
+                          lineTouchData: LineTouchData(
+                            touchTooltipData: LineTouchTooltipData(
+                              tooltipBgColor:
+                              Colors.blueGrey.withOpacity(0.8),
+                            ),
+                            touchCallback:
+                                (LineTouchResponse touchResponse) {},
+                            handleBuiltInTouches: true,
+                          ),
+                          gridData: FlGridData(
+                            show: false,
+                          ),
+                          titlesData: FlTitlesData(
+                            bottomTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 22,
+                              getTextStyles: (value) => const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                            leftTitles: SideTitles(
+                              showTitles: true,
+                              getTextStyles: (value) => const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          lineBarsData: [
+                            LineChartBarData(
+                              spots: spotDataWeight,
+                              isCurved: true,
+                              colors: [Color(0xff4af699)],
+                              isStrokeCapRound: true,
+                              belowBarData: BarAreaData(show: true, colors: [
+                                Color(0xff4af699).withOpacity(0.2)
+                              ]),
+                            ),
+                          ])));
+              }
+            }),
+        SizedBox(height: 30),
+        Text(
+          "Forearm",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+
 
 }
