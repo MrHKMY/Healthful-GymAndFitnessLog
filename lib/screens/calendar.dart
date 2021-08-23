@@ -537,6 +537,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                       .length,
                                                   itemBuilder: (context,
                                                       index) {
+
                                                     if (snapshot
                                                         .data[index].type ==
                                                         "Post") {
