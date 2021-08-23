@@ -14,7 +14,6 @@ class ChartScreen extends StatefulWidget {
 }
 
 class _ChartScreenState extends State<ChartScreen> {
-
   DatabaseHelper _dbHelper = DatabaseHelper();
   List<Progress> weight = <Progress>[];
   List<Progress> chest = <Progress>[];
@@ -46,12 +45,12 @@ class _ChartScreenState extends State<ChartScreen> {
 
   getWeightChart(int a) async {
     weight = await _dbHelper.retrieveWeightForChart("Weight");
-     Iterable inReverse = weight.reversed;
-     var reversed = inReverse.toList();
+    Iterable inReverse = weight.reversed;
+    var reversed = inReverse.toList();
 
     if (a == 1) {
       for (int x = 0; x < reversed.length; x++) {
-        spotDataWeight.add(FlSpot(double.parse((x+1).toString()),
+        spotDataWeight.add(FlSpot(double.parse((x + 1).toString()),
             double.parse(reversed[x].center.toString())));
         a = 2;
       }
@@ -66,7 +65,7 @@ class _ChartScreenState extends State<ChartScreen> {
 
     if (b == 1) {
       for (int a = 0; a < reversed.length; a++) {
-        spotDataChest.add(FlSpot(double.parse((a+1).toString()),
+        spotDataChest.add(FlSpot(double.parse((a + 1).toString()),
             double.parse(reversed[a].center.toString())));
         b = 2;
       }
@@ -77,7 +76,6 @@ class _ChartScreenState extends State<ChartScreen> {
   }
 
   getWaistChart(int b) async {
-
     waist = await _dbHelper.retrieveWeightForChart("Waist");
     //print(activity[0].setCount.toString());
     Iterable inReverse = waist.reversed;
@@ -85,7 +83,7 @@ class _ChartScreenState extends State<ChartScreen> {
 
     if (b == 1) {
       for (int a = 0; a < reversed.length; a++) {
-        spotDataWaist.add(FlSpot(double.parse((a+1).toString()),
+        spotDataWaist.add(FlSpot(double.parse((a + 1).toString()),
             double.parse(reversed[a].center.toString())));
         b = 2;
       }
@@ -103,7 +101,7 @@ class _ChartScreenState extends State<ChartScreen> {
 
     if (b == 1) {
       for (int a = 0; a < reversed.length; a++) {
-        spotDataHips.add(FlSpot(double.parse((a+1).toString()),
+        spotDataHips.add(FlSpot(double.parse((a + 1).toString()),
             double.parse(reversed[a].center.toString())));
         b = 2;
       }
@@ -111,6 +109,26 @@ class _ChartScreenState extends State<ChartScreen> {
 
     print("Hips = " + spotDataChest.toString());
     return hips;
+  }
+
+  getUpperArmChart(int a) async {
+    upperArmL = await _dbHelper.retrieve2PartsForChart("Upper Arm", "Left");
+    upperArmR = await _dbHelper.retrieve2PartsForChart("Upper Arm", "Right");
+
+    Iterable inReverse = upperArmL.reversed;
+    var reversedL = inReverse.toList();
+
+    if (a == 1) {
+      for (int x = 0; x < reversedL.length; x++) {
+        spotDataUpperArmL.add(FlSpot(double.parse((x + 1).toString()),
+            double.parse(reversedL[x].left.toString())));
+
+        spotDataUpperArmR.add(FlSpot(double.parse((x + 1).toString()),
+            double.parse(reversedL[x].right.toString())));
+        a = 2;
+      }
+    }
+    return upperArmL;
   }
 
   @override
@@ -122,7 +140,13 @@ class _ChartScreenState extends State<ChartScreen> {
   Widget build(BuildContext context) {
     //getData();
 
-    List allCharts = [weightChart(), chestChart(), waistChart(), hipsChart()];
+    List allCharts = [
+      weightChart(),
+      chestChart(),
+      waistChart(),
+      hipsChart(),
+      upperArmChart()
+    ];
 
     return Scaffold(
         appBar: AppBar(
@@ -138,29 +162,26 @@ class _ChartScreenState extends State<ChartScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.grey[100],
         body: SafeArea(
-            child: CarouselSlider(
-              options: CarouselOptions(
-                enableInfiniteScroll: false,
-                height: double.infinity,
-                //autoPlay: true,
-                // autoPlayInterval: Duration(seconds: 3),
-                // autoPlayAnimationDuration: Duration(milliseconds: 800),
-                // autoPlayCurve: Curves.fastOutSlowIn,
-                // pauseAutoPlayOnTouch: true,
-              ),
-              items: allCharts.map((card){
-                return Builder(
-                    builder:(BuildContext context){
-                      return Container(
-                        height: double.infinity,
-                        child: card,
-                      );
-                    }
-                );
-              }).toList(),
+          child: CarouselSlider(
+            options: CarouselOptions(
+              enableInfiniteScroll: false,
+              height: double.infinity,
+              //autoPlay: true,
+              // autoPlayInterval: Duration(seconds: 3),
+              // autoPlayAnimationDuration: Duration(milliseconds: 800),
+              // autoPlayCurve: Curves.fastOutSlowIn,
+              // pauseAutoPlayOnTouch: true,
             ),
-        )
-    );
+            items: allCharts.map((card) {
+              return Builder(builder: (BuildContext context) {
+                return Container(
+                  height: double.infinity,
+                  child: card,
+                );
+              });
+            }).toList(),
+          ),
+        ));
   }
 
   // ListView(
@@ -193,8 +214,7 @@ class _ChartScreenState extends State<ChartScreen> {
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: weightOne(),
-            bottomCardWidget: weightTwo()
-        )
+            bottomCardWidget: weightTwo())
       ],
     );
   }
@@ -206,73 +226,82 @@ class _ChartScreenState extends State<ChartScreen> {
             future: getWeightChart(1),
             builder: (context, snapshot) {
               if (weight.isNotEmpty) {
-              switch (snapshot.connectionState) {
-                // Uncompleted State
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
-                  break;
-                default:
-                  // Completed with error
-                  if (snapshot.hasError)
-                    return Container(child: Text(snapshot.error.toString()));
-                  return Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20)),
-                      margin: EdgeInsets.only(left: 0, right: 10, bottom: 5,top: 20),
-                      child: LineChart(LineChartData(
-                          minY: 0,
-                          lineTouchData: LineTouchData(
-                            touchTooltipData: LineTouchTooltipData(
-                              tooltipBgColor:
-                                  Colors.blueGrey.withOpacity(0.8),
+                switch (snapshot.connectionState) {
+                  // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                    // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(
+                            left: 0, right: 10, bottom: 5, top: 20),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                    Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
                             ),
-                            touchCallback:
-                                (LineTouchResponse touchResponse) {},
-                            handleBuiltInTouches: true,
-                          ),
-                          gridData: FlGridData(
-                            show: false,
-                          ),
-                          titlesData: FlTitlesData(
-                            bottomTitles: SideTitles(
-                              showTitles: false,
-                              reservedSize: 22,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: false,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                interval: 20,
+                                margin: 5,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
-                            leftTitles: SideTitles(
-                              showTitles: true,
-                              interval: 20,
-                              margin: 5,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotDataWeight,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
                               ),
-                            ),
-                          ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          lineBarsData: [
-                            LineChartBarData(
-                              spots: spotDataWeight,
-                              isCurved: true,
-                              colors: [Color(0xff4af699)],
-                              isStrokeCapRound: true,
-                              belowBarData: BarAreaData(show: true, colors: [
-                                Color(0xff4af699).withOpacity(0.2)
-                              ]),
-                            ),
-                          ])));
-              }} else {
-                return Container(child: Text("Nope"));}
+                            ])));
+                }
+              } else {
+                return Container(
+                    height: 250,
+                    child: Center(
+                        child: Text(
+                      "Not enough data to plot charts",
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                    )));
+              }
             }),
         SizedBox(height: 30),
         Text(
@@ -322,8 +351,7 @@ class _ChartScreenState extends State<ChartScreen> {
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: chestsOne(),
-            bottomCardWidget: weightTwo()
-        )
+            bottomCardWidget: weightTwo())
       ],
     );
   }
@@ -332,74 +360,82 @@ class _ChartScreenState extends State<ChartScreen> {
     return Column(
       children: [
         FutureBuilder(
-            future: getChestChart( 1),
+            future: getChestChart(1),
             builder: (context, snapshot) {
               if (chest.isNotEmpty) {
-              switch (snapshot.connectionState) {
-              // Uncompleted State
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
-                  break;
-                default:
-                // Completed with error
-                  if (snapshot.hasError)
-                    return Container(child: Text(snapshot.error.toString()));
-                  return Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20)),
-                      margin: EdgeInsets.only(left: 0, right: 10, bottom: 5,top: 20),
-                      child: LineChart(LineChartData(
-                          minY: 0,
-                          lineTouchData: LineTouchData(
-                            touchTooltipData: LineTouchTooltipData(
-                              tooltipBgColor:
-                              Colors.blueGrey.withOpacity(0.8),
+                switch (snapshot.connectionState) {
+                  // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                    // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(
+                            left: 0, right: 10, bottom: 5, top: 20),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                    Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
                             ),
-                            touchCallback:
-                                (LineTouchResponse touchResponse) {},
-                            handleBuiltInTouches: true,
-                          ),
-                          gridData: FlGridData(
-                            show: false,
-                          ),
-                          titlesData: FlTitlesData(
-                            bottomTitles: SideTitles(
-                              showTitles: true,
-                              reservedSize: 22,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
-                            leftTitles: SideTitles(
-                              showTitles: true,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotDataChest,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
                               ),
-                            ),
-                          ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          lineBarsData: [
-                            LineChartBarData(
-                              spots: spotDataChest,
-                              isCurved: true,
-                              colors: [Color(0xff4af699)],
-                              isStrokeCapRound: true,
-                              belowBarData: BarAreaData(show: true, colors: [
-                                Color(0xff4af699).withOpacity(0.2)
-                              ]),
-                            ),
-                          ])));
-              }} else {
-                return Container(child: Text("Nope"),);
+                            ])));
+                }
+              } else {
+                return Container(
+                    height: 250,
+                    child: Center(
+                        child: Text(
+                      "Not enough data to plot charts",
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                    )));
               }
             }),
         SizedBox(height: 30),
@@ -428,8 +464,7 @@ class _ChartScreenState extends State<ChartScreen> {
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: waistOne(),
-            bottomCardWidget: weightTwo()
-        )
+            bottomCardWidget: weightTwo())
       ],
     );
   }
@@ -442,13 +477,13 @@ class _ChartScreenState extends State<ChartScreen> {
             builder: (context, snapshot) {
               if (waist.isNotEmpty) {
                 switch (snapshot.connectionState) {
-                // Uncompleted State
+                  // Uncompleted State
                   case ConnectionState.none:
                   case ConnectionState.waiting:
                     return Center(child: CircularProgressIndicator());
                     break;
                   default:
-                  // Completed with error
+                    // Completed with error
                     if (snapshot.hasError)
                       return Container(child: Text(snapshot.error.toString()));
 
@@ -459,13 +494,12 @@ class _ChartScreenState extends State<ChartScreen> {
                             borderRadius: BorderRadius.circular(20)),
                         margin: EdgeInsets.only(
                             left: 0, right: 10, bottom: 5, top: 20),
-                        child:
-                        LineChart(LineChartData(
+                        child: LineChart(LineChartData(
                             minY: 0,
                             lineTouchData: LineTouchData(
                               touchTooltipData: LineTouchTooltipData(
                                 tooltipBgColor:
-                                Colors.blueGrey.withOpacity(0.8),
+                                    Colors.blueGrey.withOpacity(0.8),
                               ),
                               touchCallback:
                                   (LineTouchResponse touchResponse) {},
@@ -478,8 +512,7 @@ class _ChartScreenState extends State<ChartScreen> {
                               bottomTitles: SideTitles(
                                 showTitles: true,
                                 reservedSize: 22,
-                                getTextStyles: (value) =>
-                                const TextStyle(
+                                getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -487,8 +520,7 @@ class _ChartScreenState extends State<ChartScreen> {
                               ),
                               leftTitles: SideTitles(
                                 showTitles: true,
-                                getTextStyles: (value) =>
-                                const TextStyle(
+                                getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -511,8 +543,14 @@ class _ChartScreenState extends State<ChartScreen> {
                             ])));
                 }
               } else {
-                return Container(child: Text("Nope"));}
-
+                return Container(
+                    height: 250,
+                    child: Center(
+                        child: Text(
+                      "Not enough data to plot charts",
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                    )));
+              }
             }),
         SizedBox(height: 30),
         Text(
@@ -540,8 +578,7 @@ class _ChartScreenState extends State<ChartScreen> {
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: hipsOne(),
-            bottomCardWidget: weightTwo()
-        )
+            bottomCardWidget: weightTwo())
       ],
     );
   }
@@ -554,13 +591,13 @@ class _ChartScreenState extends State<ChartScreen> {
             builder: (context, snapshot) {
               if (hips.isNotEmpty) {
                 switch (snapshot.connectionState) {
-                // Uncompleted State
+                  // Uncompleted State
                   case ConnectionState.none:
                   case ConnectionState.waiting:
                     return Center(child: CircularProgressIndicator());
                     break;
                   default:
-                  // Completed with error
+                    // Completed with error
                     if (snapshot.hasError)
                       return Container(child: Text(snapshot.error.toString()));
 
@@ -571,13 +608,12 @@ class _ChartScreenState extends State<ChartScreen> {
                             borderRadius: BorderRadius.circular(20)),
                         margin: EdgeInsets.only(
                             left: 0, right: 10, bottom: 5, top: 20),
-                        child:
-                        LineChart(LineChartData(
+                        child: LineChart(LineChartData(
                             minY: 0,
                             lineTouchData: LineTouchData(
                               touchTooltipData: LineTouchTooltipData(
                                 tooltipBgColor:
-                                Colors.blueGrey.withOpacity(0.8),
+                                    Colors.blueGrey.withOpacity(0.8),
                               ),
                               touchCallback:
                                   (LineTouchResponse touchResponse) {},
@@ -590,8 +626,7 @@ class _ChartScreenState extends State<ChartScreen> {
                               bottomTitles: SideTitles(
                                 showTitles: true,
                                 reservedSize: 22,
-                                getTextStyles: (value) =>
-                                const TextStyle(
+                                getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -599,8 +634,7 @@ class _ChartScreenState extends State<ChartScreen> {
                               ),
                               leftTitles: SideTitles(
                                 showTitles: true,
-                                getTextStyles: (value) =>
-                                const TextStyle(
+                                getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -623,12 +657,18 @@ class _ChartScreenState extends State<ChartScreen> {
                             ])));
                 }
               } else {
-                return Container(child: Text("Nope"));}
-
+                return Container(
+                    height: 250,
+                    child: Center(
+                        child: Text(
+                      "Not enough data to plot charts",
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                    )));
+              }
             }),
         SizedBox(height: 30),
         Text(
-          "Waist",
+          "Hips",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -639,7 +679,7 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  Widget bicepsChart() {
+  Widget upperArmChart() {
     return ListView(
       shrinkWrap: false,
       padding: EdgeInsets.all(10),
@@ -651,82 +691,101 @@ class _ChartScreenState extends State<ChartScreen> {
             bottomCardHeight: 100,
             borderRadius: 20,
             slimeEnabled: false,
-            topCardWidget: bicepsOne(),
-            bottomCardWidget: weightTwo()
-        )
+            topCardWidget: upperArmOne(),
+            bottomCardWidget: weightTwo())
       ],
     );
   }
 
-  Widget bicepsOne() {
+  Widget upperArmOne() {
     return Column(
       children: [
         FutureBuilder(
-            future: getWeightChart(1),
+            future: getUpperArmChart(1),
             builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-              // Uncompleted State
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
-                  break;
-                default:
-                // Completed with error
-                  if (snapshot.hasError)
-                    return Container(child: Text(snapshot.error.toString()));
-                  return Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20)),
-                      margin: EdgeInsets.only(left: 0, right: 10, bottom: 5,top: 20),
-                      child: LineChart(LineChartData(
-                          minY: 0,
-                          lineTouchData: LineTouchData(
-                            touchTooltipData: LineTouchTooltipData(
-                              tooltipBgColor:
-                              Colors.blueGrey.withOpacity(0.8),
+              if (upperArmL.isNotEmpty) {
+                switch (snapshot.connectionState) {
+                  // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                    // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(
+                            left: 0, right: 10, bottom: 5, top: 20),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                    Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback:
+                                  (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
                             ),
-                            touchCallback:
-                                (LineTouchResponse touchResponse) {},
-                            handleBuiltInTouches: true,
-                          ),
-                          gridData: FlGridData(
-                            show: false,
-                          ),
-                          titlesData: FlTitlesData(
-                            bottomTitles: SideTitles(
-                              showTitles: true,
-                              reservedSize: 22,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
-                            leftTitles: SideTitles(
-                              showTitles: true,
-                              getTextStyles: (value) => const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotDataUpperArmL,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Color(0xff4af699).withOpacity(0.2)
+                                ]),
                               ),
-                            ),
-                          ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          lineBarsData: [
-                            LineChartBarData(
-                              spots: spotDataWeight,
-                              isCurved: true,
-                              colors: [Color(0xff4af699)],
-                              isStrokeCapRound: true,
-                              belowBarData: BarAreaData(show: true, colors: [
-                                Color(0xff4af699).withOpacity(0.2)
-                              ]),
-                            ),
-                          ])));
+                              LineChartBarData(
+                                spots: spotDataUpperArmR,
+                                isCurved: true,
+                                colors: [Colors.blue],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(show: true, colors: [
+                                  Colors.blue.withOpacity(0.2)
+                                ]),
+                              )
+                            ])));
+                }
+              } else {
+                return Container(
+                    height: 250,
+                    child: Center(
+                        child: Text(
+                      "Not enough data to plot charts",
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                    )));
               }
             }),
         SizedBox(height: 30),
@@ -755,8 +814,7 @@ class _ChartScreenState extends State<ChartScreen> {
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: foreArmOne(),
-            bottomCardWidget: weightTwo()
-        )
+            bottomCardWidget: weightTwo())
       ],
     );
   }
@@ -768,13 +826,13 @@ class _ChartScreenState extends State<ChartScreen> {
             future: getWeightChart(1),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
-              // Uncompleted State
+                // Uncompleted State
                 case ConnectionState.none:
                 case ConnectionState.waiting:
                   return Center(child: CircularProgressIndicator());
                   break;
                 default:
-                // Completed with error
+                  // Completed with error
                   if (snapshot.hasError)
                     return Container(child: Text(snapshot.error.toString()));
                   return Container(
@@ -782,16 +840,15 @@ class _ChartScreenState extends State<ChartScreen> {
                       height: 250,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20)),
-                      margin: EdgeInsets.only(left: 0, right: 10, bottom: 5,top: 20),
+                      margin: EdgeInsets.only(
+                          left: 0, right: 10, bottom: 5, top: 20),
                       child: LineChart(LineChartData(
                           minY: 0,
                           lineTouchData: LineTouchData(
                             touchTooltipData: LineTouchTooltipData(
-                              tooltipBgColor:
-                              Colors.blueGrey.withOpacity(0.8),
+                              tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
                             ),
-                            touchCallback:
-                                (LineTouchResponse touchResponse) {},
+                            touchCallback: (LineTouchResponse touchResponse) {},
                             handleBuiltInTouches: true,
                           ),
                           gridData: FlGridData(
@@ -825,9 +882,9 @@ class _ChartScreenState extends State<ChartScreen> {
                               isCurved: true,
                               colors: [Color(0xff4af699)],
                               isStrokeCapRound: true,
-                              belowBarData: BarAreaData(show: true, colors: [
-                                Color(0xff4af699).withOpacity(0.2)
-                              ]),
+                              belowBarData: BarAreaData(
+                                  show: true,
+                                  colors: [Color(0xff4af699).withOpacity(0.2)]),
                             ),
                           ])));
               }
@@ -844,7 +901,4 @@ class _ChartScreenState extends State<ChartScreen> {
       ],
     );
   }
-
-
-
 }

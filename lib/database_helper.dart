@@ -66,14 +66,15 @@ class DatabaseHelper {
     });
   }
 
-  Future<List<Progress>> retrieveChestForChart() async {
+  Future<List<Progress>> retrieve2PartsForChart(String part, String where) async {
     Database _db = await database();
-    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = 'Chest' ORDER BY id DESC");
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = '$part' ORDER BY id DESC");
 
     return List.generate(activityMap.length, (index) {
       return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"]);
     });
   }
+
 
   // Future<List<Activities>> getCharts() async {
   //   var dbClient = await database;
