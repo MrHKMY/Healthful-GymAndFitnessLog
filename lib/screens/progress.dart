@@ -383,6 +383,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       controller: leftController,
                       autofocus: true,
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.next,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
                       ],
@@ -395,6 +396,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       controller: rightController,
                       autofocus: true,
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
                       ],

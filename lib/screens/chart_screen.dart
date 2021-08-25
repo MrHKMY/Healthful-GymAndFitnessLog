@@ -19,14 +19,10 @@ class _ChartScreenState extends State<ChartScreen> {
   List<Progress> chest = <Progress>[];
   List<Progress> waist = <Progress>[];
   List<Progress> hips = <Progress>[];
-  List<Progress> upperArmL = <Progress>[];
-  List<Progress> upperArmR = <Progress>[];
-  List<Progress> forearmL = <Progress>[];
-  List<Progress> forearmR = <Progress>[];
-  List<Progress> thighL = <Progress>[];
-  List<Progress> thighR = <Progress>[];
-  List<Progress> calfL = <Progress>[];
-  List<Progress> calfR = <Progress>[];
+  List<Progress> upperArm = <Progress>[];
+  List<Progress> forearm = <Progress>[];
+  List<Progress> thigh = <Progress>[];
+  List<Progress> calf = <Progress>[];
 
   List<FlSpot> spotDataWeight = [];
   List<FlSpot> spotDataChest = [];
@@ -112,10 +108,10 @@ class _ChartScreenState extends State<ChartScreen> {
   }
 
   getUpperArmChart(int a) async {
-    upperArmL = await _dbHelper.retrieve2PartsForChart("Upper Arm", "Left");
-    upperArmR = await _dbHelper.retrieve2PartsForChart("Upper Arm", "Right");
+    upperArm = await _dbHelper.retrieve2PartsForChart("Upper Arm");
+    //upperArmR = await _dbHelper.retrieve2PartsForChart("Upper Arm", "Right");
 
-    Iterable inReverse = upperArmL.reversed;
+    Iterable inReverse = upperArm.reversed;
     var reversedL = inReverse.toList();
 
     if (a == 1) {
@@ -128,7 +124,67 @@ class _ChartScreenState extends State<ChartScreen> {
         a = 2;
       }
     }
-    return upperArmL;
+    return upperArm;
+  }
+
+  getForearmChart(int a) async {
+    forearm = await _dbHelper.retrieve2PartsForChart("Forearm");
+    //forearmR = await _dbHelper.retrieve2PartsForChart("Forearm", "Right");
+
+    Iterable inReverse = forearm.reversed;
+    var reversedL = inReverse.toList();
+
+    if (a == 1) {
+      for (int x = 0; x < reversedL.length; x++) {
+        spotDataForearmL.add(FlSpot(double.parse((x + 1).toString()),
+            double.parse(reversedL[x].left.toString())));
+
+        spotDataForearmR.add(FlSpot(double.parse((x + 1).toString()),
+            double.parse(reversedL[x].right.toString())));
+        a = 2;
+      }
+    }
+    return forearm;
+  }
+
+  getThighChart(int a) async {
+    thigh = await _dbHelper.retrieve2PartsForChart("Thigh");
+    //forearmR = await _dbHelper.retrieve2PartsForChart("Forearm", "Right");
+
+    Iterable inReverse = thigh.reversed;
+    var reversedL = inReverse.toList();
+
+    if (a == 1) {
+      for (int x = 0; x < reversedL.length; x++) {
+        spotDataThighL.add(FlSpot(double.parse((x + 1).toString()),
+            double.parse(reversedL[x].left.toString())));
+
+        spotDataThighR.add(FlSpot(double.parse((x + 1).toString()),
+            double.parse(reversedL[x].right.toString())));
+        a = 2;
+      }
+    }
+    return thigh;
+  }
+
+  getCalfChart(int a) async {
+    calf = await _dbHelper.retrieve2PartsForChart("Calf");
+    //forearmR = await _dbHelper.retrieve2PartsForChart("Forearm", "Right");
+
+    Iterable inReverse = calf.reversed;
+    var reversedL = inReverse.toList();
+
+    if (a == 1) {
+      for (int x = 0; x < reversedL.length; x++) {
+        spotDataCalfL.add(FlSpot(double.parse((x + 1).toString()),
+            double.parse(reversedL[x].left.toString())));
+
+        spotDataCalfR.add(FlSpot(double.parse((x + 1).toString()),
+            double.parse(reversedL[x].right.toString())));
+        a = 2;
+      }
+    }
+    return calf;
   }
 
   @override
@@ -145,7 +201,10 @@ class _ChartScreenState extends State<ChartScreen> {
       chestChart(),
       waistChart(),
       hipsChart(),
-      upperArmChart()
+      upperArmChart(),
+      forearmChart(),
+      thighChart(),
+      calfChart(),
     ];
 
     return Scaffold(
@@ -703,7 +762,7 @@ class _ChartScreenState extends State<ChartScreen> {
         FutureBuilder(
             future: getUpperArmChart(1),
             builder: (context, snapshot) {
-              if (upperArmL.isNotEmpty) {
+              if (upperArm.isNotEmpty) {
                 switch (snapshot.connectionState) {
                   // Uncompleted State
                   case ConnectionState.none:
@@ -801,7 +860,7 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  Widget foreArmChart() {
+  Widget forearmChart() {
     return ListView(
       shrinkWrap: false,
       padding: EdgeInsets.all(10),
@@ -823,8 +882,9 @@ class _ChartScreenState extends State<ChartScreen> {
     return Column(
       children: [
         FutureBuilder(
-            future: getWeightChart(1),
+            future: getForearmChart(1),
             builder: (context, snapshot) {
+    if (forearm.isNotEmpty) {
               switch (snapshot.connectionState) {
                 // Uncompleted State
                 case ConnectionState.none:
@@ -878,7 +938,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           ),
                           lineBarsData: [
                             LineChartBarData(
-                              spots: spotDataWeight,
+                              spots: spotDataForearmL,
                               isCurved: true,
                               colors: [Color(0xff4af699)],
                               isStrokeCapRound: true,
@@ -886,12 +946,267 @@ class _ChartScreenState extends State<ChartScreen> {
                                   show: true,
                                   colors: [Color(0xff4af699).withOpacity(0.2)]),
                             ),
+                            LineChartBarData(
+                              spots: spotDataForearmR,
+                              isCurved: true,
+                              colors: [Colors.blue],
+                              isStrokeCapRound: true,
+                              belowBarData: BarAreaData(
+                                  show: true,
+                                  colors: [Colors.blue.withOpacity(0.2)]),
+                            ),
                           ])));
-              }
+              }} else {
+      return Container(
+          height: 250,
+          child: Center(
+              child: Text(
+                "Not enough data to plot charts",
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+              )));
+    }
             }),
         SizedBox(height: 30),
         Text(
           "Forearm",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget thighChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: thighOne(),
+            bottomCardWidget: weightTwo())
+      ],
+    );
+  }
+
+  Widget thighOne() {
+    return Column(
+      children: [
+        FutureBuilder(
+            future: getThighChart(1),
+            builder: (context, snapshot) {
+              if (thigh.isNotEmpty) {
+                switch (snapshot.connectionState) {
+                // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                  // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(
+                            left: 0, right: 10, bottom: 5, top: 20),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback: (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotDataThighL,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(
+                                    show: true,
+                                    colors: [Color(0xff4af699).withOpacity(0.2)]),
+                              ),
+                              LineChartBarData(
+                                spots: spotDataThighR,
+                                isCurved: true,
+                                colors: [Colors.blue],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(
+                                    show: true,
+                                    colors: [Colors.blue.withOpacity(0.2)]),
+                              ),
+                            ])));
+                }} else {
+                return Container(
+                    height: 250,
+                    child: Center(
+                        child: Text(
+                          "Not enough data to plot charts",
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        )));
+              }
+            }),
+        SizedBox(height: 30),
+        Text(
+          "Thigh",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget calfChart() {
+    return ListView(
+      shrinkWrap: false,
+      padding: EdgeInsets.all(10),
+      children: [
+        SlimyCard(
+            color: Color(0xFF1F3546),
+            width: 400,
+            topCardHeight: 400,
+            bottomCardHeight: 100,
+            borderRadius: 20,
+            slimeEnabled: false,
+            topCardWidget: calfOne(),
+            bottomCardWidget: weightTwo())
+      ],
+    );
+  }
+
+  Widget calfOne() {
+    return Column(
+      children: [
+        FutureBuilder(
+            future: getCalfChart(1),
+            builder: (context, snapshot) {
+              if (calf.isNotEmpty) {
+                switch (snapshot.connectionState) {
+                // Uncompleted State
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                    break;
+                  default:
+                  // Completed with error
+                    if (snapshot.hasError)
+                      return Container(child: Text(snapshot.error.toString()));
+                    return Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.only(
+                            left: 0, right: 10, bottom: 5, top: 20),
+                        child: LineChart(LineChartData(
+                            minY: 0,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+                              ),
+                              touchCallback: (LineTouchResponse touchResponse) {},
+                              handleBuiltInTouches: true,
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (value) => const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: spotDataCalfL,
+                                isCurved: true,
+                                colors: [Color(0xff4af699)],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(
+                                    show: true,
+                                    colors: [Color(0xff4af699).withOpacity(0.2)]),
+                              ),
+                              LineChartBarData(
+                                spots: spotDataCalfR,
+                                isCurved: true,
+                                colors: [Colors.blue],
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(
+                                    show: true,
+                                    colors: [Colors.blue.withOpacity(0.2)]),
+                              ),
+                            ])));
+                }} else {
+                return Container(
+                    height: 250,
+                    child: Center(
+                        child: Text(
+                          "Not enough data to plot charts",
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        )));
+              }
+            }),
+        SizedBox(height: 30),
+        Text(
+          "Calf",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
