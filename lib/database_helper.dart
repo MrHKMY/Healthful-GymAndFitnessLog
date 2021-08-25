@@ -66,7 +66,7 @@ class DatabaseHelper {
     });
   }
 
-  Future<List<Progress>> retrieve2PartsForChart(String part, String where) async {
+  Future<List<Progress>> retrieve2PartsForChart(String part) async {
     Database _db = await database();
     List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = '$part' ORDER BY id DESC");
 
