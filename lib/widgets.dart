@@ -63,6 +63,97 @@ class HistoryWidget extends StatelessWidget {
   }
 }
 
+class HistoryWidgetChart extends StatelessWidget {
+  //final String activity;
+  final String date;
+  final String part;
+  final String left;
+  final double right;
+  final double count;
+
+  HistoryWidgetChart({this.date, this.part, this.count, this.left, this.right});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      //color: Colors.blue,
+      height: 60,
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      margin: EdgeInsets.only(bottom: 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                date ?? 'No date',
+                style: TextStyle(
+                    fontSize: 12, color: Colors.white, ),
+              ),
+
+              Text(
+                count.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          Divider(thickness: 1, height: 10, color: Colors.grey[700], indent: 10, endIndent: 10,),
+        ],
+      ),
+    );
+  }
+}
+
+class HistoryWidgetChart2Parts extends StatelessWidget {
+  //final String activity;
+  final String date;
+  final String part;
+  final double left;
+  final double right;
+  final double count;
+
+  HistoryWidgetChart2Parts({this.date, this.part, this.count, this.left, this.right});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      //color: Colors.blue,
+      height: 60,
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      margin: EdgeInsets.only(bottom: 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                date ?? 'No date',
+                style: TextStyle(
+                  fontSize: 12, color: Colors.white, ),
+              ),
+
+              Text(
+                "Left: " + left.toString(),
+                style: TextStyle(color: Color(0xff4af699)),
+              ),
+
+              Text(
+                "Right: " + right.toString(),
+                style: TextStyle(color: Colors.blue),
+              ),
+            ],
+          ),
+          Divider(thickness: 1, height: 10, color: Colors.grey[700], indent: 10, endIndent: 10,),
+        ],
+      ),
+    );
+  }
+}
+
 class WeightWidget extends StatefulWidget {
   final String parts;
   final String measurement;
