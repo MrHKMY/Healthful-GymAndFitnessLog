@@ -1,6 +1,7 @@
 import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/activities.dart';
 import 'package:calendar/model/progress.dart';
+import 'package:calendar/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,7 +68,6 @@ class _ChartScreenState extends State<ChartScreen> {
       }
     }
 
-    print("Chest = " + spotDataChest.toString());
     return chest;
   }
 
@@ -85,7 +85,6 @@ class _ChartScreenState extends State<ChartScreen> {
       }
     }
 
-    print("Waist = " + spotDataWaist.toString());
     return waist;
   }
 
@@ -103,7 +102,6 @@ class _ChartScreenState extends State<ChartScreen> {
       }
     }
 
-    print("Hips = " + spotDataChest.toString());
     return hips;
   }
 
@@ -260,6 +258,60 @@ class _ChartScreenState extends State<ChartScreen> {
   //   ],
   // ),
 
+  Widget bottomSlime(String focus) {
+    return Container(
+        decoration: BoxDecoration(
+          //color: Colors.white,
+            borderRadius: BorderRadius.circular(10)),
+        child: Column(children: [
+          Expanded(
+              child: FutureBuilder(
+                  initialData: [],
+                  future: _dbHelper.retrieveWeightForChart(focus),
+                  builder: (context, snapshot) {
+                    return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                          return HistoryWidgetChart(
+                            date: snapshot.data[index].date,
+                            count: snapshot.data[index].center,
+                            part: snapshot.data[index].bodyPart,
+                          );
+                      },
+                    );
+                  })
+          ),
+        ])
+    );
+  }
+
+  Widget bottomSlime2Parts(String focus) {
+    return Container(
+        decoration: BoxDecoration(
+          //color: Colors.white,
+            borderRadius: BorderRadius.circular(10)),
+        child: Column(children: [
+          Expanded(
+              child: FutureBuilder(
+                  initialData: [],
+                  future: _dbHelper.retrieveWeightForChart(focus),
+                  builder: (context, snapshot) {
+                    return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return HistoryWidgetChart2Parts(
+                          date: snapshot.data[index].date,
+                          left: snapshot.data[index].left,
+                          right: snapshot.data[index].right,
+                        );
+                      },
+                    );
+                  })
+          ),
+        ])
+    );
+  }
+
   Widget weightChart() {
     return ListView(
       shrinkWrap: false,
@@ -269,11 +321,11 @@ class _ChartScreenState extends State<ChartScreen> {
             color: Color(0xFF1F3546),
             width: 400,
             topCardHeight: 400,
-            bottomCardHeight: 100,
+            bottomCardHeight: 200,
             borderRadius: 20,
-            slimeEnabled: false,
+            slimeEnabled: true,
             topCardWidget: weightOne(),
-            bottomCardWidget: weightTwo())
+            bottomCardWidget: bottomSlime("Weight"))
       ],
     );
   }
@@ -375,28 +427,6 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  Widget weightTwo() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            "Latest : ",
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            "Highest : ",
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            "Lowest : ",
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget chestChart() {
     return ListView(
       shrinkWrap: false,
@@ -406,11 +436,11 @@ class _ChartScreenState extends State<ChartScreen> {
             color: Color(0xFF1F3546),
             width: 400,
             topCardHeight: 400,
-            bottomCardHeight: 100,
+            bottomCardHeight: 200,
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: chestsOne(),
-            bottomCardWidget: weightTwo())
+            bottomCardWidget: bottomSlime("Chest"))
       ],
     );
   }
@@ -455,7 +485,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                             titlesData: FlTitlesData(
                               bottomTitles: SideTitles(
-                                showTitles: true,
+                                showTitles: false,
                                 reservedSize: 22,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
@@ -464,6 +494,8 @@ class _ChartScreenState extends State<ChartScreen> {
                                 ),
                               ),
                               leftTitles: SideTitles(
+                                interval: 5,
+                                margin: 5,
                                 showTitles: true,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
@@ -519,11 +551,11 @@ class _ChartScreenState extends State<ChartScreen> {
             color: Color(0xFF1F3546),
             width: 400,
             topCardHeight: 400,
-            bottomCardHeight: 100,
+            bottomCardHeight: 200,
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: waistOne(),
-            bottomCardWidget: weightTwo())
+            bottomCardWidget: bottomSlime("Waist"))
       ],
     );
   }
@@ -569,7 +601,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                             titlesData: FlTitlesData(
                               bottomTitles: SideTitles(
-                                showTitles: true,
+                                showTitles: false,
                                 reservedSize: 22,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
@@ -579,6 +611,8 @@ class _ChartScreenState extends State<ChartScreen> {
                               ),
                               leftTitles: SideTitles(
                                 showTitles: true,
+                                interval: 5,
+                                margin: 5,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -633,11 +667,11 @@ class _ChartScreenState extends State<ChartScreen> {
             color: Color(0xFF1F3546),
             width: 400,
             topCardHeight: 400,
-            bottomCardHeight: 100,
+            bottomCardHeight: 200,
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: hipsOne(),
-            bottomCardWidget: weightTwo())
+            bottomCardWidget: bottomSlime("Hips"))
       ],
     );
   }
@@ -683,7 +717,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                             titlesData: FlTitlesData(
                               bottomTitles: SideTitles(
-                                showTitles: true,
+                                showTitles: false,
                                 reservedSize: 22,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
@@ -693,6 +727,8 @@ class _ChartScreenState extends State<ChartScreen> {
                               ),
                               leftTitles: SideTitles(
                                 showTitles: true,
+                                interval: 5,
+                                margin: 5,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -747,11 +783,11 @@ class _ChartScreenState extends State<ChartScreen> {
             color: Color(0xFF1F3546),
             width: 400,
             topCardHeight: 400,
-            bottomCardHeight: 100,
+            bottomCardHeight: 200,
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: upperArmOne(),
-            bottomCardWidget: weightTwo())
+            bottomCardWidget: bottomSlime2Parts("Upper Arm"))
       ],
     );
   }
@@ -796,7 +832,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                             titlesData: FlTitlesData(
                               bottomTitles: SideTitles(
-                                showTitles: true,
+                                showTitles: false,
                                 reservedSize: 22,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
@@ -806,6 +842,8 @@ class _ChartScreenState extends State<ChartScreen> {
                               ),
                               leftTitles: SideTitles(
                                 showTitles: true,
+                                interval: 5,
+                                margin: 5,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -869,11 +907,11 @@ class _ChartScreenState extends State<ChartScreen> {
             color: Color(0xFF1F3546),
             width: 400,
             topCardHeight: 400,
-            bottomCardHeight: 100,
+            bottomCardHeight: 200,
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: foreArmOne(),
-            bottomCardWidget: weightTwo())
+            bottomCardWidget: bottomSlime2Parts("Forearm"))
       ],
     );
   }
@@ -916,7 +954,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           ),
                           titlesData: FlTitlesData(
                             bottomTitles: SideTitles(
-                              showTitles: true,
+                              showTitles: false,
                               reservedSize: 22,
                               getTextStyles: (value) => const TextStyle(
                                 color: Colors.white,
@@ -926,6 +964,8 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                             leftTitles: SideTitles(
                               showTitles: true,
+                              interval: 5,
+                              margin: 5,
                               getTextStyles: (value) => const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -988,11 +1028,11 @@ class _ChartScreenState extends State<ChartScreen> {
             color: Color(0xFF1F3546),
             width: 400,
             topCardHeight: 400,
-            bottomCardHeight: 100,
+            bottomCardHeight: 200,
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: thighOne(),
-            bottomCardWidget: weightTwo())
+            bottomCardWidget: bottomSlime2Parts("Thigh"))
       ],
     );
   }
@@ -1035,7 +1075,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                             titlesData: FlTitlesData(
                               bottomTitles: SideTitles(
-                                showTitles: true,
+                                showTitles: false,
                                 reservedSize: 22,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
@@ -1045,6 +1085,8 @@ class _ChartScreenState extends State<ChartScreen> {
                               ),
                               leftTitles: SideTitles(
                                 showTitles: true,
+                                interval: 5,
+                                margin: 5,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -1107,11 +1149,11 @@ class _ChartScreenState extends State<ChartScreen> {
             color: Color(0xFF1F3546),
             width: 400,
             topCardHeight: 400,
-            bottomCardHeight: 100,
+            bottomCardHeight: 200,
             borderRadius: 20,
             slimeEnabled: false,
             topCardWidget: calfOne(),
-            bottomCardWidget: weightTwo())
+            bottomCardWidget: bottomSlime2Parts("Calves"))
       ],
     );
   }
@@ -1154,7 +1196,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                             titlesData: FlTitlesData(
                               bottomTitles: SideTitles(
-                                showTitles: true,
+                                showTitles: false,
                                 reservedSize: 22,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
@@ -1164,6 +1206,8 @@ class _ChartScreenState extends State<ChartScreen> {
                               ),
                               leftTitles: SideTitles(
                                 showTitles: true,
+                                interval: 5,
+                                margin: 5,
                                 getTextStyles: (value) => const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

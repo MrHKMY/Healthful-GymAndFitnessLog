@@ -57,19 +57,26 @@ class DatabaseHelper {
     });
   }
 
+  // Future<List<Progress>> retrieveActivityForChart( String focus) async {
+  //   Database _db = await database();
+  //   List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM workout WHERE Focus = '$focus' ORDER BY id DESC");
+  //   return List.generate(activityMap.length, (index) {
+  //     return Progress(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["Date"], setCount: activityMap[index]["SetCount"], focus: activityMap[index]["Focus"]);
+  //   });
+  // }
+
   Future<List<Progress>> retrieveWeightForChart(String part) async {
     Database _db = await database();
     List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = '$part' ORDER BY id DESC");
 
     return List.generate(activityMap.length, (index) {
-      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"]);
+      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"], date: activityMap[index]["Date"]);
     });
   }
 
   Future<List<Progress>> retrieve2PartsForChart(String part) async {
     Database _db = await database();
     List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = '$part' ORDER BY id DESC");
-
     return List.generate(activityMap.length, (index) {
       return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"]);
     });

@@ -4,9 +4,9 @@ class Progress {
   final double center;
   final double left;
   final double right;
-  //final String date;
+  final String date;
 
-  Progress ({this.id, this.bodyPart, this.center, this.left, this.right});
+  Progress ({this.id, this.bodyPart, this.center, this.left, this.right, this.date});
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,6 +25,6 @@ class Progress {
     center : json["Center"],
     left : json["Left"],
     right : json["Right"],
-    //date : json["Date"],
+    date : json["Date"],
   );
 }
