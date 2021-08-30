@@ -111,6 +111,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     //TODO remove the first 0 if exist eg : 01 for water and supp
     prefWorkDouble = double.parse(prefWorkString);
+
     prefWaterDouble = double.parse(prefWaterString);
     prefSuppDouble = double.parse(prefSuppString);
 
@@ -130,6 +131,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     prefsData();
     getTotalWater();
     randomQuotes();
+
   }
 
   randomQuotes() {
@@ -724,6 +726,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ringWidth: 60,
               ringDiameter: 250,
               fabColor: Colors.teal[300],
+              fabOpenColor: Colors.white,
               ringColor: Colors.teal[300],
               fabOpenIcon: Image.asset(
                 "assets/images/goals_icon.png",
