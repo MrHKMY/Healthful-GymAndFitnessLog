@@ -51,9 +51,9 @@ class DatabaseHelper {
 
   Future<List<Activities>> retrieveActivity() async {
     Database _db = await database();
-    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM workout ORDER BY id DESC");
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT id, Activity, SetCount, Focus, STRFTIME('%d/%m/%Y', Date) AS formattedDate FROM workout ORDER BY id DESC");
     return List.generate(activityMap.length, (index) {
-      return Activities(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["Date"], setCount: activityMap[index]["SetCount"], focus: activityMap[index]["Focus"]);
+      return Activities(id: activityMap[index]["id"], activity: activityMap[index]["Activity"], date: activityMap[index]["formattedDate"], setCount: activityMap[index]["SetCount"], focus: activityMap[index]["Focus"]);
     });
   }
 
@@ -67,10 +67,10 @@ class DatabaseHelper {
 
   Future<List<Progress>> retrieveWeightForChart(String part) async {
     Database _db = await database();
-    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT * FROM progress WHERE BodyPart = '$part' ORDER BY id DESC");
+    List<Map<String, dynamic>> activityMap = await _db.rawQuery("SELECT id, BodyPart, Center, Left, Right, STRFTIME('%d/%m/%Y', Date) AS formattedDate FROM progress WHERE BodyPart = '$part' ORDER BY id DESC");
 
     return List.generate(activityMap.length, (index) {
-      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"], date: activityMap[index]["Date"]);
+      return Progress(id: activityMap[index]["id"], bodyPart: activityMap[index]["BodyPart"], center: activityMap[index]["Center"], left: activityMap[index]["Left"], right: activityMap[index]["Right"], date: activityMap[index]["formattedDate"]);
     });
   }
 
@@ -291,10 +291,9 @@ class DatabaseHelper {
   Future<String> retrieveWorkoutCount() async {
     String theWorkoutCount;
     Database _db = await database();
-    var response = await _db.rawQuery("SELECT COUNT (*) FROM workout WHERE DATE(Date) = DATE('now','localtime')");
+    var response = await _db.rawQuery("SELECT COUNT (*) FROM (SELECT * FROM workout GROUP BY Date) A WHERE DATE(Date) >= DATE('now', 'weekday 0', '-7 days')");
     if(response.length > 0) {
       theWorkoutCount= response.last.values.toString().substring(1, response.last.values.toString().length-1);
-      //theWater.substring(2);
     }
     return theWorkoutCount;
   }
