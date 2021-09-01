@@ -323,7 +323,7 @@ class _ChartScreenState extends State<ChartScreen> {
             topCardHeight: 400,
             bottomCardHeight: 200,
             borderRadius: 20,
-            slimeEnabled: true,
+            slimeEnabled: false,
             topCardWidget: weightOne(),
             bottomCardWidget: bottomSlime("Weight"))
       ],

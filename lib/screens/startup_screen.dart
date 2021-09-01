@@ -457,9 +457,6 @@ class _StartUpScreenState extends State<StartUpScreen> {
                             ageInputController.clear();
                             heightInputController.clear();
                             //Navigator.of(context).pop();
-                            //TODO get user workout frequency per week to be use for the charts
-
-                            //TODO change navigator type to push
                             Navigator.of(context).pushReplacement(new ScaleRoute(
                                 page: new FreqWorkout()));
                             //Navigator.pop(context, SlideRightRoute(page: ProfileScreen()));

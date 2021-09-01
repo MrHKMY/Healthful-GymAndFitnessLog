@@ -547,16 +547,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           GestureDetector(
                             onTap: () {
                               //_showDialog("Info");
-                              //TODO remove below navigator if possible
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          EditProfileScreen())).then(
-                                (value) {
-                                  setState(() {});
-                                },
-                              );
+                              //TODO Edit this edit profile screen
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             EditProfileScreen())).then(
+                              //   (value) {
+                              //     setState(() {});
+                              //   },
+                              // );
                             },
                             child: Row(
                               children: [

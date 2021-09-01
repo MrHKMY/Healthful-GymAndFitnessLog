@@ -280,7 +280,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     ? snapshot.data.toString()
                                     : "0";
                                 var doubleValue = double.parse(a);
-                                //TODO Get user's weekly workout frequencies
                                 var percentage = num.parse(((doubleValue/prefWorkDouble)*100).toStringAsFixed(0));
                                 String percentString = percentage.toString();
                                 // switch (snapshot.connectionState) {
@@ -304,7 +303,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   axes: <RadialAxis>[
                                     RadialAxis(
                                         minimum: 0,
-                                        //TODO Get user's weekly workout frequencies
                                         maximum: prefWorkDouble,
                                         showLabels: false,
                                         showTicks: false,
@@ -403,7 +401,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                   color: Colors.black,
                                                 ),
                                               ),
-                                              //TODO Get user's water intake frequencies
                                               TextSpan(text: " / $prefWaterString")
                                             ]));
                                       }),
@@ -418,7 +415,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                                         return SfLinearGauge(
                                           minimum: 0,
-                                          //TODO Get user's water intake frequencies
                                           maximum: prefWaterDouble,
                                           showAxisTrack: true,
                                           showTicks: false,
@@ -512,7 +508,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                   color: Colors.black,
                                                 ),
                                               ),
-                                              //TODO Get user's daily supplement intake frequency
                                               TextSpan(text: " / $prefSuppString")
                                             ]));
                                       }),
@@ -768,11 +763,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                     onPressed: () {
                       _showWorkoutDialog();
-                      //TODO update WorkoutGoals range gauge
                     }
                     )
               ])
-          //TODO add another button to show history screen
         ]),
       ),
     );
