@@ -447,7 +447,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 ageInputController.clear();
                                 heightInputController.clear();
                                 Navigator.of(context).pop();
-                                //TODO get user workout frequency per week to be use for the charts
 
                                 // Navigator.of(context).pop(new ScaleRoute(
                                 //     page: new ProvidedStylesExample()));
