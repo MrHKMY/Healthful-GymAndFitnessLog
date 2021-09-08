@@ -544,39 +544,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 10,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              //_showDialog("Info");
-                              //TODO Edit this edit profile screen
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             EditProfileScreen())).then(
-                              //   (value) {
-                              //     setState(() {});
-                              //   },
-                              // );
-                            },
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Icon(
-                                  Icons.settings,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "Settings",
-                                  style: TextStyle(color: Colors.grey),
-                                )
-                              ],
-                            ),
-                          )
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     //_showDialog("Info");
+                          //     //TODO Edit this edit profile screen
+                          //     // Navigator.push(
+                          //     //     context,
+                          //     //     MaterialPageRoute(
+                          //     //         builder: (context) =>
+                          //     //             EditProfileScreen())).then(
+                          //     //   (value) {
+                          //     //     setState(() {});
+                          //     //   },
+                          //     // );
+                          //   },
+                          //   child: Row(
+                          //     children: [
+                          //       SizedBox(
+                          //         width: 5,
+                          //       ),
+                          //       Icon(
+                          //         Icons.settings,
+                          //         color: Colors.grey,
+                          //       ),
+                          //       SizedBox(
+                          //         width: 5,
+                          //       ),
+                          //       Text(
+                          //         "Settings",
+                          //         style: TextStyle(color: Colors.grey),
+                          //       )
+                          //     ],
+                          //   ),
+                          // )
                         ],
                       ),
                     ),

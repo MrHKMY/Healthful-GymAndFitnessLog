@@ -1,4 +1,5 @@
 import 'package:after_layout/after_layout.dart';
+import 'package:calendar/screens/calorie_screen.dart';
 import 'package:calendar/screens/profile_screen.dart';
 import 'package:calendar/screens/calendar.dart';
 import 'package:calendar/screens/history.dart';
@@ -111,7 +112,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           });
         },
       ),
-      CountDownTimer(),
+      CalorieScreen(),
       ProgressScreen(),
       ProfileScreen(),
     ];
@@ -123,7 +124,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           icon: Icon(CupertinoIcons.calendar_today),
           title: "Home",
           activeColorPrimary: Colors.blue,
-          inactiveColorPrimary: Colors.black,
+          inactiveColorPrimary: Colors.white,
           activeColorSecondary: Colors.white),
 
       PersistentBottomNavBarItem(
@@ -131,7 +132,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         title: ("Timer"),
         activeColorPrimary: Colors.green,
         activeColorSecondary: Colors.white,
-        inactiveColorPrimary: Colors.black,
+        inactiveColorPrimary: Colors.white,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -145,7 +146,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         title: ("Progress"),
         activeColorPrimary: Colors.orange,
         activeColorSecondary: Colors.white,
-        inactiveColorPrimary: Colors.black,
+        inactiveColorPrimary: Colors.white,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -160,7 +161,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         title: ("Profile"),
         activeColorPrimary: Colors.red,
         activeColorSecondary: Colors.white,
-        inactiveColorPrimary: Colors.black,
+        inactiveColorPrimary: Colors.white,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -182,7 +183,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         screens: _buildScreens(),
         items: _navBarsItems(),
         confineInSafeArea: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.teal,
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
