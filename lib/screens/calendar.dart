@@ -61,7 +61,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   String prefSuppString;
   double prefSuppDouble = 20;
 
-
   var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
     "\"All progress takes place outside the comfort zone.\" \n -Michael John Bobak",
@@ -571,7 +570,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             )
                           ],
                           borderRadius: BorderRadius.circular(20)),
-                      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                      margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                       child: TableCalendar(
                         events: _events,
                         //availableCalendarFormats: const{ CalendarFormat.month: "Month"},
@@ -672,17 +671,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         //calendarController = _calendarController,
                       ),
                     ),
-                    ..._selectedEvents.map((event) => GestureDetector(
+                     ..._selectedEvents.map((event) =>
+                    GestureDetector(
                           onTap: () => Navigator.push(
-                              //TODO ontap to expand down showing workout detail with little arrow to go to history screen
-                              //TODO use ExpansionPanel
                               context,
                               MaterialPageRoute(
                                   builder: (context) => HistoryScreen())),
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.teal,
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey,
@@ -691,7 +689,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   offset: Offset(1.0, 1.0), // shadow direction: bottom right
                                 )
                               ],
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(10),
                               //border: Border.all(color: Color(0xFF30A9B2)),
                             ),
                             height: MediaQuery.of(context).size.height / 20,
@@ -724,8 +722,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               fabOpenColor: Colors.white,
               ringColor: Colors.teal[300],
               fabOpenIcon: Image.asset(
-                "assets/images/goals_icon.png",
-                scale: 12,
+                "assets/images/circle_icon_transparent.png",
+                scale: 1,
               ),
               children: <Widget>[
                 IconButton(
