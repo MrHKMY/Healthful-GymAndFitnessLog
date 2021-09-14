@@ -279,14 +279,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 right: width * 0.1,
                 bottom: MediaQuery.of(context).viewInsets.bottom > 0
                     ? 0.0
-                    : kBottomNavigationBarHeight + 50,
+                    : kBottomNavigationBarHeight + 30,
                 child: FloatingActionButton(
                   backgroundColor: Colors.teal[300],
                   onPressed: () {
                     Navigator.of(context).push(
-                        new SlideRightRoute(page: new ChartScreen()));
+                        new ScaleRoute(page: new ChartScreen()));
                   },
-                  child: Icon(Icons.bar_chart_rounded, color: Colors.black,),
+                  child: Image.asset(
+                    "assets/images/line_chart.png",
+                    scale: 18,),
                 ),
               )
             ]),
