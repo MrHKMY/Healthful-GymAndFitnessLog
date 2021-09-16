@@ -1,5 +1,6 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:calendar/screens/calorie_screen.dart';
+import 'package:calendar/screens/nutrition_screen.dart';
 import 'package:calendar/screens/profile_screen.dart';
 import 'package:calendar/screens/calendar.dart';
 import 'package:calendar/screens/history.dart';
@@ -112,7 +113,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           });
         },
       ),
-      CalorieScreen(),
+      NutritionSearch(),
       ProgressScreen(),
       ProfileScreen(),
     ];
@@ -128,8 +129,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           activeColorSecondary: Colors.white),
 
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.timer),
-        title: ("Timer"),
+        icon: Icon(Icons.fastfood_outlined),
+        title: ("Nutrition"),
         activeColorPrimary: Colors.green,
         activeColorSecondary: Colors.white,
         inactiveColorPrimary: Colors.white,

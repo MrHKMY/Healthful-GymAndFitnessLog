@@ -28,15 +28,37 @@ class DatabaseHelper {
           "CREATE TABLE water (id INTEGER PRIMARY KEY, Litre INTEGER, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
-          "CREATE TABLE calorie (id INTEGER PRIMARY KEY, Food TEXT, Calorie REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
+          "CREATE TABLE nutrition (id INTEGER PRIMARY KEY, FoodName TEXT, Calorie REAL, Protein REAL, Carb REAL, Fat REAL, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
           "CREATE TABLE supplement (id INTEGER PRIMARY KEY, Supplement TEXT, PostPre TEXT, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
+
         return db;
       },
       version: 1,
     );
+  }
+
+  Future<int> insertNutrition (Calorie calorie) async {
+    int id = 0;
+    Database _db = await database();
+    await _db.insert("nutrition", calorie.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace).then((value) => id = null);
+    return id;
+  }
+
+  Future<List<Calorie>> retrieveNutrition() async {
+    Database _db = await database();
+    List<Map<String, dynamic>> nutritionMap = await _db.rawQuery("SELECT * FROM nutrition");
+    return List.generate(nutritionMap.length, (index) {
+      return Calorie(id: nutritionMap[index]["id"],
+          food: nutritionMap[index]["FoodName"],
+          calorieCount: nutritionMap[index]["Calorie"],
+          proteinCount: nutritionMap[index]["Protein"],
+        carbCount: nutritionMap[index]["Carb"],
+        fatCount: nutritionMap[index]["Fat"]);
+    });
   }
 
   Future<int> insertActivity(Activities activities) async {
@@ -232,16 +254,6 @@ class DatabaseHelper {
     int actID = 0;
     Database _db = await database();
     await _db.insert("water", water.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
-      actID = value;
-    });
-    return actID;
-  }
-
-  Future<int> insertCalorie(Calorie calorie) async {
-    int actID = 0;
-    Database _db = await database();
-    await _db.insert("calorie", calorie.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
       actID = value;
     });
