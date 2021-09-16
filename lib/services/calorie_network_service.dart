@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:calendar/model/calorie.dart';
+import 'package:calendar/model/nutrition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart'as http;
 

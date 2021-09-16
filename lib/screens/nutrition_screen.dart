@@ -1,9 +1,14 @@
+import 'package:calendar/database_helper.dart';
 import 'package:calendar/model/calorie.dart';
+import 'package:calendar/model/nutrition.dart';
 import 'package:calendar/screens/calorie_screen.dart';
 import 'package:calendar/services/calorie_network_service.dart';
 import 'package:flutter/material.dart';
 
-class SearchPage extends StatelessWidget {
+class NutritionSearch extends StatelessWidget {
+  DatabaseHelper _dbHelper = DatabaseHelper();
+
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery
@@ -41,13 +46,26 @@ class SearchPage extends StatelessWidget {
                       : kBottomNavigationBarHeight,
                 ),
                 //backgroundColor: Colors.grey[500],
-                child: ListTile(
-                  isThreeLine: true,
-                  title: Text("Food name here"),
-                  subtitle: Text(
-                      "Calorie value here \nProtein value here"),
-                  leading: Icon(Icons.emoji_food_beverage),
-                )
+                child: FutureBuilder(
+                    initialData: [],
+                    future: _dbHelper.retrieveNutrition(),
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder:
+                              (BuildContext context, int index) {
+                            var currentFood = snapshot.data[index];
+                            return ListTile(
+                              title: Text(currentFood.food),
+                              subtitle: Text(
+                                  "Calorie: ${currentFood
+                                      .calorieCount} + Protein: ${currentFood
+                                      .proteinCount}"),
+                            );
+                          });
+                    }
+                ),
             ),
 
             Positioned(
@@ -76,6 +94,9 @@ class SearchPage extends StatelessWidget {
 class FoodSearch extends SearchDelegate<String> {
   String get searchFieldLabel => "Search meals";
   CalorieNetworkService networkService = CalorieNetworkService();
+  DatabaseHelper _dbHelper = DatabaseHelper();
+  int calorieID = 0;
+
 
   final food = [
     "Chicken",
@@ -212,15 +233,22 @@ class FoodSearch extends SearchDelegate<String> {
           // final remainingText = suggestion.food.substring(query.length);
 
           return ListTile(
-            onTap: () {
+            onTap: () async {
               //query = suggestion.food;
 
               // 1. Show Results
               //showResults(context);
 
               // 2. Close Search & Return Result
+              Calorie _newCalorie = Calorie(
+                  food: suggestion.food,
+                  calorieCount: suggestion.calorieCount,
+                  proteinCount: suggestion.proteinCount,
+                  carbCount: suggestion.carbCount,
+                  fatCount: suggestion.fatCount);
+              //date: a.substring(0, 10));
+              calorieID = await _dbHelper.insertNutrition(_newCalorie);
               close(context, suggestion.food);
-              //TODO Save selected food into local database then go back to main calorie screen with updated data
 
               // 3. Navigate to Result Page
               //  Navigator.push(

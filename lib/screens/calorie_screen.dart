@@ -1,6 +1,7 @@
 import 'package:calendar/model/calorie.dart';
+import 'package:calendar/model/nutrition.dart';
 import 'package:calendar/route_animation.dart';
-import 'package:calendar/screens/calorie_search.dart';
+import 'package:calendar/screens/nutrition_screen.dart';
 import 'package:calendar/services/calorie_network_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,7 +71,7 @@ class _CalorieScreenState extends State<CalorieScreen> {
               ),
               FloatingActionButton(onPressed: () {
                 Navigator.of(context).push(
-                    new ScaleRoute(page: new SearchPage()));
+                    new ScaleRoute(page: new NutritionSearch()));
               })
             ],
           ),
