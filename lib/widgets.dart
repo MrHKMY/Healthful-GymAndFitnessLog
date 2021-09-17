@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calendar/model/timerPainter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path/path.dart';
 
 class HistoryWidget extends StatelessWidget {
   final String activity;
@@ -90,16 +90,23 @@ class HistoryWidgetChart extends StatelessWidget {
               Text(
                 date ?? 'No date',
                 style: TextStyle(
-                    fontSize: 12, color: Colors.white, ),
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
               ),
-
               Text(
                 count.toString(),
                 style: TextStyle(color: Colors.white),
               ),
             ],
           ),
-          Divider(thickness: 1, height: 10, color: Colors.grey[700], indent: 10, endIndent: 10,),
+          Divider(
+            thickness: 1,
+            height: 10,
+            color: Colors.grey[700],
+            indent: 10,
+            endIndent: 10,
+          ),
         ],
       ),
     );
@@ -114,7 +121,8 @@ class HistoryWidgetChart2Parts extends StatelessWidget {
   final double right;
   final double count;
 
-  HistoryWidgetChart2Parts({this.date, this.part, this.count, this.left, this.right});
+  HistoryWidgetChart2Parts(
+      {this.date, this.part, this.count, this.left, this.right});
 
   @override
   Widget build(BuildContext context) {
@@ -133,21 +141,27 @@ class HistoryWidgetChart2Parts extends StatelessWidget {
               Text(
                 date ?? 'No date',
                 style: TextStyle(
-                  fontSize: 12, color: Colors.white, ),
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
               ),
-
               Text(
                 "Left: " + left.toString(),
                 style: TextStyle(color: Color(0xff4af699)),
               ),
-
               Text(
                 "Right: " + right.toString(),
                 style: TextStyle(color: Colors.blue),
               ),
             ],
           ),
-          Divider(thickness: 1, height: 10, color: Colors.grey[700], indent: 10, endIndent: 10,),
+          Divider(
+            thickness: 1,
+            height: 10,
+            color: Colors.grey[700],
+            indent: 10,
+            endIndent: 10,
+          ),
         ],
       ),
     );
@@ -526,5 +540,109 @@ class _CountDownTimerState extends State<CountDownTimer>
         ),
       ),
     );
+  }
+}
+
+class NutritionCardList extends StatelessWidget {
+  final String foodName;
+  final String imageLink;
+  final double calorie, protein, carb, fat;
+
+  const NutritionCardList(
+      {Key key,
+      this.foodName,
+      this.imageLink,
+      this.calorie,
+      this.protein,
+      this.carb,
+      this.fat})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    final imageThumbnail = new Container(
+      margin: new EdgeInsets.symmetric(vertical: 16.0),
+      alignment: FractionalOffset.centerLeft,
+      child: ClipOval(
+          child: CachedNetworkImage(
+              placeholder: (context, url) => Image.asset ("assets/images/wave.gif"),
+              imageUrl: imageLink,
+              errorWidget: (context, url, error) => Image.asset ("assets/images/launcher_icon.png"),
+            ),
+          ),
+    );
+
+    final cardContent = Container(
+      height: 124.0,
+      margin: new EdgeInsets.only(left: 46.0),
+      decoration: new BoxDecoration(
+        color: Colors.teal,
+        shape: BoxShape.rectangle,
+        borderRadius: new BorderRadius.circular(8.0),
+        boxShadow: <BoxShadow>[
+          new BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10.0,
+            offset: new Offset(0.0, 10.0),
+          ),
+        ],
+      ),
+      child: Container(
+        height: 100,
+        margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
+        constraints: new BoxConstraints.expand(),
+        child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new Container(height: 4.0),
+            new Text(
+              foodName,
+              //style: headerTextStyle,
+            ),
+            new Container(height: 10.0),
+            new Text(
+              calorie.toString(),
+              //style: subHeaderTextStyle
+            ),
+            new Container(
+                margin: new EdgeInsets.symmetric(vertical: 8.0),
+                height: 2.0,
+                width: 18.0,
+                color: new Color(0xff00c6ff)),
+            new Row(
+              children: <Widget>[
+                //new Image.asset("assets/img/ic_distance.png", height: 12.0),
+                new Container(width: 8.0),
+                new Text(
+                  protein.toString(),
+                  //style: regularTextStyle,
+                ),
+                new Container(width: 24.0),
+                //new Image.asset("assets/img/ic_gravity.png", height: 12.0),
+                new Container(width: 8.0),
+                new Text(
+                  carb.toString(),
+                  //style: regularTextStyle,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+
+    return new Container(
+        height: 120.0,
+        margin: const EdgeInsets.symmetric(
+          vertical: 16.0,
+          horizontal: 24.0,
+        ),
+        child: new Stack(
+          children: <Widget>[
+            cardContent,
+            imageThumbnail,
+          ],
+        ));
   }
 }

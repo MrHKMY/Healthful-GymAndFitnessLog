@@ -41,6 +41,7 @@ dependencies:
   slimy_card: ^1.0.4
   carousel_slider: ^4.0.0
   http: ^0.13.3
+  cached_network_image: ^3.1.0
 
 flutter_icons:
   image_path: "assets/images/launcher_icon.png"

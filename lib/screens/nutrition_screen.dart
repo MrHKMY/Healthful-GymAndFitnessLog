@@ -1,20 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calendar/database_helper.dart';
-import 'package:calendar/model/calorie.dart';
 import 'package:calendar/model/nutrition.dart';
-import 'package:calendar/screens/calorie_screen.dart';
 import 'package:calendar/services/calorie_network_service.dart';
+import 'package:calendar/widgets.dart';
 import 'package:flutter/material.dart';
 
 class NutritionSearch extends StatelessWidget {
   DatabaseHelper _dbHelper = DatabaseHelper();
 
-
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -26,54 +22,54 @@ class NutritionSearch extends StatelessWidget {
                 icon: Icon(Icons.search),
                 onPressed: () {
                   final results =
-                  showSearch(context: context, delegate: FoodSearch());
+                      showSearch(context: context, delegate: FoodSearch());
                 })
           ],
         ),
         body: SafeArea(
           child: Stack(children: [
             Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                color: Colors.teal[100],
-                //height: 500,
-                height: double.infinity,
-                margin: EdgeInsets.only(
-                  bottom: MediaQuery
-                      .of(context)
-                      .viewInsets
-                      .bottom > 0
-                      ? 0.0
-                      : kBottomNavigationBarHeight,
-                ),
-                //backgroundColor: Colors.grey[500],
-                child: FutureBuilder(
-                    initialData: [],
-                    future: _dbHelper.retrieveNutrition(),
-                    builder: (context, snapshot) {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data.length,
-                          itemBuilder:
-                              (BuildContext context, int index) {
-                            var currentFood = snapshot.data[index];
-                            return ListTile(
-                              title: Text(currentFood.food),
-                              subtitle: Text(
-                                  "Calorie: ${currentFood
-                                      .calorieCount} + Protein: ${currentFood
-                                      .proteinCount}"),
-                            );
-                          });
-                    }
-                ),
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              color: Colors.teal[100],
+              //height: 500,
+              height: double.infinity,
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom > 0
+                    ? 0.0
+                    : kBottomNavigationBarHeight,
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.retrieveNutrition(),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var currentFood = snapshot.data[index];
+                                if (currentFood.imageLink == null) {
+                                  currentFood.imageLink = "null";
+                                }
+                                return NutritionCardList(
+                                  foodName: currentFood.food,
+                                  calorie: currentFood.calorieCount,
+                                  protein: currentFood.proteinCount,
+                                  carb: currentFood.carbCount,
+                                  fat: currentFood.fatCount,
+                                  imageLink: currentFood.imageLink,
+                                );
+                              });
+                        }),
+                  ),
+                ],
+              ),
             ),
-
             Positioned(
               right: width * 0.1,
-              bottom: MediaQuery
-                  .of(context)
-                  .viewInsets
-                  .bottom > 0
+              bottom: MediaQuery.of(context).viewInsets.bottom > 0
                   ? 0.0
                   : kBottomNavigationBarHeight + 20,
               child: FloatingActionButton(
@@ -97,7 +93,6 @@ class FoodSearch extends SearchDelegate<String> {
   DatabaseHelper _dbHelper = DatabaseHelper();
   int calorieID = 0;
 
-
   final food = [
     "Chicken",
     "Fish",
@@ -113,8 +108,7 @@ class FoodSearch extends SearchDelegate<String> {
   ];
 
   @override
-  List<Widget> buildActions(BuildContext context) =>
-      [
+  List<Widget> buildActions(BuildContext context) => [
         IconButton(
             icon: Icon(Icons.clear),
             onPressed: () {
@@ -170,9 +164,7 @@ class FoodSearch extends SearchDelegate<String> {
                               return ListTile(
                                 title: Text(currentFood.food),
                                 subtitle: Text(
-                                    "Calorie: ${currentFood
-                                        .calorieCount} + Protein: ${currentFood
-                                        .proteinCount}"),
+                                    "Calorie: ${currentFood.calorieCount} + Protein: ${currentFood.proteinCount}"),
                               );
                             }),
                       ),
@@ -216,8 +208,7 @@ class FoodSearch extends SearchDelegate<String> {
         });
   }
 
-  Widget buildNoSuggestions() =>
-      Center(
+  Widget buildNoSuggestions() => Center(
         child: Text(
           'No suggestions!',
           style: TextStyle(fontSize: 28, color: Colors.black),
@@ -233,6 +224,20 @@ class FoodSearch extends SearchDelegate<String> {
           // final remainingText = suggestion.food.substring(query.length);
 
           return ListTile(
+            leading: ClipOval(
+              child: CachedNetworkImage(
+                placeholder: (context, url) =>
+                    Image.asset ("assets/images/wave.gif"),
+                imageUrl: suggestion.imageLink,
+                errorWidget: (context, url, error) =>
+                    Image.asset("assets/images/launcher_icon.png"),
+              ),
+            ),
+            title: Text(suggestion.food),
+            isThreeLine: true,
+            subtitle: Text(
+                "Calorie: ${suggestion.calorieCount}\t\t  Carb: ${suggestion.carbCount}\n"
+                    "Protein: ${suggestion.proteinCount}\t\t Fat: ${suggestion.fatCount} "),
             onTap: () async {
               //query = suggestion.food;
 
@@ -242,10 +247,15 @@ class FoodSearch extends SearchDelegate<String> {
               // 2. Close Search & Return Result
               Calorie _newCalorie = Calorie(
                   food: suggestion.food,
-                  calorieCount: suggestion.calorieCount,
-                  proteinCount: suggestion.proteinCount,
-                  carbCount: suggestion.carbCount,
-                  fatCount: suggestion.fatCount);
+                  imageLink: suggestion.imageLink,
+                  calorieCount:
+                      double.parse(suggestion.calorieCount.toStringAsFixed(2)),
+                  proteinCount:
+                      double.parse(suggestion.proteinCount.toStringAsFixed(2)),
+                  carbCount:
+                      double.parse(suggestion.carbCount.toStringAsFixed(2)),
+                  fatCount:
+                      double.parse(suggestion.fatCount.toStringAsFixed(2)));
               //date: a.substring(0, 10));
               calorieID = await _dbHelper.insertNutrition(_newCalorie);
               close(context, suggestion.food);
@@ -258,12 +268,6 @@ class FoodSearch extends SearchDelegate<String> {
               //   ),
               // );
             },
-            leading: Icon(Icons.fastfood_outlined),
-            //title: Text(suggestion),
-            title: Text(suggestion.food),
-            subtitle: Text(
-                "Calorie: ${suggestion.calorieCount} + Protein: ${suggestion
-                    .proteinCount}"),
           );
         });
   }
@@ -272,8 +276,7 @@ class FoodSearch extends SearchDelegate<String> {
     return ListTile(
       title: Text(calorie.food),
       subtitle: Text(
-          "Calorie: ${calorie.calorieCount} + Protein: ${calorie
-              .proteinCount}"),
+          "Calorie: ${calorie.calorieCount} + Protein: ${calorie.proteinCount}"),
     );
   }
 }
