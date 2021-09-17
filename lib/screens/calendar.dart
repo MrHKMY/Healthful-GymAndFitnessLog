@@ -189,7 +189,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               color: Colors.teal[300],
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black,
+                                  color: Colors.grey[700],
                                   blurRadius: 2.0,
                                   spreadRadius: 0.0,
                                   offset: Offset(2.0, 2.0), // shadow direction: bottom right

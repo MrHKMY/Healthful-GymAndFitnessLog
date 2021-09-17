@@ -1,14 +1,10 @@
 import 'package:after_layout/after_layout.dart';
-import 'package:calendar/screens/calorie_screen.dart';
 import 'package:calendar/screens/nutrition_screen.dart';
 import 'package:calendar/screens/profile_screen.dart';
 import 'package:calendar/screens/calendar.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:calendar/screens/progress.dart';
-import 'package:calendar/screens/startup/freq_workout.dart';
 import 'package:calendar/screens/startup/name_startup.dart';
-import 'package:calendar/screens/startup_screen.dart';
-import 'package:calendar/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,9 +19,11 @@ BuildContext testContext;
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: "Healthful",
       theme: ThemeData(
+        primarySwatch: Colors.teal,
           backgroundColor: Colors.grey,
       textTheme: TextTheme(
         bodyText1: TextStyle(color: Colors.black)
