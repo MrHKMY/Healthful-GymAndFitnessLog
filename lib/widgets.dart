@@ -560,83 +560,107 @@ class NutritionCardList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final imageThumbnail = new Container(
       margin: new EdgeInsets.symmetric(vertical: 16.0),
       alignment: FractionalOffset.centerLeft,
       child: ClipOval(
-          child: CachedNetworkImage(
-              placeholder: (context, url) => Image.asset ("assets/images/wave.gif"),
-              imageUrl: imageLink,
-              errorWidget: (context, url, error) => Image.asset ("assets/images/launcher_icon.png"),
-            ),
-          ),
+        child: CachedNetworkImage(
+          placeholder: (context, url) => Image.asset("assets/images/wave.gif"),
+          imageUrl: imageLink,
+          errorWidget: (context, url, error) =>
+              Image.asset("assets/images/launcher_icon.png"),
+        ),
+      ),
     );
 
     final cardContent = Container(
-      height: 124.0,
-      margin: new EdgeInsets.only(left: 46.0),
+      margin: new EdgeInsets.only(left: 40.0),
       decoration: new BoxDecoration(
-        color: Colors.teal,
+        color: Colors.white,
         shape: BoxShape.rectangle,
-        borderRadius: new BorderRadius.circular(8.0),
+        borderRadius: new BorderRadius.circular(10),
         boxShadow: <BoxShadow>[
           new BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10.0,
-            offset: new Offset(0.0, 10.0),
+            color: Colors.grey,
+            blurRadius: 2.0,
+            offset: new Offset(2.0, 2.0),
           ),
         ],
       ),
       child: Container(
-        height: 100,
-        margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
-        constraints: new BoxConstraints.expand(),
+        margin: new EdgeInsets.fromLTRB(60.0, 8.0, 8.0, 8.0),
+        //constraints: new BoxConstraints.expand(),
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Container(height: 4.0),
             new Text(
               foodName,
-              //style: headerTextStyle,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-            new Container(height: 10.0),
-            new Text(
-              calorie.toString(),
-              //style: subHeaderTextStyle
-            ),
-            new Container(
-                margin: new EdgeInsets.symmetric(vertical: 8.0),
-                height: 2.0,
-                width: 18.0,
-                color: new Color(0xff00c6ff)),
-            new Row(
-              children: <Widget>[
-                //new Image.asset("assets/img/ic_distance.png", height: 12.0),
-                new Container(width: 8.0),
-                new Text(
-                  protein.toString(),
-                  //style: regularTextStyle,
-                ),
-                new Container(width: 24.0),
-                //new Image.asset("assets/img/ic_gravity.png", height: 12.0),
-                new Container(width: 8.0),
-                new Text(
-                  carb.toString(),
-                  //style: regularTextStyle,
-                ),
-              ],
-            ),
+            new Container(height: 10.0,),
+            Row(
+                //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+              Container(
+                width: 110,
+                child: Column(children: [
+                  new Row(children: <Widget>[
+                    //new Image.asset("assets/img/ic_distance.png", height: 12.0),
+                    Text("Calorie: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                    new Text(
+                      " ${calorie.toString()}",
+                      //style: regularTextStyle,
+                    ),
+                  ]),
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      //new Image.asset("assets/img/ic_gravity.png", height: 12.0),
+                      Text("Protein: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                      new Text(
+                        " ${protein.toString()}",
+                        //style: regularTextStyle,
+                      ),
+                    ],
+                  ),
+                ]),
+              ),
+
+              Container(
+                width: 110,
+                child: Column(children: [
+                  new Row(children: <Widget>[
+                    //new Image.asset("assets/img/ic_distance.png", height: 12.0),
+                    Text("Carb: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                    new Text(
+                      " ${carb.toString()}",
+                      //style: regularTextStyle,
+                    ),
+                  ]),
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      //new Image.asset("assets/img/ic_gravity.png", height: 12.0),
+                      Text("Fat: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                      new Text(
+                        " ${fat.toString()}",
+                        //style: regularTextStyle,
+                      ),
+                    ],
+                  ),
+                ]),
+              ),
+            ]),
           ],
         ),
       ),
     );
 
     return new Container(
-        height: 120.0,
+        height: 100.0,
         margin: const EdgeInsets.symmetric(
-          vertical: 16.0,
-          horizontal: 24.0,
+          vertical: 8.0,
+          horizontal: 16.0,
         ),
         child: new Stack(
           children: <Widget>[
