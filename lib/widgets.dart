@@ -577,15 +577,7 @@ class NutritionCardList extends StatelessWidget {
       margin: new EdgeInsets.only(left: 40.0),
       decoration: new BoxDecoration(
         color: Colors.white,
-        shape: BoxShape.rectangle,
-        borderRadius: new BorderRadius.circular(10),
-        boxShadow: <BoxShadow>[
-          new BoxShadow(
-            color: Colors.grey,
-            blurRadius: 2.0,
-            offset: new Offset(2.0, 2.0),
-          ),
-        ],
+        shape: BoxShape.circle,
       ),
       child: Container(
         margin: new EdgeInsets.fromLTRB(60.0, 8.0, 8.0, 8.0),
@@ -650,6 +642,7 @@ class NutritionCardList extends StatelessWidget {
                   ),
                 ]),
               ),
+
             ]),
           ],
         ),
@@ -658,9 +651,10 @@ class NutritionCardList extends StatelessWidget {
 
     return new Container(
         height: 100.0,
+        //padding: EdgeInsets.all(10),
         margin: const EdgeInsets.symmetric(
-          vertical: 8.0,
-          horizontal: 16.0,
+          vertical: 0.3,
+          horizontal: 0.0,
         ),
         child: new Stack(
           children: <Widget>[
