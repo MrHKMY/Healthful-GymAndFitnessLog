@@ -4,6 +4,7 @@ import 'package:calendar/model/nutrition.dart';
 import 'package:calendar/services/calorie_network_service.dart';
 import 'package:calendar/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class NutritionSearch extends StatelessWidget {
   DatabaseHelper _dbHelper = DatabaseHelper();
@@ -30,7 +31,7 @@ class NutritionSearch extends StatelessWidget {
           child: Stack(children: [
             Container(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-              color: Colors.teal[100],
+              color: Colors.grey[300],
               //height: 500,
               height: double.infinity,
               margin: EdgeInsets.only(
@@ -40,29 +41,225 @@ class NutritionSearch extends StatelessWidget {
               ),
               child: Column(
                 children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.teal, width: 8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey[700],
+                          blurRadius: 2.0,
+                          spreadRadius: 0.0,
+                          offset: Offset(
+                              2.0, 2.0), // shadow direction: bottom right
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 150,
+                          height: 120,
+                          child: SfRadialGauge(
+                              enableLoadingAnimation: true,
+                              animationDuration: 2500,
+                              title: GaugeTitle(
+                                  text: "Calorie",
+                                  textStyle: TextStyle(fontSize: 18)),
+                              axes: <RadialAxis>[
+                                RadialAxis(
+                                    startAngle: 270,
+                                    endAngle: 270,
+                                    minimum: 0,
+                                    maximum: 100,
+                                    showLabels: false,
+                                    showTicks: false,
+                                    radiusFactor: 1,
+                                    canScaleToFit: true,
+                                    axisLineStyle: AxisLineStyle(
+                                      thickness: 0.15,
+                                      cornerStyle: CornerStyle.startCurve,
+                                      color: Colors.grey[300],
+                                      thicknessUnit: GaugeSizeUnit.factor,
+                                    ),
+                                    pointers: <GaugePointer>[
+                                      RangePointer(
+                                          enableAnimation: true,
+                                          animationDuration: 2500,
+                                          animationType:
+                                              AnimationType.easeOutBack,
+                                          value: 70,
+                                          width: 0.15,
+                                          sizeUnit: GaugeSizeUnit.factor,
+                                          cornerStyle: CornerStyle.endCurve,
+                                          gradient:
+                                              SweepGradient(colors: <Color>[
+                                            Colors.yellow[200],
+                                            Colors.yellow[600],
+                                          ], stops: <double>[
+                                            0.25,
+                                            0.75
+                                          ])),
+                                    ],
+                                    annotations: <GaugeAnnotation>[
+                                      GaugeAnnotation(
+                                          positionFactor: 0.1,
+                                          angle: 90,
+                                          widget: Text.rich(TextSpan(
+                                              text: "75",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18),
+                                              children: [
+                                                TextSpan(
+                                                  text: "/250",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18),
+                                                ),
+                                              ])))
+                                    ])
+                              ]),
+                        ),
+                        VerticalDivider(
+                          color: Colors.teal,
+                          thickness: 2,
+                          indent: 10,
+                          endIndent: 10,
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Container(
+                          width: 150,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              FutureBuilder(
+                                future: _dbHelper.retrieveProtein(),
+                                builder: (context, snapshot) {
+                                  return Text.rich(TextSpan(
+                                      text: "Protein : ",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 18),
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              snapshot.data.toString() != "null"
+                                                  ? snapshot.data.toString()
+                                                  : "0",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ]));
+                                },
+                              ),
+                              FutureBuilder(
+                                future: _dbHelper.retrieveCarb(),
+                                builder: (context, snapshot) {
+                                  return RichText(
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      text: TextSpan(
+                                          text: "Carb : ",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18),
+                                          children: [
+                                            TextSpan(
+                                              text: snapshot.data.toString() !=
+                                                      "null"
+                                                  ? snapshot.data.toString()
+                                                  : "0",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ]));
+                                },
+                              ),
+                              FutureBuilder(
+                                future: _dbHelper.retrieveFat(),
+                                builder: (context, snapshot) {
+                                  return RichText(
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      text: TextSpan(
+                                          text: "Fat : ",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18),
+                                          children: [
+                                            TextSpan(
+                                              text: snapshot.data.toString() !=
+                                                      "null"
+                                                  ? snapshot.data.toString()
+                                                  : "0",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ]));
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Expanded(
-                    child: FutureBuilder(
-                        initialData: [],
-                        future: _dbHelper.retrieveNutrition(),
-                        builder: (context, snapshot) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var currentFood = snapshot.data[index];
-                                if (currentFood.imageLink == null) {
-                                  currentFood.imageLink = "null";
-                                }
-                                return NutritionCardList(
-                                  foodName: currentFood.food,
-                                  calorie: currentFood.calorieCount,
-                                  protein: currentFood.proteinCount,
-                                  carb: currentFood.carbCount,
-                                  fat: currentFood.fatCount,
-                                  imageLink: currentFood.imageLink,
-                                );
-                              });
-                        }),
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[700],
+                            blurRadius: 2.0,
+                            spreadRadius: 0.0,
+                            offset: Offset(
+                                2.0, 2.0), // shadow direction: bottom right
+                          )
+                        ],
+                      ),
+                      child: FutureBuilder(
+                          initialData: [],
+                          future: _dbHelper.retrieveNutrition(),
+                          builder: (context, snapshot) {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var currentFood = snapshot.data[index];
+                                  if (currentFood.imageLink == null) {
+                                    currentFood.imageLink = "null";
+                                  }
+                                  return NutritionCardList(
+                                    foodName: currentFood.food,
+                                    calorie: currentFood.calorieCount,
+                                    protein: currentFood.proteinCount,
+                                    carb: currentFood.carbCount,
+                                    fat: currentFood.fatCount,
+                                    imageLink: currentFood.imageLink,
+                                  );
+                                });
+                          }),
+                    ),
                   ),
                 ],
               ),
@@ -227,7 +424,7 @@ class FoodSearch extends SearchDelegate<String> {
             leading: ClipOval(
               child: CachedNetworkImage(
                 placeholder: (context, url) =>
-                    Image.asset ("assets/images/wave.gif"),
+                    Image.asset("assets/images/wave.gif"),
                 imageUrl: suggestion.imageLink,
                 errorWidget: (context, url, error) =>
                     Image.asset("assets/images/launcher_icon.png"),
@@ -237,7 +434,7 @@ class FoodSearch extends SearchDelegate<String> {
             isThreeLine: true,
             subtitle: Text(
                 "Calorie: ${suggestion.calorieCount}\t\t  Carb: ${suggestion.carbCount}\n"
-                    "Protein: ${suggestion.proteinCount}\t\t Fat: ${suggestion.fatCount} "),
+                "Protein: ${suggestion.proteinCount}\t\t Fat: ${suggestion.fatCount} "),
             onTap: () async {
               //query = suggestion.food;
 

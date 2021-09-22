@@ -1,4 +1,5 @@
 import 'package:calendar/model/progress.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:calendar/model/activities.dart';
@@ -309,6 +310,50 @@ class DatabaseHelper {
       theWorkoutCount= response.last.values.toString().substring(1, response.last.values.toString().length-1);
     }
     return theWorkoutCount;
+  }
+
+  Future<double> retrieveProtein() async {
+    String theProtein;
+    double value;
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT SUM (Protein) FROM nutrition WHERE DATE(Date) = DATE('now','localtime')");
+    if(response.length > 0) {
+      theProtein = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      //theWater.substring(2);
+      value = double.parse(theProtein);
+      value =  double.parse(value.toStringAsFixed(2));
+    }
+    return value;
+  }
+
+  Future<double> retrieveCarb() async {
+    String theCarb;
+    double value;
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT SUM (Carb) FROM nutrition WHERE DATE(Date) = DATE('now','localtime')");
+    if(response.length > 0) {
+      theCarb = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      //theWater.substring(2);
+      value = double.parse(theCarb);
+      value =  double.parse(value.toStringAsFixed(2));
+    }
+    return value;
+  }
+
+  Future<double> retrieveFat() async {
+    String theFat;
+    double value;
+    Database _db = await database();
+    var response = await _db.rawQuery("SELECT SUM (Fat) FROM nutrition WHERE DATE(Date) = DATE('now','localtime')");
+    if(response.length > 0) {
+      theFat = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+      //theWater.substring(2);
+      value = double.parse(theFat);
+      value =  double.parse(value.toStringAsFixed(2));
+      //print(theFat);
+      //print(value);
+    }
+    return value;
   }
 
 }
