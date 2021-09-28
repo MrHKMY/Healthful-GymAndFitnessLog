@@ -15,6 +15,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:unicorndial/unicorndial.dart';
 
 class CalendarScreen extends StatefulWidget {
   final BuildContext menuScreenContext;
@@ -130,7 +131,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     prefsData();
     getTotalWater();
     randomQuotes();
-
   }
 
   randomQuotes() {
@@ -141,7 +141,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Future<double> getTotalWater() async {
     waterCountString = await _dbHelper.retrieveWater();
     print("Water count: $waterCountString");
-    waterCount = waterCountString != "null" ? double.parse(waterCountString) : 0;
+    waterCount =
+        waterCountString != "null" ? double.parse(waterCountString) : 0;
     return waterCount;
   }
 
@@ -157,6 +158,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    var childButtons = List<UnicornButton>();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -192,7 +195,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   color: Colors.grey[700],
                                   blurRadius: 2.0,
                                   spreadRadius: 0.0,
-                                  offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                                  offset: Offset(2.0,
+                                      2.0), // shadow direction: bottom right
                                 )
                               ],
                               borderRadius: BorderRadius.only(
@@ -265,99 +269,106 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     color: Colors.grey,
                                     blurRadius: 2.0,
                                     spreadRadius: 0.0,
-                                    offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                                    offset: Offset(2.0,
+                                        2.0), // shadow direction: bottom right
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(20)),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
                             child: FutureBuilder(
-                              future: _dbHelper.retrieveWorkoutCount(),
-                              builder: (context, snapshot) {
-                                String a =
-                                snapshot.data.toString() != "null"
-                                    ? snapshot.data.toString()
-                                    : "0";
-                                var doubleValue = double.parse(a);
-                                var percentage = num.parse(((doubleValue/prefWorkDouble)*100).toStringAsFixed(0));
-                                String percentString = percentage.toString();
-                                // switch (snapshot.connectionState) {
-                                // // Uncompleted State
-                                // case ConnectionState.none:
-                                // case ConnectionState.waiting:
-                                // return Center(child: CircularProgressIndicator());
-                                // break;
-                                // default:
-                                // // Completed with error
-                                // if (snapshot.hasError)
-                                // return Container(
-                                // child: Text("?",style: TextStyle(color: Colors.grey)));
-                              return SfRadialGauge(
-                                  enableLoadingAnimation: true,
-                                  animationDuration: 2500,
-                                  title: GaugeTitle(
-                                    text: "Weekly Workout Goals:",
-                                    textStyle: TextStyle(color: Colors.black),
-                                  ),
-                                  axes: <RadialAxis>[
-                                    RadialAxis(
-                                        minimum: 0,
-                                        maximum: prefWorkDouble,
-                                        showLabels: false,
-                                        showTicks: false,
-                                        radiusFactor: 1,
-                                        canScaleToFit: false,
-                                        axisLineStyle: AxisLineStyle(
-                                          thickness: 0.15,
-                                          cornerStyle: CornerStyle.bothCurve,
-                                          color: Colors.grey[300],
-                                          thicknessUnit: GaugeSizeUnit.factor,
-                                        ),
-                                        pointers: <GaugePointer>[
-                                          RangePointer(
-                                              enableAnimation: true,
-                                              animationDuration: 2500,
-                                              animationType:
-                                                  AnimationType.easeOutBack,
-                                              value: doubleValue,
-                                              width: 0.15,
-                                              sizeUnit: GaugeSizeUnit.factor,
-                                              cornerStyle: CornerStyle.bothCurve,
-                                              gradient: const SweepGradient(
-                                                  colors: <Color>[
-                                                    Color(0xFF00a9b5),
-                                                    Colors.green,
-                                                  ],
-                                                  stops: <double>[
-                                                    0.25,
-                                                    0.75
-                                                  ])),
-                                        ],
-                                        annotations: <GaugeAnnotation>[
-                                          GaugeAnnotation(
-                                              positionFactor: 0.1,
-                                              angle: 90,
-                                              widget: Text.rich(TextSpan(
-                                                  text: snapshot.data.toString() !=
-                                                          "null"
-                                                      ? percentString
-                                                      : "0",
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18),
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "%",
+                                future: _dbHelper.retrieveWorkoutCount(),
+                                builder: (context, snapshot) {
+                                  String a = snapshot.data.toString() != "null"
+                                      ? snapshot.data.toString()
+                                      : "0";
+                                  var doubleValue = double.parse(a);
+                                  var percentage = num.parse(
+                                      ((doubleValue / prefWorkDouble) * 100)
+                                          .toStringAsFixed(0));
+                                  String percentString = percentage.toString();
+                                  // switch (snapshot.connectionState) {
+                                  // // Uncompleted State
+                                  // case ConnectionState.none:
+                                  // case ConnectionState.waiting:
+                                  // return Center(child: CircularProgressIndicator());
+                                  // break;
+                                  // default:
+                                  // // Completed with error
+                                  // if (snapshot.hasError)
+                                  // return Container(
+                                  // child: Text("?",style: TextStyle(color: Colors.grey)));
+                                  return SfRadialGauge(
+                                      enableLoadingAnimation: true,
+                                      animationDuration: 2500,
+                                      title: GaugeTitle(
+                                        text: "Weekly Workout Goals:",
+                                        textStyle:
+                                            TextStyle(color: Colors.black),
+                                      ),
+                                      axes: <RadialAxis>[
+                                        RadialAxis(
+                                            minimum: 0,
+                                            maximum: prefWorkDouble,
+                                            showLabels: false,
+                                            showTicks: false,
+                                            radiusFactor: 1,
+                                            canScaleToFit: false,
+                                            axisLineStyle: AxisLineStyle(
+                                              thickness: 0.15,
+                                              cornerStyle:
+                                                  CornerStyle.bothCurve,
+                                              color: Colors.grey[300],
+                                              thicknessUnit:
+                                                  GaugeSizeUnit.factor,
+                                            ),
+                                            pointers: <GaugePointer>[
+                                              RangePointer(
+                                                  enableAnimation: true,
+                                                  animationDuration: 2500,
+                                                  animationType:
+                                                      AnimationType.easeOutBack,
+                                                  value: doubleValue,
+                                                  width: 0.15,
+                                                  sizeUnit:
+                                                      GaugeSizeUnit.factor,
+                                                  cornerStyle:
+                                                      CornerStyle.bothCurve,
+                                                  gradient: const SweepGradient(
+                                                      colors: <Color>[
+                                                        Color(0xFF00a9b5),
+                                                        Colors.green,
+                                                      ],
+                                                      stops: <double>[
+                                                        0.25,
+                                                        0.75
+                                                      ])),
+                                            ],
+                                            annotations: <GaugeAnnotation>[
+                                              GaugeAnnotation(
+                                                  positionFactor: 0.1,
+                                                  angle: 90,
+                                                  widget: Text.rich(TextSpan(
+                                                      text: snapshot.data
+                                                                  .toString() !=
+                                                              "null"
+                                                          ? percentString
+                                                          : "0",
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 18),
-                                                    ),
-                                                  ])))
-                                        ])
-                                  ]);
-                              }
-                            )
-                        ),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: "%",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 18),
+                                                        ),
+                                                      ])))
+                                            ])
+                                      ]);
+                                })),
                         Flexible(
                           flex: 2,
                           child: Container(
@@ -371,7 +382,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     color: Colors.grey,
                                     blurRadius: 2.0,
                                     spreadRadius: 0.0,
-                                    offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                                    offset: Offset(2.0,
+                                        2.0), // shadow direction: bottom right
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(20)),
@@ -400,7 +412,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                   color: Colors.black,
                                                 ),
                                               ),
-                                              TextSpan(text: " / $prefWaterString")
+                                              TextSpan(
+                                                  text: " / $prefWaterString")
                                             ]));
                                       }),
                                   FutureBuilder(
@@ -507,7 +520,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                   color: Colors.black,
                                                 ),
                                               ),
-                                              TextSpan(text: " / $prefSuppString")
+                                              TextSpan(
+                                                  text: " / $prefSuppString")
                                             ]));
                                       }),
                                   SizedBox(
@@ -515,9 +529,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       width: 180,
                                       child: FutureBuilder(
                                           initialData: [],
-                                          future: _dbHelper.retrieveSupplement(),
+                                          future:
+                                              _dbHelper.retrieveSupplement(),
                                           builder: (context, snapshot) {
-                                            if (snapshot.data.toString() == "[]") {
+                                            if (snapshot.data.toString() ==
+                                                "[]") {
                                               return Icon(
                                                 Icons.local_fire_department,
                                                 color: Colors.grey[300],
@@ -528,14 +544,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 child: ListView.builder(
                                                   shrinkWrap: true,
                                                   scrollDirection:
-                                                  Axis.horizontal,
-                                                  itemCount: snapshot.data
-                                                      .length,
-                                                  itemBuilder: (context,
-                                                      index) {
-
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      snapshot.data.length,
+                                                  itemBuilder:
+                                                      (context, index) {
                                                     if (snapshot
-                                                        .data[index].type ==
+                                                            .data[index].type ==
                                                         "Post") {
                                                       iconColor = Colors.green;
                                                     } else {
@@ -566,7 +581,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               color: Colors.grey,
                               blurRadius: 2.0,
                               spreadRadius: 0.0,
-                              offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                              offset: Offset(
+                                  2.0, 2.0), // shadow direction: bottom right
                             )
                           ],
                           borderRadius: BorderRadius.circular(20)),
@@ -589,10 +605,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               //fontWeight: FontWeight.bold
                             ),
                             outsideStyle: TextStyle(color: Colors.grey),
-                            unavailableStyle:
-                                TextStyle(color: Colors.grey),
-                            outsideWeekendStyle:
-                                TextStyle(color: Colors.grey),
+                            unavailableStyle: TextStyle(color: Colors.grey),
+                            outsideWeekendStyle: TextStyle(color: Colors.grey),
                             canEventMarkersOverflow: false,
                             //cellMargin: EdgeInsets.all(5),
                             contentPadding: EdgeInsets.symmetric(
@@ -671,8 +685,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         //calendarController = _calendarController,
                       ),
                     ),
-                     ..._selectedEvents.map((event) =>
-                    GestureDetector(
+                    ..._selectedEvents.map((event) => GestureDetector(
                           onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -686,7 +699,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   color: Colors.grey,
                                   blurRadius: 1.0,
                                   spreadRadius: 0.0,
-                                  offset: Offset(1.0, 1.0), // shadow direction: bottom right
+                                  offset: Offset(1.0,
+                                      1.0), // shadow direction: bottom right
                                 )
                               ],
                               borderRadius: BorderRadius.circular(10),
@@ -713,6 +727,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
           ),
+
           FabCircularMenu(
               fabMargin: EdgeInsets.only(
                   right: 30, bottom: kBottomNavigationBarHeight + 30),
@@ -1015,12 +1030,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       width: 100,
                       height: 60,
                       decoration: BoxDecoration(
-                          color: selected == 'Pre'
-                              ? Colors.orange
-                              : Colors.white,
+                        color: selected == 'Pre' ? Colors.orange : Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: Colors.black),
+                        border: Border.all(color: Colors.black),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1035,9 +1047,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           Text(
                             "Workout",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black),
+                            style: TextStyle(fontSize: 14, color: Colors.black),
                           ),
                         ],
                       ),
@@ -1054,12 +1064,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       width: 100,
                       height: 60,
                       decoration: BoxDecoration(
-                        color: selected == 'Post'
-                        ? Colors.green
-                            : Colors.white,
+                        color: selected == 'Post' ? Colors.green : Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: Colors.black),
+                        border: Border.all(color: Colors.black),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1074,9 +1081,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           Text(
                             "Workout",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black),
+                            style: TextStyle(fontSize: 14, color: Colors.black),
                           ),
                         ],
                       ),
@@ -1106,7 +1111,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
                     onPressed: () async {
-                      if(selected != null) {
+                      if (selected != null) {
                         Supplement addSupplement = Supplement(
                           supplement: "Protein",
                           type: selected,
