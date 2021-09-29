@@ -14,12 +14,11 @@ class NutritionSearch extends StatefulWidget {
 }
 
 class _NutritionSearchState extends State<NutritionSearch>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   DatabaseHelper _dbHelper = DatabaseHelper();
-
   Animation<double> _animation;
-
   AnimationController _animationController;
+  TabController _controller;
 
   @override
   void initState() {
@@ -30,6 +29,7 @@ class _NutritionSearchState extends State<NutritionSearch>
     final curvedAnimation =
         CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
+    _controller = new TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -59,23 +59,15 @@ class _NutritionSearchState extends State<NutritionSearch>
             child: Icon(Icons.airplanemode_active))));
 
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Calorie Screen"),
         centerTitle: true,
-        actions: [
-          IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                final results =
-                    showSearch(context: context, delegate: FoodSearch());
-              })
-        ],
       ),
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-          color: Colors.grey[300],
+          color: Colors.white,
           //height: 500,
           height: double.infinity,
           margin: EdgeInsets.only(
@@ -255,97 +247,270 @@ class _NutritionSearchState extends State<NutritionSearch>
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey[700],
-                        blurRadius: 2.0,
-                        spreadRadius: 0.0,
-                        offset:
-                            Offset(2.0, 2.0), // shadow direction: bottom right
-                      ),
-                    ],
-                  ),
-                  child: FutureBuilder(
-                      initialData: [],
-                      future: _dbHelper.retrieveNutrition(),
-                      builder: (context, snapshot) {
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              var currentFood = snapshot.data[index];
-                              if (currentFood.imageLink == null) {
-                                currentFood.imageLink = "null";
-                              }
-                              return NutritionCardList(
-                                foodName: currentFood.food,
-                                calorie: currentFood.calorieCount,
-                                protein: currentFood.proteinCount,
-                                carb: currentFood.carbCount,
-                                fat: currentFood.fatCount,
-                                imageLink: currentFood.imageLink,
-                              );
-                            });
-                      }),
+              SizedBox(height: 20,),
+              Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.teal,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey[700],
-                        blurRadius: 2.0,
-                        spreadRadius: 0.0,
-                        offset:
-                            Offset(2.0, 2.0), // shadow direction: bottom right
-                      ),
-                    ],
+                child: new TabBar(
+                  indicatorColor: Colors.yellow,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicatorWeight: 5,
+
+                  controller: _controller,
+                  tabs: [
+                    new Tab(
+                      text: "Breakfast",
+                    ),
+                    new Tab(
+                      text: "Lunch",
+                    ),
+                    new Tab(
+                      text: "Dinner",
+                    ),
+                    new Tab(
+                      text: "Other",
+                    ),
+                  ],),),
+
+                  Expanded(
+                    child: Container(
+
+                      child: TabBarView(
+                        controller: _controller,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                            child:
+                            FutureBuilder(
+                                initialData: [],
+                                future: _dbHelper.retrieveNutrition(),
+                                builder: (context, snapshot) {
+                                  return ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        var currentFood = snapshot.data[index];
+                                        if (currentFood.imageLink == null) {
+                                          currentFood.imageLink = "null";
+                                        }
+                                        return NutritionCardList(
+                                          foodName: currentFood.food,
+                                          calorie: currentFood.calorieCount,
+                                          protein: currentFood.proteinCount,
+                                          carb: currentFood.carbCount,
+                                          fat: currentFood.fatCount,
+                                          imageLink: currentFood.imageLink,
+                                        );
+                                      });
+                                }),
+                          ),
+                          new Container(
+                            child: Text("123"),
+                          ),
+                          new Container(
+                            child: Text("123"),
+                          ),
+                          new Container(
+                            child: Text("123"),
+                          )
+                        ],
+                      )
+                    ),
                   ),
-                  child: FutureBuilder(
-                      initialData: [],
-                      future: _dbHelper.retrieveNutrition(),
-                      builder: (context, snapshot) {
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              var currentFood = snapshot.data[index];
-                              if (currentFood.imageLink == null) {
-                                currentFood.imageLink = "null";
-                              }
-                              return NutritionCardList(
-                                foodName: currentFood.food,
-                                calorie: currentFood.calorieCount,
-                                protein: currentFood.proteinCount,
-                                carb: currentFood.carbCount,
-                                fat: currentFood.fatCount,
-                                imageLink: currentFood.imageLink,
-                              );
-                            });
-                      }),
-                ),
-              ),
-            ],
+
+
+                  // Container(
+                  //   //padding: EdgeInsets.all(10),
+                  //   margin: EdgeInsets.symmetric(horizontal: 10),
+                  //   height: 100,
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                  //   ),
+                  //   child:
+                  //       Expanded(
+                  //         child: FutureBuilder(
+                  //             initialData: [],
+                  //             future: _dbHelper.retrieveNutrition(),
+                  //             builder: (context, snapshot) {
+                  //               return ListView.builder(
+                  //                   shrinkWrap: true,
+                  //                   itemCount: snapshot.data.length,
+                  //                   itemBuilder: (BuildContext context, int index) {
+                  //                     var currentFood = snapshot.data[index];
+                  //                     if (currentFood.imageLink == null) {
+                  //                       currentFood.imageLink = "null";
+                  //                     }
+                  //                     return NutritionCardList(
+                  //                       foodName: currentFood.food,
+                  //                       calorie: currentFood.calorieCount,
+                  //                       protein: currentFood.proteinCount,
+                  //                       carb: currentFood.carbCount,
+                  //                       fat: currentFood.fatCount,
+                  //                       imageLink: currentFood.imageLink,
+                  //                     );
+                  //                   });
+                  //             }),
+                  //       ),
+                  //      ),
+                ]),
+                // SizedBox(
+                //   height: 150,
+                //   child: Container(
+                //     //padding: EdgeInsets.all(10),
+                //     margin: EdgeInsets.symmetric(horizontal: 10),
+                //     height: 100,
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //
+                //     ),
+                //     child: Column(
+                //       children: [
+                //         Container(
+                //             width: double.infinity,
+                //             height: 40,
+                //             decoration: BoxDecoration(
+                //               color: Colors.yellow,
+                //               borderRadius: BorderRadius.circular(10),
+                //             ),
+                //             child: Center(child: Text("Lunch"))),
+                //         Expanded(
+                //           child: FutureBuilder(
+                //               initialData: [],
+                //               future: _dbHelper.retrieveNutrition(),
+                //               builder: (context, snapshot) {
+                //                 return ListView.builder(
+                //                     shrinkWrap: true,
+                //                     itemCount: snapshot.data.length,
+                //                     itemBuilder: (BuildContext context, int index) {
+                //                       var currentFood = snapshot.data[index];
+                //                       if (currentFood.imageLink == null) {
+                //                         currentFood.imageLink = "null";
+                //                       }
+                //                       return NutritionCardList(
+                //                         foodName: currentFood.food,
+                //                         calorie: currentFood.calorieCount,
+                //                         protein: currentFood.proteinCount,
+                //                         carb: currentFood.carbCount,
+                //                         fat: currentFood.fatCount,
+                //                         imageLink: currentFood.imageLink,
+                //                       );
+                //                     });
+                //               }),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 300,
+                //   child: Container(
+                //     //padding: EdgeInsets.all(10),
+                //     margin: EdgeInsets.symmetric(horizontal: 10),
+                //     height: 100,
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       //borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                //
+                //     ),
+                //     child: Column(
+                //       children: [
+                //         Container(
+                //             width: double.infinity,
+                //             height: 40,
+                //             decoration: BoxDecoration(
+                //               color: Colors.pink,
+                //               borderRadius: BorderRadius.circular(10),
+                //             ),
+                //             child: Center(child: Text("Dinner"))),
+                //         Expanded(
+                //           child: FutureBuilder(
+                //               initialData: [],
+                //               future: _dbHelper.retrieveNutrition(),
+                //               builder: (context, snapshot) {
+                //                 return ListView.builder(
+                //                     shrinkWrap: true,
+                //                     itemCount: snapshot.data.length,
+                //                     itemBuilder: (BuildContext context, int index) {
+                //                       var currentFood = snapshot.data[index];
+                //                       if (currentFood.imageLink == null) {
+                //                         currentFood.imageLink = "null";
+                //                       }
+                //                       return NutritionCardList(
+                //                         foodName: currentFood.food,
+                //                         calorie: currentFood.calorieCount,
+                //                         protein: currentFood.proteinCount,
+                //                         carb: currentFood.carbCount,
+                //                         fat: currentFood.fatCount,
+                //                         imageLink: currentFood.imageLink,
+                //                       );
+                //                     });
+                //               }),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 300,
+                //   child: Container(
+                //     //padding: EdgeInsets.all(10),
+                //     margin: EdgeInsets.symmetric(horizontal: 10),
+                //     height: 100,
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       //borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                //
+                //     ),
+                //     child: Column(
+                //       children: [
+                //         Container(
+                //             width: double.infinity,
+                //             height: 40,
+                //             decoration: BoxDecoration(
+                //               color: Colors.blueGrey,
+                //               borderRadius: BorderRadius.circular(10),
+                //             ),
+                //             child: Center(child: Text("Other"))),
+                //         Expanded(
+                //           child: FutureBuilder(
+                //               initialData: [],
+                //               future: _dbHelper.retrieveNutrition(),
+                //               builder: (context, snapshot) {
+                //                 return ListView.builder(
+                //                     shrinkWrap: true,
+                //                     itemCount: snapshot.data.length,
+                //                     itemBuilder: (BuildContext context, int index) {
+                //                       var currentFood = snapshot.data[index];
+                //                       if (currentFood.imageLink == null) {
+                //                         currentFood.imageLink = "null";
+                //                       }
+                //                       return NutritionCardList(
+                //                         foodName: currentFood.food,
+                //                         calorie: currentFood.calorieCount,
+                //                         protein: currentFood.proteinCount,
+                //                         carb: currentFood.carbCount,
+                //                         fat: currentFood.fatCount,
+                //                         imageLink: currentFood.imageLink,
+                //                       );
+                //                     });
+                //               }),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+            ),
           ),
-        ),
-      ),
+
+
       floatingActionButton: Padding(
           padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom > 0
@@ -543,8 +708,8 @@ class FoodSearch extends SearchDelegate<String> {
 
   Widget buildNoSuggestions() => Center(
         child: Text(
-          'No suggestions!',
-          style: TextStyle(fontSize: 28, color: Colors.black),
+          'Enter keyword for suggestions',
+          style: TextStyle(fontSize: 18, color: Colors.grey),
         ),
       );
 
