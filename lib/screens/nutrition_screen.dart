@@ -6,7 +6,6 @@ import 'package:calendar/widgets.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'package:unicorndial/unicorndial.dart';
 
 class NutritionSearch extends StatefulWidget {
   @override
@@ -36,27 +35,6 @@ class _NutritionSearchState extends State<NutritionSearch>
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var childButtons = List<UnicornButton>();
-
-    childButtons.add(UnicornButton(
-        hasLabel: true,
-        labelText: "Choo choo",
-        currentButton: FloatingActionButton(
-          heroTag: "train",
-          backgroundColor: Colors.redAccent,
-          mini: true,
-          child: Icon(Icons.train),
-          onPressed: () {
-            print("Clicked fab");
-          },
-        )));
-
-    childButtons.add(UnicornButton(
-        currentButton: FloatingActionButton(
-            heroTag: "airplane",
-            backgroundColor: Colors.greenAccent,
-            mini: true,
-            child: Icon(Icons.airplanemode_active))));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,442 +53,330 @@ class _NutritionSearchState extends State<NutritionSearch>
                 ? 0.0
                 : kBottomNavigationBarHeight,
           ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
+          child: Column(children: [
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              height: 150,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.teal, width: 8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[700],
+                    blurRadius: 2.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                  )
+                ],
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 150,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.teal, width: 8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[700],
-                      blurRadius: 2.0,
-                      spreadRadius: 0.0,
-                      offset:
-                          Offset(2.0, 2.0), // shadow direction: bottom right
-                    )
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 150,
-                      height: 120,
-                      child: SfRadialGauge(
-                          enableLoadingAnimation: true,
-                          animationDuration: 2500,
-                          title: GaugeTitle(
-                              text: "Calorie",
-                              textStyle: TextStyle(fontSize: 18)),
-                          axes: <RadialAxis>[
-                            RadialAxis(
-                                startAngle: 270,
-                                endAngle: 270,
-                                minimum: 0,
-                                maximum: 100,
-                                showLabels: false,
-                                showTicks: false,
-                                radiusFactor: 1,
-                                canScaleToFit: true,
-                                axisLineStyle: AxisLineStyle(
-                                  thickness: 0.15,
-                                  cornerStyle: CornerStyle.startCurve,
-                                  color: Colors.grey[300],
-                                  thicknessUnit: GaugeSizeUnit.factor,
-                                ),
-                                pointers: <GaugePointer>[
-                                  RangePointer(
-                                      enableAnimation: true,
-                                      animationDuration: 2500,
-                                      animationType: AnimationType.easeOutBack,
-                                      value: 70,
-                                      width: 0.15,
-                                      sizeUnit: GaugeSizeUnit.factor,
-                                      cornerStyle: CornerStyle.endCurve,
-                                      gradient: SweepGradient(colors: <Color>[
-                                        Colors.yellow[200],
-                                        Colors.yellow[600],
-                                      ], stops: <double>[
-                                        0.25,
-                                        0.75
-                                      ])),
-                                ],
-                                annotations: <GaugeAnnotation>[
-                                  GaugeAnnotation(
-                                      positionFactor: 0.1,
-                                      angle: 90,
-                                      widget: Text.rich(TextSpan(
-                                          text: "75",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18),
-                                          children: [
-                                            TextSpan(
-                                              text: "/250",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 18),
-                                            ),
-                                          ])))
-                                ])
-                          ]),
-                    ),
-                    VerticalDivider(
-                      color: Colors.teal,
-                      thickness: 2,
-                      indent: 10,
-                      endIndent: 10,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Container(
-                      width: 150,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          FutureBuilder(
-                            future: _dbHelper.retrieveProtein(),
-                            builder: (context, snapshot) {
-                              return Text.rich(TextSpan(
-                                  text: "Protein : ",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
-                                  children: [
-                                    TextSpan(
-                                      text: snapshot.data.toString() != "null"
-                                          ? snapshot.data.toString()
-                                          : "0",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 150,
+                    height: 120,
+                    child: SfRadialGauge(
+                        enableLoadingAnimation: true,
+                        animationDuration: 2500,
+                        title: GaugeTitle(
+                            text: "Calorie",
+                            textStyle: TextStyle(fontSize: 18)),
+                        axes: <RadialAxis>[
+                          RadialAxis(
+                              startAngle: 270,
+                              endAngle: 270,
+                              minimum: 0,
+                              maximum: 100,
+                              showLabels: false,
+                              showTicks: false,
+                              radiusFactor: 1,
+                              canScaleToFit: true,
+                              axisLineStyle: AxisLineStyle(
+                                thickness: 0.15,
+                                cornerStyle: CornerStyle.startCurve,
+                                color: Colors.grey[300],
+                                thicknessUnit: GaugeSizeUnit.factor,
+                              ),
+                              pointers: <GaugePointer>[
+                                RangePointer(
+                                    enableAnimation: true,
+                                    animationDuration: 2500,
+                                    animationType: AnimationType.easeOutBack,
+                                    value: 70,
+                                    width: 0.15,
+                                    sizeUnit: GaugeSizeUnit.factor,
+                                    cornerStyle: CornerStyle.endCurve,
+                                    gradient: SweepGradient(colors: <Color>[
+                                      Colors.yellow[200],
+                                      Colors.yellow[600],
+                                    ], stops: <double>[
+                                      0.25,
+                                      0.75
+                                    ])),
+                              ],
+                              annotations: <GaugeAnnotation>[
+                                GaugeAnnotation(
+                                    positionFactor: 0.1,
+                                    angle: 90,
+                                    widget: Text.rich(TextSpan(
+                                        text: "75",
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 18),
+                                        children: [
+                                          TextSpan(
+                                            text: "/250",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18),
+                                          ),
+                                        ])))
+                              ])
+                        ]),
+                  ),
+                  VerticalDivider(
+                    color: Colors.teal,
+                    thickness: 2,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    width: 150,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        FutureBuilder(
+                          future: _dbHelper.retrieveProtein(),
+                          builder: (context, snapshot) {
+                            return Text.rich(TextSpan(
+                                text: "Protein : ",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                                children: [
+                                  TextSpan(
+                                    text: snapshot.data.toString() != "null"
+                                        ? snapshot.data.toString()
+                                        : "0",
+                                    style: TextStyle(
+                                      color: Colors.black,
                                     ),
-                                  ]));
-                            },
-                          ),
-                          FutureBuilder(
-                            future: _dbHelper.retrieveCarb(),
-                            builder: (context, snapshot) {
-                              return RichText(
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(
-                                      text: "Carb : ",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 18),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                              snapshot.data.toString() != "null"
-                                                  ? snapshot.data.toString()
-                                                  : "0",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
+                                  ),
+                                ]));
+                          },
+                        ),
+                        FutureBuilder(
+                          future: _dbHelper.retrieveCarb(),
+                          builder: (context, snapshot) {
+                            return RichText(
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(
+                                    text: "Carb : ",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 18),
+                                    children: [
+                                      TextSpan(
+                                        text: snapshot.data.toString() != "null"
+                                            ? snapshot.data.toString()
+                                            : "0",
+                                        style: TextStyle(
+                                          color: Colors.black,
                                         ),
-                                      ]));
-                            },
-                          ),
-                          FutureBuilder(
-                            future: _dbHelper.retrieveFat(),
-                            builder: (context, snapshot) {
-                              return RichText(
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(
-                                      text: "Fat : ",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 18),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                              snapshot.data.toString() != "null"
-                                                  ? snapshot.data.toString()
-                                                  : "0",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
+                                      ),
+                                    ]));
+                          },
+                        ),
+                        FutureBuilder(
+                          future: _dbHelper.retrieveFat(),
+                          builder: (context, snapshot) {
+                            return RichText(
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(
+                                    text: "Fat : ",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 18),
+                                    children: [
+                                      TextSpan(
+                                        text: snapshot.data.toString() != "null"
+                                            ? snapshot.data.toString()
+                                            : "0",
+                                        style: TextStyle(
+                                          color: Colors.black,
                                         ),
-                                      ]));
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20,),
-              Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.teal,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                ),
-                child: new TabBar(
-                  indicatorColor: Colors.yellow,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicatorWeight: 5,
-
-                  controller: _controller,
-                  tabs: [
-                    new Tab(
-                      text: "Breakfast",
-                    ),
-                    new Tab(
-                      text: "Lunch",
-                    ),
-                    new Tab(
-                      text: "Dinner",
-                    ),
-                    new Tab(
-                      text: "Other",
-                    ),
-                  ],),),
-
-                  Expanded(
-                    child: Container(
-
-                      child: TabBarView(
-                        controller: _controller,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                            child:
-                            FutureBuilder(
-                                initialData: [],
-                                future: _dbHelper.retrieveNutrition(),
-                                builder: (context, snapshot) {
-                                  return ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data.length,
-                                      itemBuilder: (BuildContext context, int index) {
-                                        var currentFood = snapshot.data[index];
-                                        if (currentFood.imageLink == null) {
-                                          currentFood.imageLink = "null";
-                                        }
-                                        return NutritionCardList(
-                                          foodName: currentFood.food,
-                                          calorie: currentFood.calorieCount,
-                                          protein: currentFood.proteinCount,
-                                          carb: currentFood.carbCount,
-                                          fat: currentFood.fatCount,
-                                          imageLink: currentFood.imageLink,
-                                        );
-                                      });
-                                }),
-                          ),
-                          new Container(
-                            child: Text("123"),
-                          ),
-                          new Container(
-                            child: Text("123"),
-                          ),
-                          new Container(
-                            child: Text("123"),
-                          )
-                        ],
-                      )
+                                      ),
+                                    ]));
+                          },
+                        ),
+                      ],
                     ),
                   ),
-
-
-                  // Container(
-                  //   //padding: EdgeInsets.all(10),
-                  //   margin: EdgeInsets.symmetric(horizontal: 10),
-                  //   height: 100,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.white,
-                  //     borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                  //   ),
-                  //   child:
-                  //       Expanded(
-                  //         child: FutureBuilder(
-                  //             initialData: [],
-                  //             future: _dbHelper.retrieveNutrition(),
-                  //             builder: (context, snapshot) {
-                  //               return ListView.builder(
-                  //                   shrinkWrap: true,
-                  //                   itemCount: snapshot.data.length,
-                  //                   itemBuilder: (BuildContext context, int index) {
-                  //                     var currentFood = snapshot.data[index];
-                  //                     if (currentFood.imageLink == null) {
-                  //                       currentFood.imageLink = "null";
-                  //                     }
-                  //                     return NutritionCardList(
-                  //                       foodName: currentFood.food,
-                  //                       calorie: currentFood.calorieCount,
-                  //                       protein: currentFood.proteinCount,
-                  //                       carb: currentFood.carbCount,
-                  //                       fat: currentFood.fatCount,
-                  //                       imageLink: currentFood.imageLink,
-                  //                     );
-                  //                   });
-                  //             }),
-                  //       ),
-                  //      ),
-                ]),
-                // SizedBox(
-                //   height: 150,
-                //   child: Container(
-                //     //padding: EdgeInsets.all(10),
-                //     margin: EdgeInsets.symmetric(horizontal: 10),
-                //     height: 100,
-                //     decoration: BoxDecoration(
-                //       color: Colors.white,
-                //
-                //     ),
-                //     child: Column(
-                //       children: [
-                //         Container(
-                //             width: double.infinity,
-                //             height: 40,
-                //             decoration: BoxDecoration(
-                //               color: Colors.yellow,
-                //               borderRadius: BorderRadius.circular(10),
-                //             ),
-                //             child: Center(child: Text("Lunch"))),
-                //         Expanded(
-                //           child: FutureBuilder(
-                //               initialData: [],
-                //               future: _dbHelper.retrieveNutrition(),
-                //               builder: (context, snapshot) {
-                //                 return ListView.builder(
-                //                     shrinkWrap: true,
-                //                     itemCount: snapshot.data.length,
-                //                     itemBuilder: (BuildContext context, int index) {
-                //                       var currentFood = snapshot.data[index];
-                //                       if (currentFood.imageLink == null) {
-                //                         currentFood.imageLink = "null";
-                //                       }
-                //                       return NutritionCardList(
-                //                         foodName: currentFood.food,
-                //                         calorie: currentFood.calorieCount,
-                //                         protein: currentFood.proteinCount,
-                //                         carb: currentFood.carbCount,
-                //                         fat: currentFood.fatCount,
-                //                         imageLink: currentFood.imageLink,
-                //                       );
-                //                     });
-                //               }),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 300,
-                //   child: Container(
-                //     //padding: EdgeInsets.all(10),
-                //     margin: EdgeInsets.symmetric(horizontal: 10),
-                //     height: 100,
-                //     decoration: BoxDecoration(
-                //       color: Colors.white,
-                //       //borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                //
-                //     ),
-                //     child: Column(
-                //       children: [
-                //         Container(
-                //             width: double.infinity,
-                //             height: 40,
-                //             decoration: BoxDecoration(
-                //               color: Colors.pink,
-                //               borderRadius: BorderRadius.circular(10),
-                //             ),
-                //             child: Center(child: Text("Dinner"))),
-                //         Expanded(
-                //           child: FutureBuilder(
-                //               initialData: [],
-                //               future: _dbHelper.retrieveNutrition(),
-                //               builder: (context, snapshot) {
-                //                 return ListView.builder(
-                //                     shrinkWrap: true,
-                //                     itemCount: snapshot.data.length,
-                //                     itemBuilder: (BuildContext context, int index) {
-                //                       var currentFood = snapshot.data[index];
-                //                       if (currentFood.imageLink == null) {
-                //                         currentFood.imageLink = "null";
-                //                       }
-                //                       return NutritionCardList(
-                //                         foodName: currentFood.food,
-                //                         calorie: currentFood.calorieCount,
-                //                         protein: currentFood.proteinCount,
-                //                         carb: currentFood.carbCount,
-                //                         fat: currentFood.fatCount,
-                //                         imageLink: currentFood.imageLink,
-                //                       );
-                //                     });
-                //               }),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 300,
-                //   child: Container(
-                //     //padding: EdgeInsets.all(10),
-                //     margin: EdgeInsets.symmetric(horizontal: 10),
-                //     height: 100,
-                //     decoration: BoxDecoration(
-                //       color: Colors.white,
-                //       //borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                //
-                //     ),
-                //     child: Column(
-                //       children: [
-                //         Container(
-                //             width: double.infinity,
-                //             height: 40,
-                //             decoration: BoxDecoration(
-                //               color: Colors.blueGrey,
-                //               borderRadius: BorderRadius.circular(10),
-                //             ),
-                //             child: Center(child: Text("Other"))),
-                //         Expanded(
-                //           child: FutureBuilder(
-                //               initialData: [],
-                //               future: _dbHelper.retrieveNutrition(),
-                //               builder: (context, snapshot) {
-                //                 return ListView.builder(
-                //                     shrinkWrap: true,
-                //                     itemCount: snapshot.data.length,
-                //                     itemBuilder: (BuildContext context, int index) {
-                //                       var currentFood = snapshot.data[index];
-                //                       if (currentFood.imageLink == null) {
-                //                         currentFood.imageLink = "null";
-                //                       }
-                //                       return NutritionCardList(
-                //                         foodName: currentFood.food,
-                //                         calorie: currentFood.calorieCount,
-                //                         protein: currentFood.proteinCount,
-                //                         carb: currentFood.carbCount,
-                //                         fat: currentFood.fatCount,
-                //                         imageLink: currentFood.imageLink,
-                //                       );
-                //                     });
-                //               }),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                ],
+              ),
             ),
-          ),
-
-
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.teal,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+              ),
+              child: new TabBar(
+                indicatorColor: Colors.yellow,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorWeight: 5,
+                unselectedLabelColor: Colors.black,
+                controller: _controller,
+                tabs: [
+                  new Tab(
+                    text: "Breakfast",
+                  ),
+                  new Tab(
+                    text: "Lunch",
+                  ),
+                  new Tab(
+                    text: "Dinner",
+                  ),
+                  new Tab(
+                    text: "Other",
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                  child: TabBarView(
+                controller: _controller,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.retrieveNutrition(),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var currentFood = snapshot.data[index];
+                                if (currentFood.imageLink == null) {
+                                  currentFood.imageLink = "null";
+                                }
+                                return NutritionCardList(
+                                  foodName: currentFood.food,
+                                  calorie: currentFood.calorieCount,
+                                  protein: currentFood.proteinCount,
+                                  carb: currentFood.carbCount,
+                                  fat: currentFood.fatCount,
+                                  imageLink: currentFood.imageLink,
+                                );
+                              });
+                        }),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.retrieveNutrition(),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var currentFood = snapshot.data[index];
+                                if (currentFood.imageLink == null) {
+                                  currentFood.imageLink = "null";
+                                }
+                                return NutritionCardList(
+                                  foodName: currentFood.food,
+                                  calorie: currentFood.calorieCount,
+                                  protein: currentFood.proteinCount,
+                                  carb: currentFood.carbCount,
+                                  fat: currentFood.fatCount,
+                                  imageLink: currentFood.imageLink,
+                                );
+                              });
+                        }),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.retrieveNutrition(),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var currentFood = snapshot.data[index];
+                                if (currentFood.imageLink == null) {
+                                  currentFood.imageLink = "null";
+                                }
+                                return NutritionCardList(
+                                  foodName: currentFood.food,
+                                  calorie: currentFood.calorieCount,
+                                  protein: currentFood.proteinCount,
+                                  carb: currentFood.carbCount,
+                                  fat: currentFood.fatCount,
+                                  imageLink: currentFood.imageLink,
+                                );
+                              });
+                        }),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.retrieveNutrition(),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var currentFood = snapshot.data[index];
+                                if (currentFood.imageLink == null) {
+                                  currentFood.imageLink = "null";
+                                }
+                                return NutritionCardList(
+                                  foodName: currentFood.food,
+                                  calorie: currentFood.calorieCount,
+                                  protein: currentFood.proteinCount,
+                                  carb: currentFood.carbCount,
+                                  fat: currentFood.fatCount,
+                                  imageLink: currentFood.imageLink,
+                                );
+                              });
+                        }),
+                  ),
+                ],
+              )),
+            ),
+          ]),
+        ),
+      ),
       floatingActionButton: Padding(
           padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom > 0
@@ -570,17 +436,7 @@ class _NutritionSearchState extends State<NutritionSearch>
                 },
               ),
             ],
-          )
-
-          // UnicornDialer(
-          //     backgroundColor: Colors.transparent,
-          //     parentButton: Icon(Icons.fastfood_outlined),
-          //     parentButtonBackground: Colors.teal,
-          //     orientation: UnicornOrientation.VERTICAL,
-          //     childButtons: childButtons
-          //
-          // ),
-          ),
+          )),
     );
   }
 }
