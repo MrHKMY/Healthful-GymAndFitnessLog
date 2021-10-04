@@ -29,7 +29,7 @@ class DatabaseHelper {
           "CREATE TABLE water (id INTEGER PRIMARY KEY, Litre INTEGER, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
-          "CREATE TABLE nutrition (id INTEGER PRIMARY KEY, FoodName TEXT, Calorie REAL, Protein REAL, Carb REAL, Fat REAL, ImageLink TEXT, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
+          "CREATE TABLE nutrition (id INTEGER PRIMARY KEY, FoodName TEXT, MealTime TEXT, Calorie REAL, Protein REAL, Carb REAL, Fat REAL, ImageLink TEXT, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
         );
         await db.execute(
           "CREATE TABLE supplement (id INTEGER PRIMARY KEY, Supplement TEXT, PostPre TEXT, Date TIMESTAMP DEFAULT (datetime('now','localtime')))",
@@ -49,17 +49,19 @@ class DatabaseHelper {
     return id;
   }
 
-  Future<List<Calorie>> retrieveNutrition() async {
+  Future<List<Calorie>> retrieveNutrition(String mealTime) async {
     Database _db = await database();
-    List<Map<String, dynamic>> nutritionMap = await _db.rawQuery("SELECT * FROM nutrition");
+    List<Map<String, dynamic>> nutritionMap = await _db
+        .rawQuery("SELECT * FROM nutrition WHERE MealTime = '$mealTime'");
     return List.generate(nutritionMap.length, (index) {
-      return Calorie(id: nutritionMap[index]["id"],
+      return Calorie(
+          id: nutritionMap[index]["id"],
           food: nutritionMap[index]["FoodName"],
           imageLink: nutritionMap[index]["ImageLink"],
           calorieCount: nutritionMap[index]["Calorie"],
           proteinCount: nutritionMap[index]["Protein"],
-        carbCount: nutritionMap[index]["Carb"],
-        fatCount: nutritionMap[index]["Fat"]);
+          carbCount: nutritionMap[index]["Carb"],
+          fatCount: nutritionMap[index]["Fat"]);
     });
   }
 
