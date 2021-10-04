@@ -105,7 +105,9 @@ class _NutritionSearchState extends State<NutritionSearch>
                                     enableAnimation: true,
                                     animationDuration: 2500,
                                     animationType: AnimationType.easeOutBack,
-                                    value: 70,
+                                    //TODO get today calorie
+                                    //TODO get preference calorie target
+                                    value: 80,
                                     width: 0.15,
                                     sizeUnit: GaugeSizeUnit.factor,
                                     cornerStyle: CornerStyle.endCurve,
@@ -266,7 +268,36 @@ class _NutritionSearchState extends State<NutritionSearch>
                     ),
                     child: FutureBuilder(
                         initialData: [],
-                        future: _dbHelper.retrieveNutrition(),
+                        future: _dbHelper.retrieveNutrition("Breakfast"),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              //TODO return empty state if list is empty
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var currentFood = snapshot.data[index];
+                                if (currentFood.imageLink == null) {
+                                  currentFood.imageLink = "null";
+                                }
+                                return NutritionCardList(
+                                  foodName: currentFood.food,
+                                  calorie: currentFood.calorieCount,
+                                  protein: currentFood.proteinCount,
+                                  carb: currentFood.carbCount,
+                                  fat: currentFood.fatCount,
+                                  imageLink: currentFood.imageLink,
+                                );
+                              });
+                        }),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.retrieveNutrition("Lunch"),
                         builder: (context, snapshot) {
                           return ListView.builder(
                               shrinkWrap: true,
@@ -294,7 +325,7 @@ class _NutritionSearchState extends State<NutritionSearch>
                     ),
                     child: FutureBuilder(
                         initialData: [],
-                        future: _dbHelper.retrieveNutrition(),
+                        future: _dbHelper.retrieveNutrition("Dinner"),
                         builder: (context, snapshot) {
                           return ListView.builder(
                               shrinkWrap: true,
@@ -322,35 +353,7 @@ class _NutritionSearchState extends State<NutritionSearch>
                     ),
                     child: FutureBuilder(
                         initialData: [],
-                        future: _dbHelper.retrieveNutrition(),
-                        builder: (context, snapshot) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var currentFood = snapshot.data[index];
-                                if (currentFood.imageLink == null) {
-                                  currentFood.imageLink = "null";
-                                }
-                                return NutritionCardList(
-                                  foodName: currentFood.food,
-                                  calorie: currentFood.calorieCount,
-                                  protein: currentFood.proteinCount,
-                                  carb: currentFood.carbCount,
-                                  fat: currentFood.fatCount,
-                                  imageLink: currentFood.imageLink,
-                                );
-                              });
-                        }),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: FutureBuilder(
-                        initialData: [],
-                        future: _dbHelper.retrieveNutrition(),
+                        future: _dbHelper.retrieveNutrition("Other"),
                         builder: (context, snapshot) {
                           return ListView.builder(
                               shrinkWrap: true,
@@ -398,7 +401,10 @@ class _NutritionSearchState extends State<NutritionSearch>
                 //icon:Icons.settings,
                 titleStyle: TextStyle(fontSize: 16, color: Colors.white),
                 onPress: () {
-                  showSearch(context: context, delegate: FoodSearch());
+                  showSearch(
+                      context: context,
+                      delegate:
+                          FoodSearch(mealTime: new MealTime("Breakfast")));
                   _animationController.reverse();
                 },
               ),
@@ -409,7 +415,9 @@ class _NutritionSearchState extends State<NutritionSearch>
                 //icon:Icons.people,
                 titleStyle: TextStyle(fontSize: 16, color: Colors.white),
                 onPress: () {
-                  showSearch(context: context, delegate: FoodSearch());
+                  showSearch(
+                      context: context,
+                      delegate: FoodSearch(mealTime: new MealTime("Lunch")));
                   _animationController.reverse();
                 },
               ),
@@ -420,7 +428,9 @@ class _NutritionSearchState extends State<NutritionSearch>
                 //icon:Icons.home,
                 titleStyle: TextStyle(fontSize: 16, color: Colors.white),
                 onPress: () {
-                  showSearch(context: context, delegate: FoodSearch());
+                  showSearch(
+                      context: context,
+                      delegate: FoodSearch(mealTime: new MealTime("Dinner")));
                   _animationController.reverse();
                 },
               ),
@@ -431,7 +441,9 @@ class _NutritionSearchState extends State<NutritionSearch>
                 //icon:Icons.home,
                 titleStyle: TextStyle(fontSize: 16, color: Colors.white),
                 onPress: () {
-                  showSearch(context: context, delegate: FoodSearch());
+                  showSearch(
+                      context: context,
+                      delegate: FoodSearch(mealTime: new MealTime("Other")));
                   _animationController.reverse();
                 },
               ),
@@ -442,6 +454,10 @@ class _NutritionSearchState extends State<NutritionSearch>
 }
 
 class FoodSearch extends SearchDelegate<String> {
+  final MealTime mealTime;
+
+  FoodSearch({this.mealTime});
+
   String get searchFieldLabel => "Search meals";
   CalorieNetworkService networkService = CalorieNetworkService();
   DatabaseHelper _dbHelper = DatabaseHelper();
@@ -463,17 +479,17 @@ class FoodSearch extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) => [
-        IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              if (query.isEmpty) {
-                close(context, null);
-              } else {
-                query = "";
-                showSuggestions(context);
-              }
-            })
-      ];
+    IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          if (query.isEmpty) {
+            close(context, null);
+          } else {
+            query = "";
+            showSuggestions(context);
+          }
+        })
+  ];
 
   @override
   Widget buildLeading(BuildContext context) {
@@ -563,11 +579,11 @@ class FoodSearch extends SearchDelegate<String> {
   }
 
   Widget buildNoSuggestions() => Center(
-        child: Text(
-          'Enter keyword for suggestions',
-          style: TextStyle(fontSize: 18, color: Colors.grey),
-        ),
-      );
+    child: Text(
+      'Enter keyword for suggestions',
+      style: TextStyle(fontSize: 18, color: Colors.grey),
+    ),
+  );
 
   Widget buildSuggestionsSuccess(List<Calorie> suggestions) {
     return ListView.builder(
@@ -591,16 +607,18 @@ class FoodSearch extends SearchDelegate<String> {
             isThreeLine: true,
             subtitle: Text(
                 "Calorie: ${suggestion.calorieCount}\t\t  Carb: ${suggestion.carbCount}\n"
-                "Protein: ${suggestion.proteinCount}\t\t Fat: ${suggestion.fatCount} "),
+                    "Protein: ${suggestion.proteinCount}\t\t Fat: ${suggestion.fatCount} "),
             onTap: () async {
               //query = suggestion.food;
 
               // 1. Show Results
               //showResults(context);
 
+              print("The selected button: ${mealTime.name}");
               // 2. Close Search & Return Result
               Calorie _newCalorie = Calorie(
                   food: suggestion.food,
+                  foodTime: mealTime.name,
                   imageLink: suggestion.imageLink,
                   calorieCount:
                       double.parse(suggestion.calorieCount.toStringAsFixed(2)),

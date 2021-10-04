@@ -36,6 +36,7 @@ class Supplement {
 class Calorie {
   int id;
   String food;
+  String foodTime;
   String imageLink;
   double proteinCount;
   double calorieCount;
@@ -43,7 +44,14 @@ class Calorie {
   double fatCount;
 
   Calorie(
-      {this.id, this.food, this.imageLink, this.calorieCount, this.proteinCount, this.carbCount, this.fatCount});
+      {this.id,
+      this.food,
+      this.foodTime,
+      this.imageLink,
+      this.calorieCount,
+      this.proteinCount,
+      this.carbCount,
+      this.fatCount});
 
   Calorie.fromJson(Map<String, dynamic> json)
       : food = json["food"]["label"],
@@ -57,6 +65,7 @@ class Calorie {
     return {
       "id": id,
       "FoodName": food,
+      "MealTime": foodTime,
       "ImageLink": imageLink,
       "Calorie": calorieCount,
       "Protein": proteinCount,
@@ -65,4 +74,10 @@ class Calorie {
       //"Date": date
     };
   }
+}
+
+class MealTime {
+  String name;
+
+  MealTime(this.name);
 }
