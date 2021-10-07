@@ -1,7 +1,7 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:calendar/screens/nutrition_screen.dart';
 import 'package:calendar/screens/profile_screen.dart';
-import 'package:calendar/screens/calendar.dart';
+import 'package:calendar/screens/home_screen.dart';
 import 'package:calendar/screens/history.dart';
 import 'package:calendar/screens/progress.dart';
 import 'package:calendar/screens/startup/name_startup.dart';

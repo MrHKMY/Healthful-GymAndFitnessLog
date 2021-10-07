@@ -78,6 +78,7 @@ class _NutritionSearchState extends State<NutritionSearch>
                   Container(
                     width: 150,
                     height: 120,
+                    //TODO update chart based on value in db
                     child: SfRadialGauge(
                         enableLoadingAnimation: true,
                         animationDuration: 2500,

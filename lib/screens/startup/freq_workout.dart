@@ -1,3 +1,4 @@
+import 'package:calendar/screens/startup/calorie_startup.dart';
 import 'package:calendar/screens/startup/freq_water.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -125,7 +126,7 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                         color: Color(0xFF1F3546),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          width: selected == '6' ? 3 : 1,
+                            width: selected == '6' ? 3 : 1,
                             color: selected == '6' ? Colors.teal : Colors.grey),
                       ),
                       child: Center(
@@ -207,8 +208,8 @@ class _FreqWorkoutState extends State<FreqWorkout> {
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                             prefs.setString("prefWork", selected);
-                            Navigator.of(context).push(
-                                new SlideRightRoute(page: new FreqWater()));
+                            Navigator.of(context).push(new SlideRightRoute(
+                                page: new CalorieStartUp()));
                           }
                         }),
                   )
