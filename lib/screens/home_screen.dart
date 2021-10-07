@@ -61,6 +61,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   double prefWorkDouble = 20;
   String prefSuppString;
   double prefSuppDouble = 20;
+  String prefCalString;
+  double prefCalDouble = 20;
 
   var list = <String>[
     "\"Success usually comes to those who are too busy to be looking for it.\" \n -Henry David Thoreau",
@@ -108,12 +110,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
     prefWorkString = prefs.getString('prefWork');
     prefWaterString = prefs.getString('prefWater');
     prefSuppString = prefs.getString('prefSupp');
+    prefCalString = prefs.getString('prefCal');
 
     //TODO remove the first 0 if exist eg : 01 for water and supp
     prefWorkDouble = double.parse(prefWorkString);
-
     prefWaterDouble = double.parse(prefWaterString);
     prefSuppDouble = double.parse(prefSuppString);
+    prefCalDouble = double.parse(prefCalString);
 
     setState(() {
       _events = Map<DateTime, List<dynamic>>.from(
@@ -464,43 +467,74 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         );
                                       }),
                                   //TODO CALORIE charts down here
-
-                                  // Text(
-                                  //   "Calorie Intake : 1553 / 2000",
-                                  //   style: TextStyle(
-                                  //     color: Colors.black,
-                                  //   ),
-                                  // ),
-                                  // SfLinearGauge(
-                                  //   minimum: 0,
-                                  //   maximum: 100,
-                                  //   showAxisTrack: true,
-                                  //   showTicks: false,
-                                  //   showLabels: false,
-                                  //   axisTrackStyle: LinearAxisTrackStyle(
-                                  //     color: Colors.grey[300],
-                                  //     edgeStyle: LinearEdgeStyle.bothCurve,
-                                  //     thickness: 10,
-                                  //   ),
-                                  //   barPointers: [
-                                  //     LinearBarPointer(
-                                  //       value: 80,
-                                  //       shaderCallback: (bounds) =>
-                                  //           LinearGradient(
-                                  //               begin: Alignment.centerLeft,
-                                  //               end: Alignment.centerRight,
-                                  //               colors: [
-                                  //             Colors.yellow[200],
-                                  //             Colors.yellow[600]
-                                  //           ]).createShader(bounds),
-                                  //       thickness: 10,
-                                  //       edgeStyle: LinearEdgeStyle.bothCurve,
-                                  //       position: LinearElementPosition.cross,
-                                  //       animationType: LinearAnimationType.ease,
-                                  //       animationDuration: 2500,
-                                  //     )
-                                  //   ],
-                                  // ),
+                                  FutureBuilder(
+                                      future: _dbHelper.retrieveCal(),
+                                      builder: (context, snapshot) {
+                                        return Text.rich(TextSpan(
+                                            text: "Calorie : ",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: snapshot.data
+                                                            .toString() !=
+                                                        "null"
+                                                    ? snapshot.data.toString()
+                                                    : "0",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                  text: " / $prefCalString")
+                                            ]));
+                                      }),
+                                  FutureBuilder(
+                                      future: _dbHelper.retrieveCal(),
+                                      builder: (context, snapshot) {
+                                        String a =
+                                            snapshot.data.toString() != "null"
+                                                ? snapshot.data.toString()
+                                                : "0";
+                                        var doubleValue = double.parse(a);
+                                        return SfLinearGauge(
+                                          minimum: 0,
+                                          maximum: prefCalDouble,
+                                          showAxisTrack: true,
+                                          showTicks: false,
+                                          showLabels: false,
+                                          axisTrackStyle: LinearAxisTrackStyle(
+                                            color: Colors.grey[300],
+                                            edgeStyle:
+                                                LinearEdgeStyle.bothCurve,
+                                            thickness: 10,
+                                          ),
+                                          barPointers: [
+                                            LinearBarPointer(
+                                              value: doubleValue,
+                                              shaderCallback: (bounds) =>
+                                                  LinearGradient(
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
+                                                      colors: [
+                                                    Colors.yellow[200],
+                                                    Colors.yellow[600]
+                                                  ]).createShader(bounds),
+                                              thickness: 10,
+                                              edgeStyle:
+                                                  LinearEdgeStyle.bothCurve,
+                                              position:
+                                                  LinearElementPosition.cross,
+                                              animationType:
+                                                  LinearAnimationType.ease,
+                                              animationDuration: 2500,
+                                            )
+                                          ],
+                                        );
+                                      }),
                                   FutureBuilder(
                                       future: _dbHelper.retrieveSuppCount(),
                                       builder: (context, snapshot) {
@@ -727,7 +761,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
           ),
-
           FabCircularMenu(
               fabMargin: EdgeInsets.only(
                   right: 30, bottom: kBottomNavigationBarHeight + 30),
@@ -776,8 +809,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                     onPressed: () {
                       _showWorkoutDialog();
-                    }
-                    )
+                    })
               ])
         ]),
       ),

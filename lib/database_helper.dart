@@ -51,8 +51,8 @@ class DatabaseHelper {
 
   Future<List<Calorie>> retrieveNutrition(String mealTime) async {
     Database _db = await database();
-    List<Map<String, dynamic>> nutritionMap = await _db
-        .rawQuery("SELECT * FROM nutrition WHERE MealTime = '$mealTime'");
+    List<Map<String, dynamic>> nutritionMap = await _db.rawQuery(
+        "SELECT * FROM nutrition WHERE MealTime = '$mealTime' AND DATE(Date) = DATE('now','localtime')");
     return List.generate(nutritionMap.length, (index) {
       return Calorie(
           id: nutritionMap[index]["id"],
@@ -214,51 +214,55 @@ class DatabaseHelper {
     String theName;
     Database _db = await database();
     var response = await _db.rawQuery("SELECT $info FROM userInfo");
-    if(response.length > 0) {
-      theName = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+    if (response.length > 0) {
+      theName = response.last.values
+          .toString()
+          .substring(1, response.last.values.toString().length - 1);
       //theName.substring(2);
     }
     return theName;
   }
 
-  Future<String> retrieveUserInfoWorkCount() async {
-    Database _db = await database();
-    String workout;
-    var response = await _db.rawQuery("SELECT WorkoutCount FROM userInfo");
-    if(response.length > 0) {
-      workout =
-          response.last.values.toString().substring(1, response.last.values.toString().length - 1);
-    }
-    return workout;
-  }
-
-  Future<String> retrieveUserInfoWaterCount() async {
-    Database _db = await database();
-    String water;
-    var response = await _db.rawQuery("SELECT WaterCount FROM userInfo");
-    if(response.length > 0) {
-      water =
-          response.last.values.toString().substring(1, response.last.values.toString().length - 1);
-    }
-    return water;
-  }
-
-  Future<String> retrieveUserInfoSupplementCount() async {
-    Database _db = await database();
-    String supplement;
-    var response = await _db.rawQuery("SELECT SupplementCount FROM userInfo");
-    if(response.length > 0) {
-      supplement =
-          response.last.values.toString().substring(1, response.last.values.toString().length - 1);
-    }
-    return supplement;
-  }
+  // Future<String> retrieveUserInfoWorkCount() async {
+  //   Database _db = await database();
+  //   String workout;
+  //   var response = await _db.rawQuery("SELECT WorkoutCount FROM userInfo");
+  //   if(response.length > 0) {
+  //     workout =
+  //         response.last.values.toString().substring(1, response.last.values.toString().length - 1);
+  //   }
+  //   return workout;
+  // }
+  //
+  // Future<String> retrieveUserInfoWaterCount() async {
+  //   Database _db = await database();
+  //   String water;
+  //   var response = await _db.rawQuery("SELECT WaterCount FROM userInfo");
+  //   if(response.length > 0) {
+  //     water =
+  //         response.last.values.toString().substring(1, response.last.values.toString().length - 1);
+  //   }
+  //   return water;
+  // }
+  //
+  // Future<String> retrieveUserInfoSupplementCount() async {
+  //   Database _db = await database();
+  //   String supplement;
+  //   var response = await _db.rawQuery("SELECT SupplementCount FROM userInfo");
+  //   if(response.length > 0) {
+  //     supplement =
+  //         response.last.values.toString().substring(1, response.last.values.toString().length - 1);
+  //   }
+  //   return supplement;
+  // }
 
   Future<int> insertWater(Water water) async {
     int actID = 0;
     Database _db = await database();
-    await _db.insert("water", water.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace).then((value) {
+    await _db
+        .insert("water", water.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace)
+        .then((value) {
       actID = value;
     });
     return actID;
@@ -307,20 +311,45 @@ class DatabaseHelper {
   Future<String> retrieveWorkoutCount() async {
     String theWorkoutCount;
     Database _db = await database();
-    var response = await _db.rawQuery("SELECT COUNT (*) FROM (SELECT * FROM workout GROUP BY Date) A WHERE DATE(Date) >= DATE('now', 'weekday 0', '-7 days')");
-    if(response.length > 0) {
-      theWorkoutCount= response.last.values.toString().substring(1, response.last.values.toString().length-1);
+    var response = await _db.rawQuery(
+        "SELECT COUNT (*) FROM (SELECT * FROM workout GROUP BY Date) A WHERE DATE(Date) >= DATE('now', 'weekday 0', '-7 days')");
+    if (response.length > 0) {
+      theWorkoutCount = response.last.values
+          .toString()
+          .substring(1, response.last.values.toString().length - 1);
     }
     return theWorkoutCount;
+  }
+
+  Future<double> retrieveCal() async {
+    String theCal;
+    double value;
+    Database _db = await database();
+    var response = await _db.rawQuery(
+        "SELECT SUM (Calorie) FROM nutrition WHERE DATE(Date) = DATE('now','localtime')");
+    if (response.length > 0) {
+      theCal = response.last.values
+          .toString()
+          .substring(1, response.last.values.toString().length - 1);
+      //theWater.substring(2);
+      value = double.parse(theCal);
+      value = double.parse(value.toStringAsFixed(2));
+      //print(theFat);
+      //print(value);
+    }
+    return value;
   }
 
   Future<double> retrieveProtein() async {
     String theProtein;
     double value;
     Database _db = await database();
-    var response = await _db.rawQuery("SELECT SUM (Protein) FROM nutrition WHERE DATE(Date) = DATE('now','localtime')");
-    if(response.length > 0) {
-      theProtein = response.last.values.toString().substring(1, response.last.values.toString().length-1);
+    var response = await _db.rawQuery(
+        "SELECT SUM (Protein) FROM nutrition WHERE DATE(Date) = DATE('now','localtime')");
+    if (response.length > 0) {
+      theProtein = response.last.values
+          .toString()
+          .substring(1, response.last.values.toString().length - 1);
       //theWater.substring(2);
       value = double.parse(theProtein);
       value =  double.parse(value.toStringAsFixed(2));
