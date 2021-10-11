@@ -5,6 +5,7 @@ import 'package:calendar/services/calorie_network_service.dart';
 import 'package:calendar/widgets.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class NutritionSearch extends StatefulWidget {
@@ -18,6 +19,17 @@ class _NutritionSearchState extends State<NutritionSearch>
   Animation<double> _animation;
   AnimationController _animationController;
   TabController _controller;
+  SharedPreferences prefs;
+
+  String prefCalString;
+  double prefCalDouble = 20;
+
+  prefsData() async {
+    prefs = await SharedPreferences.getInstance();
+    prefCalString = prefs.getString('prefCal');
+
+    prefCalDouble = double.parse(prefCalString);
+  }
 
   @override
   void initState() {
@@ -29,6 +41,7 @@ class _NutritionSearchState extends State<NutritionSearch>
         CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     _controller = new TabController(length: 4, vsync: this);
+    prefsData();
     super.initState();
   }
 
@@ -39,8 +52,9 @@ class _NutritionSearchState extends State<NutritionSearch>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Calorie Screen"),
+        title: Text("Today's Nutrition"),
         centerTitle: true,
+        backgroundColor: Color(0xFF1F3546),
       ),
       body: SafeArea(
         child: Container(
@@ -78,66 +92,78 @@ class _NutritionSearchState extends State<NutritionSearch>
                   Container(
                     width: 150,
                     height: 120,
-                    //TODO update chart based on value in db
-                    child: SfRadialGauge(
-                        enableLoadingAnimation: true,
-                        animationDuration: 2500,
-                        title: GaugeTitle(
-                            text: "Calorie",
-                            textStyle: TextStyle(fontSize: 18)),
-                        axes: <RadialAxis>[
-                          RadialAxis(
-                              startAngle: 270,
-                              endAngle: 270,
-                              minimum: 0,
-                              maximum: 100,
-                              showLabels: false,
-                              showTicks: false,
-                              radiusFactor: 1,
-                              canScaleToFit: true,
-                              axisLineStyle: AxisLineStyle(
-                                thickness: 0.15,
-                                cornerStyle: CornerStyle.startCurve,
-                                color: Colors.grey[300],
-                                thicknessUnit: GaugeSizeUnit.factor,
-                              ),
-                              pointers: <GaugePointer>[
-                                RangePointer(
-                                    enableAnimation: true,
-                                    animationDuration: 2500,
-                                    animationType: AnimationType.easeOutBack,
-                                    //TODO get today calorie
-                                    //TODO get preference calorie target
-                                    value: 80,
-                                    width: 0.15,
-                                    sizeUnit: GaugeSizeUnit.factor,
-                                    cornerStyle: CornerStyle.endCurve,
-                                    gradient: SweepGradient(colors: <Color>[
-                                      Colors.yellow[200],
-                                      Colors.yellow[600],
-                                    ], stops: <double>[
-                                      0.25,
-                                      0.75
-                                    ])),
-                              ],
-                              annotations: <GaugeAnnotation>[
-                                GaugeAnnotation(
-                                    positionFactor: 0.1,
-                                    angle: 90,
-                                    widget: Text.rich(TextSpan(
-                                        text: "75",
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 18),
-                                        children: [
-                                          TextSpan(
-                                            text: "/250",
+                    child: FutureBuilder(
+                      future: _dbHelper.retrieveCal(),
+                      builder: (context, snapshot) {
+                        String value = snapshot.data.toString() != "null"
+                            ? snapshot.data.toString()
+                            : "0";
+                        var doubleValue = double.parse(value);
+
+                        return SfRadialGauge(
+                            enableLoadingAnimation: true,
+                            animationDuration: 2500,
+                            title: GaugeTitle(
+                                text: "Calorie",
+                                textStyle: TextStyle(fontSize: 18)),
+                            axes: <RadialAxis>[
+                              RadialAxis(
+                                  startAngle: 270,
+                                  endAngle: 270,
+                                  minimum: 0,
+                                  maximum: prefCalDouble,
+                                  showLabels: false,
+                                  showTicks: false,
+                                  radiusFactor: 1,
+                                  canScaleToFit: true,
+                                  axisLineStyle: AxisLineStyle(
+                                    thickness: 0.15,
+                                    cornerStyle: CornerStyle.startCurve,
+                                    color: Colors.grey[300],
+                                    thicknessUnit: GaugeSizeUnit.factor,
+                                  ),
+                                  pointers: <GaugePointer>[
+                                    RangePointer(
+                                        enableAnimation: true,
+                                        animationDuration: 2500,
+                                        animationType:
+                                            AnimationType.easeOutBack,
+                                        value: doubleValue,
+                                        width: 0.15,
+                                        sizeUnit: GaugeSizeUnit.factor,
+                                        cornerStyle: CornerStyle.endCurve,
+                                        gradient: SweepGradient(colors: <Color>[
+                                          Colors.yellow[200],
+                                          Colors.yellow[600],
+                                        ], stops: <double>[
+                                          0.25,
+                                          0.75
+                                        ])),
+                                  ],
+                                  annotations: <GaugeAnnotation>[
+                                    GaugeAnnotation(
+                                        positionFactor: 0.1,
+                                        angle: 90,
+                                        widget: Text.rich(TextSpan(
+                                            text: snapshot.data.toString() !=
+                                                    "null"
+                                                ? snapshot.data.toString()
+                                                : "0",
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 18),
-                                          ),
-                                        ])))
-                              ])
-                        ]),
+                                            children: [
+                                              TextSpan(
+                                                text: "\n/ $prefCalString",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18),
+                                              ),
+                                            ])))
+                                  ])
+                            ]);
+                      },
+                    ),
                   ),
                   VerticalDivider(
                     color: Colors.teal,
@@ -271,24 +297,27 @@ class _NutritionSearchState extends State<NutritionSearch>
                         initialData: [],
                         future: _dbHelper.retrieveNutrition("Breakfast"),
                         builder: (context, snapshot) {
-                          return ListView.builder(
-                              //TODO return empty state if list is empty
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var currentFood = snapshot.data[index];
-                                if (currentFood.imageLink == null) {
-                                  currentFood.imageLink = "null";
-                                }
-                                return NutritionCardList(
-                                  foodName: currentFood.food,
-                                  calorie: currentFood.calorieCount,
-                                  protein: currentFood.proteinCount,
-                                  carb: currentFood.carbCount,
-                                  fat: currentFood.fatCount,
-                                  imageLink: currentFood.imageLink,
-                                );
-                              });
+                          if (snapshot.data.toString() == "[]") {
+                            return Text("Empty");
+                          } else {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var currentFood = snapshot.data[index];
+                                  if (currentFood.imageLink == null) {
+                                    currentFood.imageLink = "null";
+                                  }
+                                  return NutritionCardList(
+                                    foodName: currentFood.food,
+                                    calorie: currentFood.calorieCount,
+                                    protein: currentFood.proteinCount,
+                                    carb: currentFood.carbCount,
+                                    fat: currentFood.fatCount,
+                                    imageLink: currentFood.imageLink,
+                                  );
+                                });
+                          }
                         }),
                   ),
                   Container(
@@ -300,23 +329,27 @@ class _NutritionSearchState extends State<NutritionSearch>
                         initialData: [],
                         future: _dbHelper.retrieveNutrition("Lunch"),
                         builder: (context, snapshot) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var currentFood = snapshot.data[index];
-                                if (currentFood.imageLink == null) {
-                                  currentFood.imageLink = "null";
-                                }
-                                return NutritionCardList(
-                                  foodName: currentFood.food,
-                                  calorie: currentFood.calorieCount,
-                                  protein: currentFood.proteinCount,
-                                  carb: currentFood.carbCount,
-                                  fat: currentFood.fatCount,
-                                  imageLink: currentFood.imageLink,
-                                );
-                              });
+                          if (snapshot.data.toString() == "[]") {
+                            return Text("Empty");
+                          } else {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var currentFood = snapshot.data[index];
+                                  if (currentFood.imageLink == null) {
+                                    currentFood.imageLink = "null";
+                                  }
+                                  return NutritionCardList(
+                                    foodName: currentFood.food,
+                                    calorie: currentFood.calorieCount,
+                                    protein: currentFood.proteinCount,
+                                    carb: currentFood.carbCount,
+                                    fat: currentFood.fatCount,
+                                    imageLink: currentFood.imageLink,
+                                  );
+                                });
+                          }
                         }),
                   ),
                   Container(
@@ -328,23 +361,27 @@ class _NutritionSearchState extends State<NutritionSearch>
                         initialData: [],
                         future: _dbHelper.retrieveNutrition("Dinner"),
                         builder: (context, snapshot) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var currentFood = snapshot.data[index];
-                                if (currentFood.imageLink == null) {
-                                  currentFood.imageLink = "null";
-                                }
-                                return NutritionCardList(
-                                  foodName: currentFood.food,
-                                  calorie: currentFood.calorieCount,
-                                  protein: currentFood.proteinCount,
-                                  carb: currentFood.carbCount,
-                                  fat: currentFood.fatCount,
-                                  imageLink: currentFood.imageLink,
-                                );
-                              });
+                          if (snapshot.data.toString() == "[]") {
+                            return Text("Empty");
+                          } else {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var currentFood = snapshot.data[index];
+                                  if (currentFood.imageLink == null) {
+                                    currentFood.imageLink = "null";
+                                  }
+                                  return NutritionCardList(
+                                    foodName: currentFood.food,
+                                    calorie: currentFood.calorieCount,
+                                    protein: currentFood.proteinCount,
+                                    carb: currentFood.carbCount,
+                                    fat: currentFood.fatCount,
+                                    imageLink: currentFood.imageLink,
+                                  );
+                                });
+                          }
                         }),
                   ),
                   Container(
@@ -356,23 +393,27 @@ class _NutritionSearchState extends State<NutritionSearch>
                         initialData: [],
                         future: _dbHelper.retrieveNutrition("Other"),
                         builder: (context, snapshot) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var currentFood = snapshot.data[index];
-                                if (currentFood.imageLink == null) {
-                                  currentFood.imageLink = "null";
-                                }
-                                return NutritionCardList(
-                                  foodName: currentFood.food,
-                                  calorie: currentFood.calorieCount,
-                                  protein: currentFood.proteinCount,
-                                  carb: currentFood.carbCount,
-                                  fat: currentFood.fatCount,
-                                  imageLink: currentFood.imageLink,
-                                );
-                              });
+                          if (snapshot.data.toString() == "[]") {
+                            return Text("Empty");
+                          } else {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var currentFood = snapshot.data[index];
+                                  if (currentFood.imageLink == null) {
+                                    currentFood.imageLink = "null";
+                                  }
+                                  return NutritionCardList(
+                                    foodName: currentFood.food,
+                                    calorie: currentFood.calorieCount,
+                                    protein: currentFood.proteinCount,
+                                    carb: currentFood.carbCount,
+                                    fat: currentFood.fatCount,
+                                    imageLink: currentFood.imageLink,
+                                  );
+                                });
+                          }
                         }),
                   ),
                 ],
@@ -480,17 +521,17 @@ class FoodSearch extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) => [
-    IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          if (query.isEmpty) {
-            close(context, null);
-          } else {
-            query = "";
-            showSuggestions(context);
-          }
-        })
-  ];
+        IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              if (query.isEmpty) {
+                close(context, null);
+              } else {
+                query = "";
+                showSuggestions(context);
+              }
+            })
+      ];
 
   @override
   Widget buildLeading(BuildContext context) {
@@ -580,11 +621,11 @@ class FoodSearch extends SearchDelegate<String> {
   }
 
   Widget buildNoSuggestions() => Center(
-    child: Text(
-      'Enter keyword for suggestions',
-      style: TextStyle(fontSize: 18, color: Colors.grey),
-    ),
-  );
+        child: Text(
+          'Enter keyword for suggestions',
+          style: TextStyle(fontSize: 18, color: Colors.grey),
+        ),
+      );
 
   Widget buildSuggestionsSuccess(List<Calorie> suggestions) {
     return ListView.builder(
@@ -608,7 +649,7 @@ class FoodSearch extends SearchDelegate<String> {
             isThreeLine: true,
             subtitle: Text(
                 "Calorie: ${suggestion.calorieCount}\t\t  Carb: ${suggestion.carbCount}\n"
-                    "Protein: ${suggestion.proteinCount}\t\t Fat: ${suggestion.fatCount} "),
+                "Protein: ${suggestion.proteinCount}\t\t Fat: ${suggestion.fatCount} "),
             onTap: () async {
               //query = suggestion.food;
 
