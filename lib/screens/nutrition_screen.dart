@@ -298,7 +298,9 @@ class _NutritionSearchState extends State<NutritionSearch>
                         future: _dbHelper.retrieveNutrition("Breakfast"),
                         builder: (context, snapshot) {
                           if (snapshot.data.toString() == "[]") {
-                            return Text("Empty");
+                            return Center(
+                              child: Container(child: Text("No data yet")),
+                            );
                           } else {
                             return ListView.builder(
                                 shrinkWrap: true,
@@ -330,7 +332,9 @@ class _NutritionSearchState extends State<NutritionSearch>
                         future: _dbHelper.retrieveNutrition("Lunch"),
                         builder: (context, snapshot) {
                           if (snapshot.data.toString() == "[]") {
-                            return Text("Empty");
+                            return Center(
+                              child: Container(child: Text("No data yet")),
+                            );
                           } else {
                             return ListView.builder(
                                 shrinkWrap: true,
@@ -362,7 +366,9 @@ class _NutritionSearchState extends State<NutritionSearch>
                         future: _dbHelper.retrieveNutrition("Dinner"),
                         builder: (context, snapshot) {
                           if (snapshot.data.toString() == "[]") {
-                            return Text("Empty");
+                            return Center(
+                              child: Container(child: Text("No data yet")),
+                            );
                           } else {
                             return ListView.builder(
                                 shrinkWrap: true,
@@ -394,7 +400,9 @@ class _NutritionSearchState extends State<NutritionSearch>
                         future: _dbHelper.retrieveNutrition("Other"),
                         builder: (context, snapshot) {
                           if (snapshot.data.toString() == "[]") {
-                            return Text("Empty");
+                            return Center(
+                              child: Container(child: Text("No data yet")),
+                            );
                           } else {
                             return ListView.builder(
                                 shrinkWrap: true,
@@ -504,20 +512,6 @@ class FoodSearch extends SearchDelegate<String> {
   CalorieNetworkService networkService = CalorieNetworkService();
   DatabaseHelper _dbHelper = DatabaseHelper();
   int calorieID = 0;
-
-  final food = [
-    "Chicken",
-    "Fish",
-    "Meat",
-    "Lamb",
-    "Beef",
-  ];
-
-  final recentFood = [
-    "Lamb",
-    "Chicken",
-    "Beef",
-  ];
 
   @override
   List<Widget> buildActions(BuildContext context) => [
@@ -648,15 +642,14 @@ class FoodSearch extends SearchDelegate<String> {
             title: Text(suggestion.food),
             isThreeLine: true,
             subtitle: Text(
-                "Calorie: ${suggestion.calorieCount}\t\t  Carb: ${suggestion.carbCount}\n"
-                "Protein: ${suggestion.proteinCount}\t\t Fat: ${suggestion.fatCount} "),
+                "Calorie: ${suggestion.calorieCount.toStringAsFixed(2)}\t\t  Carb: ${suggestion.carbCount.toStringAsFixed(2)}\n"
+                "Protein: ${suggestion.proteinCount.toStringAsFixed(2)}\t\t Fat: ${suggestion.fatCount.toStringAsFixed(2)} "),
             onTap: () async {
               //query = suggestion.food;
 
               // 1. Show Results
               //showResults(context);
 
-              print("The selected button: ${mealTime.name}");
               // 2. Close Search & Return Result
               Calorie _newCalorie = Calorie(
                   food: suggestion.food,

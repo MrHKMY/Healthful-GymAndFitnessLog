@@ -560,102 +560,6 @@ class NutritionCardList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageThumbnail = new Container(
-      margin: new EdgeInsets.symmetric(vertical: 16.0),
-      alignment: FractionalOffset.centerLeft,
-      child: ClipOval(
-        child: CachedNetworkImage(
-          placeholder: (context, url) => Image.asset("assets/images/wave.gif"),
-          imageUrl: imageLink,
-          errorWidget: (context, url, error) =>
-              Image.asset("assets/images/launcher_icon.png"),
-        ),
-      ),
-    );
-
-    final cardContent = Container(
-      margin: new EdgeInsets.only(left: 40.0),
-      decoration: new BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-      ),
-      child: Container(
-        margin: new EdgeInsets.fromLTRB(60.0, 8.0, 8.0, 8.0),
-        //constraints: new BoxConstraints.expand(),
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            new Text(
-              foodName,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            new Container(
-              height: 10.0,
-            ),
-            Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: 110,
-                    child: Column(children: [
-                      new Row(children: <Widget>[
-                        //new Image.asset("assets/img/ic_distance.png", height: 12.0),
-                        Text("Calorie: ",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        new Text(
-                          " ${calorie.toString()}",
-                          //style: regularTextStyle,
-                        ),
-                      ]),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          //new Image.asset("assets/img/ic_gravity.png", height: 12.0),
-                          Text("Protein: ",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          new Text(
-                            " ${protein.toString()}",
-                            //style: regularTextStyle,
-                          ),
-                        ],
-                      ),
-                    ]),
-                  ),
-                  Container(
-                    width: 110,
-                    child: Column(children: [
-                      new Row(children: <Widget>[
-                        //new Image.asset("assets/img/ic_distance.png", height: 12.0),
-                        Text("Carb: ",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        new Text(
-                          " ${carb.toString()}",
-                          //style: regularTextStyle,
-                        ),
-                      ]),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          //new Image.asset("assets/img/ic_gravity.png", height: 12.0),
-                          Text("Fat: ",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          new Text(
-                            " ${fat.toString()}",
-                            //style: regularTextStyle,
-                          ),
-                        ],
-                      ),
-                    ]),
-                  ),
-                ]),
-          ],
-        ),
-      ),
-    );
 
     return new Container(
         height: 100.0,
@@ -695,8 +599,9 @@ class NutritionCardList extends StatelessWidget {
                     children: <Widget>[
                       new Text(
                         foodName,
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       new Container(
                         height: 10.0,
