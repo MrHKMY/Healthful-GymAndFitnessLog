@@ -227,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         //todo this not updated if user loaded profile first, before user input weight in progress
                                         snapshot.data.toString() != "null"
                                             ? snapshot.data.toString()
-                                            : "?",
+                                            : "Enter Weight",
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,

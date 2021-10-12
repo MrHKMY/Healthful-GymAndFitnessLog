@@ -465,7 +465,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           ],
                                         );
                                       }),
-                                  //TODO CALORIE charts down here
                                   FutureBuilder(
                                       future: _dbHelper.retrieveCal(),
                                       builder: (context, snapshot) {
